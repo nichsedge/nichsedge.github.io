@@ -1,0 +1,11 @@
+{
+  "name": "NICHSEDGE // DATA ARCHIVE",
+  "description": "Technical portfolio of a Data Engineer featuring live pipelines and neural skill graphs.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

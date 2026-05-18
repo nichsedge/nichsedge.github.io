@@ -1,0 +1,393 @@
+{
+  "profile": {
+    "name": "Ichsanul Amal",
+    "role": "Data Engineer",
+    "location": "Cimahi, West Java, Indonesia",
+    "tagline": "I build systems that move and transform data.",
+    "specialization": "scalable data lakes, high-throughput ETL pipelines, and robust database architectures.",
+    "currentFocus": "driving automated operations and data quality analytics at Accenture.",
+    "email": "muhammad.ichsanul19@gmail.com",
+    "github": "https://github.com/nichsedge",
+    "linkedin": "https://www.linkedin.com/in/ichsanulamal19/",
+    "twitter": "https://twitter.com/nichsedge"
+  },
+  "work": [
+    {
+      "company": "Accenture",
+      "role": "Data Engineering, Governance, and Management Analyst",
+      "period": {
+        "start": "2024-09-01",
+        "end": null
+      },
+      "shortDescription": "Designing enterprise-grade data platforms and governance structures for high-scale analytics environments.",
+      "fullDescription": "Driving enterprise data engineering, governance standards, and data management pipelines. Partnering with cross-functional stakeholders to define metadata specifications and enforce governance rules across data lakes.",
+      "tech": [
+        "Python",
+        "SQL",
+        "Airflow",
+        "BigQuery",
+        "Data Governance",
+        "Metadata Management",
+        "Data Engineering"
+      ],
+      "impact": [
+        "Spearheaded enterprise data quality verification and metadata governance frameworks across data platform pipelines."
+      ],
+      "projects": [
+        {
+          "role": "Vibe Coder",
+          "period": {
+            "start": "2025-05-01",
+            "end": "2025-10-31"
+          },
+          "shortDescription": "Researched agentic AI frameworks and built automated product development workflows using ADK, AutoGen, and LangChain.",
+          "fullDescription": "Led research and prototype engineering for LLM-agent-driven applications. Evaluated cutting-edge AI developer platforms and constructed multi-agent tools to automate and streamline software development cycles.",
+          "tech": [
+            "LangChain",
+            "AutoGen",
+            "Google ADK",
+            "Gemini",
+            "TypeScript",
+            "Next.js",
+            "AI Agents"
+          ],
+          "impact": [
+            "Researched and built prototypes using agentic AI frameworks such as LangChain, AutoGen, and Google Agent Development Kit (ADK).",
+            "Evaluated and compared state-of-the-art AI developer tools (Gemini CLI, Lovable, Cursor, Cline, Replit) to automate engineering workflows.",
+            "Constructed a full-stack project management app prototype, integrating AI agents to coordinate and assist dev workflows."
+          ]
+        },
+        {
+          "role": "Data Quality Engineer (Telecom Project)",
+          "period": {
+            "start": "2024-09-01",
+            "end": "2025-04-30"
+          },
+          "shortDescription": "Designed data quality verification dimensions and Airflow ETL orchestration pipelines, migrating thousands of configurations for a telecom client.",
+          "fullDescription": "Spearheaded sales and customer data quality models for a major telecommunications client. Formulated stored procedures, optimized PostgreSQL queries, and automated massive configuration migrations.",
+          "tech": [
+            "Python",
+            "Airflow",
+            "PostgreSQL",
+            "Hive",
+            "Oracle",
+            "SQL",
+            "Tableau",
+            "ETL",
+            "Data Quality"
+          ],
+          "impact": [
+            "Developed customer and sales data quality dimensions models in the telecom industry.",
+            "Automated configuration migration for ~4,000 components using custom Python scripting, cutting manual effort.",
+            "Constructed and monitored Airflow DAGs for ad-hoc ETL operations and proactive system monitoring.",
+            "Created complex SQL procedures, window functions, and delivered business data marts for Tableau visualization.",
+            "Executed root cause analysis, bug resolution, and expanded UAT assertions for the core DQ platform."
+          ]
+        }
+      ]
+    },
+    {
+      "company": "NTI (Telkomsel's Project)",
+      "role": "Database Engineer",
+      "period": {
+        "start": "2023-08-01",
+        "end": "2024-04-30"
+      },
+      "shortDescription": "Architected data models and ETL pipelines using Airflow and dbt, maximizing database performance through query optimization, indexing, and partitioning.",
+      "fullDescription": "Managed database architecture and ingestion pipelines for the Network Service Measurement unit, integrating various formats (REST APIs, CSVs, RDBMS) and introducing dbt to accelerate SQL analytics development.",
+      "tech": [
+        "dbt",
+        "PostgreSQL",
+        "BigQuery",
+        "Airflow",
+        "ETL",
+        "SQL"
+      ],
+      "impact": [
+        "Developed and optimized data models for the Network Service Measurement & Benchmarking unit.",
+        "Managed and monitored databases (BigQuery, PostgreSQL) and ETL pipelines using Airflow, improving data ingestion from various sources (databases, CSVs, REST APIs).",
+        "Enhanced PostgreSQL performance through indexing, partitioning, and window analytic functions; created multi-function, stored procedures, and maintained FDW databases.",
+        "Initiated data build tool (dbt) for modular SQL and faster development."
+      ]
+    },
+    {
+      "company": "IR-NLP Lab CSUI",
+      "role": "Research Intern",
+      "period": {
+        "start": "2023-02-01",
+        "end": "2023-06-30"
+      },
+      "shortDescription": "Engineered web applications and e-learning text analytics dashboards, performing aspect-based sentiment analysis on student feedback.",
+      "fullDescription": "Researched and integrated natural language processing models to extract sentiment trends from academic feedback, designing responsive Flask applications to visualize system-wide metrics.",
+      "tech": [
+        "Python",
+        "Flask",
+        "NLP",
+        "Sentiment Analysis",
+        "Dashboard"
+      ],
+      "impact": [
+        "Analyzed and integrated student feedback data from e-learning systems using Python.",
+        "Performed aspect-based sentiment analysis and built a user-friendly dashboard to assess learning aspects.",
+        "Designed, developed, and deployed web & database applications using Flask and integrating them with data visualization tools."
+      ]
+    },
+    {
+      "company": "Traveloka",
+      "role": "Data Engineer Intern",
+      "period": {
+        "start": "2022-08-01",
+        "end": "2022-12-31"
+      },
+      "shortDescription": "Built scalable data warehouse models and ETL pipelines in BigQuery and Airflow adhering to Kimball dimensional modeling principles.",
+      "fullDescription": "Worked within the Core Data Team to design high-performance warehouse models for hotel and transport business units, optimizing resource utilization and monitoring BigQuery costs.",
+      "tech": [
+        "BigQuery",
+        "dbt",
+        "Airflow",
+        "Python",
+        "SQL",
+        "Kimball"
+      ],
+      "impact": [
+        "Implemented data warehouse models for hotel and transport BU, utilizing SQL and dbt (data build tool).",
+        "Migrated and optimized data warehouse assets using BigQuery and Python adhering to Kimball principles.",
+        "Monitored ETL pipeline and performed data backfill using Airflow.",
+        "Developed dashboards using Google Data Studio to monitor and optimize BigQuery resources."
+      ]
+    },
+    {
+      "company": "University of Indonesia",
+      "role": "Teaching Assistant",
+      "period": {
+        "start": "2020-09-01",
+        "end": "2022-01-31"
+      },
+      "shortDescription": "Instructed and evaluated undergraduate students in Python fundamental programming, Calculus, and Operating Systems courses.",
+      "fullDescription": "Coordinated lab sessions and evaluated assignments, serving as a primary academic link for hundreds of students during fundamental computing courses.",
+      "tech": [
+        "Python",
+        "Calculus",
+        "Operating Systems"
+      ],
+      "impact": [
+        "Teaching Assistant for Fundamental Programming (Python), Calculus, and Operating System courses.",
+        "Assess and assist the students with weekly lab sessions, assignment work, and assignment demos (interviews)."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "idx-bei",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/idx-bei.png"
+      }
+    },
+    {
+      "name": "sansfinance",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/sansfinance.png"
+      }
+    },
+    {
+      "name": "atracker",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/atracker.png"
+      }
+    }
+  ],
+  "skills": {
+    "languages": [
+      "Python",
+      "SQL",
+      "JavaScript",
+      "Java",
+      "Go",
+      "Shell",
+      "C#",
+      "Kotlin (Vibe Code)"
+    ],
+    "infrastructure": [
+      "GCP",
+      "AWS",
+      "Linux",
+      "Docker",
+      "Kubernetes"
+    ],
+    "ides": [
+      "Visual Studio Code",
+      "Google Antigravity",
+      "Android Studio",
+      "Codex",
+      "Claude Code"
+    ],
+    "platforms": [
+      "Airflow",
+      "dbt",
+      "BigQuery",
+      "PostgreSQL",
+      "Hive",
+      "Oracle",
+      "Spark",
+      "Kafka",
+      "Hadoop",
+      "Looker Studio",
+      "SQL Server"
+    ],
+    "core": [
+      "DATA_PIPELINES",
+      "DATA_WAREHOUSING",
+      "STREAM_PROCESSING",
+      "SYSTEM_AUTOMATION",
+      "AI_INTEGRATION",
+      "AGENTIC_AI",
+      "DATA_QUALITY_GOVERNANCE",
+      "Hermes Agent (AI)"
+    ]
+  },
+  "narrative": {
+    "philosophy": "Invisible Reliability. The best data infrastructure is one that hums quietly in the background, working flawlessly so the business never has to think about it. It’s the clean, trustworthy foundation that allows decisions to be made with confidence.",
+    "intro": "In modern engineering, the true challenge isn't just scaling the nodes or writing faster queries—it's establishing trust in the data itself. As a Data Engineer, I build pipelines that act as the reliable nervous system of the organization.",
+    "conclusion": "Whether it is optimizing query execution times by 50% or automating the migration of thousands of system configurations, my goal is to design robust, self-healing platforms that turn operational complexity into clean, actionable insights."
+  },
+  "education": [
+    {
+      "institution": "University of Indonesia",
+      "degree": "B.Sc. in Computer Science (Information Systems)",
+      "period": {
+        "start": "2019-09-01",
+        "end": "2023-08-31"
+      },
+      "details": "Graduated with GPA 3.77/4.0. Specialized in Database Systems, Operating Systems, and Fundamental Programming."
+    },
+    {
+      "institution": "SMA Negeri 4 Bandung",
+      "degree": "High School Diploma",
+      "period": {
+        "start": "2016-07-01",
+        "end": "2019-06-30"
+      },
+      "details": "Focused on Natural Sciences. Physics Olympiad winner and represented the school at the city level."
+    }
+  ],
+  "contact": {
+    "terminal_hint": "Access via ichsanul@data.hq",
+    "socials": [
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/nichsedge"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/in/ichsanulamal19/"
+      }
+    ]
+  },
+  "certificates": [
+    {
+      "title": "Generative AI",
+      "issuer": "Udacity",
+      "date": "2025-08",
+      "link": "https://www.udacity.com/certificate/e/6913bf48-5c8c-11f0-aeb4-f7971f128067"
+    },
+    {
+      "title": "Data Engineering with AWS",
+      "issuer": "Udacity",
+      "date": "2025-07",
+      "link": "https://www.udacity.com/certificate/e/36ab80b2-51a2-11f0-b43a-1f6a5d8b2818"
+    },
+    {
+      "title": "Build intelligent agents with Agent Development Kit (ADK)",
+      "issuer": "Google Cloud Skills Boost",
+      "date": "2025-07",
+      "credential_id": "16939219",
+      "link": "https://partner.cloudskillsboost.google/public_profiles/332ac046-6731-4ca5-a724-b37a0bf662d5/badges/16939219"
+    },
+    {
+      "title": "DevOps Engineering - Git, GitHub, Maven, JUnit, Log4j",
+      "issuer": "Udemy",
+      "date": "2021-06",
+      "link": "https://www.udemy.com/certificate/UC-eee64d99-184d-48b5-bb23-de5354aed4eb/"
+    },
+    {
+      "title": "Data Engineering - ETL, Web Scraping ,Big Data,SQL,Power BI",
+      "issuer": "Udemy",
+      "date": "2021-11",
+      "link": "https://www.udemy.com/certificate/UC-284a6015-3733-4df4-a131-0df0b21a7df3/"
+    },
+    {
+      "title": "Belajar Dasar Pemrograman JavaScript",
+      "issuer": "Dicoding Indonesia",
+      "date": "2022-01",
+      "credential_id": "RVZK155LNPD5",
+      "link": "https://www.dicoding.com/certificates/RVZK155LNPD5"
+    },
+    {
+      "title": "Cloud Practitioner Essentials (AWS Cloud)",
+      "issuer": "Dicoding Indonesia",
+      "date": "2021-08",
+      "credential_id": "2VX326O0QPYQ",
+      "link": "https://www.dicoding.com/certificates/2VX326O0QPYQ"
+    },
+    {
+      "title": "Data Science on Google Cloud",
+      "issuer": "Qwiklabs",
+      "date": "2021-09",
+      "link": "https://www.cloudskillsboost.google/public_profiles/e6b091ab-7cba-4bb8-afb4-ddb8cb0c72d7"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Best Technology",
+      "issuer": "Tokopedia Devcamp 2022 Hackathon",
+      "date": "2022-10",
+      "description": "Contributed to the backend development using Flask and data collection using the RasaHQ Framework to create a chatbot for gift recommendations as a team."
+    },
+    {
+      "title": "Active Participation as Mentee",
+      "issuer": "Deall Career Mentoring Festival (DCMF)",
+      "date": "2022-12",
+      "description": "Engaged in mentorship sessions discussing industry best practices, professional development, and systems engineering careers."
+    },
+    {
+      "title": "Physics Olympiad Winner",
+      "issuer": "SMAN 4 Bandung",
+      "date": "2017-12",
+      "description": "Won first place in the high school Physics Olympiad and represented the school at the city level."
+    }
+  ],
+  "organizations": [
+    {
+      "name": "ILUNI UI",
+      "role": "Technology and Innovation (Grid) - Database & Analytics",
+      "start_date": "2025-10",
+      "end_date": "Present"
+    },
+    {
+      "name": "BETIS Fasilkom UI",
+      "role": "Staff of Academic",
+      "start_date": "2019-11",
+      "end_date": "2020-06",
+      "description": "BETIS is an event to help underprivileged high school students prepare for university entrance exams. Recruited and managed English tutors and designed curricula for 50+ students."
+    }
+  ],
+  "spoken_languages": [
+    {
+      "language": "English",
+      "proficiency": "Professional Working Proficiency (77 on EF SET / Proficient)"
+    },
+    {
+      "language": "Indonesian",
+      "proficiency": "Native or Bilingual Proficiency"
+    }
+  ],
+  "interests": [
+    "Finance & Investment",
+    "Philosophy",
+    "Futsal",
+    "Movies"
+  ]
+}
