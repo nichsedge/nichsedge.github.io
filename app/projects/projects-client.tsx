@@ -39,8 +39,8 @@ export default function ProjectsClient() {
 
   const yAxisWidth = windowWidth < 640 ? 70 : 110;
   const formatYAxisTick = (tickItem: string) => {
-    return windowWidth < 640 && tickItem.length > 10 
-      ? `${tickItem.substring(0, 8)}..` 
+    return windowWidth < 640 && tickItem.length > 10
+      ? `${tickItem.substring(0, 8)}..`
       : tickItem;
   };
 
@@ -75,7 +75,7 @@ export default function ProjectsClient() {
   const stats = useMemo(() => {
     const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
     const languages = [...new Set(repos.map(r => r.language).filter(Boolean))];
-    const topTopic = 'data-engineering';
+    const topTopic = 'life';
     return { totalStars, langCount: languages.length, topTopic, totalCount: repos.length };
   }, [repos]);
 
@@ -110,10 +110,10 @@ export default function ProjectsClient() {
 
   const displayedTopics = useMemo(() => {
     if (showAllTopics) return allTopicsSorted;
-    
+
     // Always include selected topics, even if they aren't in the top 15
     const top15 = allTopicsSorted.slice(0, 15);
-    const selectedNotRestricted = allTopicsSorted.filter(([topic]) => 
+    const selectedNotRestricted = allTopicsSorted.filter(([topic]) =>
       selectedTopics.includes(topic) && !top15.some(([t]) => t === topic)
     );
     return [...top15, ...selectedNotRestricted];
@@ -182,7 +182,7 @@ export default function ProjectsClient() {
                 </button>
               )}
             </div>
-            <div 
+            <div
               className="w-full transition-all duration-300 ease-in-out"
               style={{ height: showAllLangs ? `${Math.max(180, langData.length * 36)}px` : '180px' }}
             >
@@ -213,7 +213,7 @@ export default function ProjectsClient() {
               <p className="text-[11px] text-text-2 font-light italic leading-relaxed">
                 &quot;Languages are tools for the mission. This overview reflects a journey across layers of the stack.&quot;
               </p>
-              <div 
+              <div
                 className="space-y-2 overflow-y-auto pr-2 scrollbar-thin transition-all duration-300"
                 style={{ maxHeight: showAllLangs ? `${Math.max(180, langData.length * 36 - 60)}px` : '180px' }}
               >
@@ -247,7 +247,7 @@ export default function ProjectsClient() {
               className="w-full bg-bg-1 border border-border-subtle rounded-sm py-2 pl-9 pr-4 text-[12px] font-mono outline-none focus:border-accent/40 focus:bg-bg-1/80 transition-all focus:shadow-[0_0_12px_rgba(0,225,207,0.05)] text-text-0"
             />
           </div>
-          
+
           {selectedTopics.length > 0 && (
             <button
               onClick={() => setSelectedTopics([])}
@@ -257,13 +257,13 @@ export default function ProjectsClient() {
             </button>
           )}
         </div>
-        
+
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider flex items-center gap-1.5">
               <Filter size={10} className="text-accent" /> Topics:
             </span>
-            
+
             {allTopicsSorted.length > 15 && (
               <button
                 onClick={() => setShowAllTopics(!showAllTopics)}
@@ -274,30 +274,27 @@ export default function ProjectsClient() {
               </button>
             )}
           </div>
-          
-          <div className={`flex flex-wrap gap-2 transition-all duration-300 ${
-            showAllTopics 
-              ? 'max-h-40 overflow-y-auto pr-2 py-2 border border-border-subtle bg-bg-1/25 p-2 rounded-sm shadow-[inset_0_0_12px_rgba(0,225,207,0.02)]' 
+
+          <div className={`flex flex-wrap gap-2 transition-all duration-300 ${showAllTopics
+              ? 'max-h-40 overflow-y-auto pr-2 py-2 border border-border-subtle bg-bg-1/25 p-2 rounded-sm shadow-[inset_0_0_12px_rgba(0,225,207,0.02)]'
               : ''
-          }`}>
+            }`}>
             {displayedTopics.map(([topic, count]) => {
               const isSelected = selectedTopics.includes(topic);
               return (
                 <button
                   key={topic}
                   onClick={() => toggleTopic(topic)}
-                  className={`px-2 py-1 text-[9px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${
-                    isSelected
+                  className={`px-2 py-1 text-[9px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${isSelected
                       ? 'bg-accent/10 border-accent/80 text-accent shadow-[0_0_8px_rgba(0,225,207,0.12)]'
                       : 'bg-bg-1 border-border-subtle text-text-3 hover:border-text-3 hover:text-text-1 hover:bg-bg-1/80'
-                  }`}
+                    }`}
                 >
                   <span>#{topic}</span>
-                  <span className={`px-1 rounded-sm text-[8px] font-semibold ${
-                    isSelected 
-                      ? 'bg-accent/25 text-accent' 
+                  <span className={`px-1 rounded-sm text-[8px] font-semibold ${isSelected
+                      ? 'bg-accent/25 text-accent'
                       : 'bg-bg-2 text-text-3 border border-border-subtle'
-                  }`}>
+                    }`}>
                     {count}
                   </span>
                 </button>

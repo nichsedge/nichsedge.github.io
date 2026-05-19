@@ -13,9 +13,48 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'NICHSEDGE // DATA ARCHIVE',
+  metadataBase: new URL('https://nichsedge.github.io'),
+  title: {
+    default: 'NICHSEDGE // DATA ARCHIVE',
+    template: '%s // NICHSEDGE',
+  },
   description: 'Data engineer and curious generalist building data systems and exploring the intersection of pipelines and ideas.',
+  keywords: ['Data Engineering', 'Systems Architecture', 'ETL', 'Pipelines', 'BigQuery', 'dbt', 'Python', 'SQL', 'Ichsanul Amal'],
+  authors: [{ name: 'Ichsanul Amal', url: 'https://nichsedge.github.io' }],
+  creator: 'Ichsanul Amal',
+  openGraph: {
+    title: 'NICHSEDGE // DATA ARCHIVE',
+    description: 'Data engineer and curious generalist building data systems and exploring the intersection of pipelines and ideas.',
+    url: 'https://nichsedge.github.io',
+    siteName: 'NICHSEDGE // DATA ARCHIVE',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NICHSEDGE // DATA ARCHIVE',
+    description: 'Data engineer and curious generalist building data systems and exploring the intersection of pipelines and ideas.',
+    creator: '@nichsedge',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+      { url: '/icon.svg', type: 'image/svg+xml', sizes: 'any' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  manifest: '/manifest.webmanifest',
 };
+
+export const viewport = {
+  themeColor: '#00e1cf',
+  width: 'device-width',
+  initialScale: 1,
+};
+
 
 import { CommandPalette } from '@/components/command-palette';
 import { SystemMonitor } from '@/components/system-monitor';

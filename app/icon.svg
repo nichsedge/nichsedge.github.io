@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Dark Mode Glow Filter -->
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    :root {
+      --accent: #00e1cf;
+      --bg: #09090b;
+      --fg: #fafafa;
+      --fg-subtle: #a1a1aa;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --accent: #00b8a9;
+        --bg: #fafafa;
+        --fg: #09090b;
+        --fg-subtle: #4b5563;
+      }
+    }
+
+    .hat-body {
+      fill: none;
+      stroke: var(--fg);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .hat-band {
+      fill: var(--accent);
+      filter: url(#neon-glow);
+    }
+
+    .hat-brim {
+      fill: none;
+      stroke: var(--fg);
+      stroke-width: 14;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .glasses-frame {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#neon-glow);
+    }
+
+    .glasses-fill {
+      fill: var(--accent);
+      fill-opacity: 0.1;
+    }
+
+    .hud-line {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 4;
+      stroke-linecap: round;
+      opacity: 0.8;
+      filter: url(#neon-glow);
+    }
+
+    .hud-dot {
+      fill: var(--accent);
+      opacity: 0.9;
+      filter: url(#neon-glow);
+    }
+  </style>
+
+  <!-- Crown / Top of Hat -->
+  <path class="hat-body" d="M 180,230 L 195,160 C 205,140 240,135 256,145 C 272,135 307,140 317,160 L 332,230 Z" />
+
+  <!-- Hat Band (glowing accent) -->
+  <polygon class="hat-band" points="180,226 332,226 335,242 177,242" />
+
+  <!-- Hat Brim -->
+  <path class="hat-brim" d="M 100,248 L 256,238 L 412,248 L 380,264 L 256,254 L 132,264 Z" />
+
+  <!-- Cyber Spectacles / Visor -->
+  <!-- Left Lens -->
+  <polygon class="glasses-fill" points="150,285 235,285 220,335 165,335" />
+  <polygon class="glasses-frame" points="150,285 235,285 220,335 165,335" />
+
+  <!-- Right Lens -->
+  <polygon class="glasses-fill" points="277,285 362,285 347,335 292,335" />
+  <polygon class="glasses-frame" points="277,285 362,285 347,335 292,335" />
+
+  <!-- Bridge -->
+  <line class="glasses-frame" x1="235" y1="292" x2="277" y2="292" />
+
+  <!-- HUD Details inside Left Lens -->
+  <line class="hud-line" x1="170" y1="310" x2="215" y2="310" />
+  <line class="hud-line" x1="192" y1="302" x2="192" y2="318" />
+  <circle class="hud-dot" cx="192" cy="310" r="4" />
+
+  <!-- HUD Details inside Right Lens -->
+  <line class="hud-line" x1="297" y1="310" x2="342" y2="310" />
+  <line class="hud-line" x1="320" y1="302" x2="320" y2="318" />
+  <circle class="hud-dot" cx="320" cy="310" r="4" />
+</svg>
