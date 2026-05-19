@@ -10,6 +10,7 @@ export function DataOracle() {
   const [insight, setInsight] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [stage, setStage] = useState(0);
+  const [status, setStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
   const [metrics, setMetrics] = useState<any[]>(Array.from({length: 10}).map((_, i) => ({ time: i, cpu: 10, mem: 20 })));
 
   useEffect(() => {
@@ -40,9 +41,19 @@ export function DataOracle() {
     }
 
     try {
-      setInsight(getFallbackGhostResponse("As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences."));
+      const query = "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
+      const res = await fetch('/api/ghost', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+      if (!res.ok) throw new Error("API Route offline");
+      const data = await res.json();
+      setStatus('LIVE');
+      setInsight(data.response);
     } catch (e) {
-      setInsight("ERR: PREDICTION_BUFFER_OVERFLOW. CONNECTION RESET.");
+      setStatus('LOCAL');
+      setInsight(getFallbackGhostResponse("As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences."));
     } finally {
       setIsLoading(false);
     }
@@ -56,9 +67,20 @@ export function DataOracle() {
       
       <div className="relative z-10 flex flex-col md:flex-row gap-8">
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-text-0 mb-4 flex items-center gap-3">
-            <Sparkles size={20} className="text-accent" /> Use the Data Oracle
-          </h3>
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h3 className="text-xl font-bold text-text-0 flex items-center gap-3">
+              <Sparkles size={20} className="text-accent" /> Use the Data Oracle
+            </h3>
+            {status && (
+              <span className={`font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 border ${
+                status === 'LIVE' 
+                  ? 'border-green-500/30 text-green-400 bg-green-500/5 shadow-[0_0_8px_rgba(34,197,94,0.1)]' 
+                  : 'border-cyan-500/20 text-cyan-400 bg-cyan-500/5'
+              }`}>
+                [{status === 'LIVE' ? 'LIVE_COGNITIVE_CORE' : 'LOCAL_EMULATION'}]
+              </span>
+            )}
+          </div>
           <p className="text-[13px] text-text-3 font-light mb-8 max-w-lg leading-relaxed">
              Connect your current expertise to the future. Our neural projection engine analyzes your stack to predict the next wave of data evolution.
           </p>

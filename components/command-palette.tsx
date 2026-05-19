@@ -43,15 +43,41 @@ export function CommandPalette() {
     setIsAuditing(true);
     setAuditReport('');
     try {
-      const report = getFallbackAuditReport({
-        name: 'Ichsanul Amal',
-        role: 'Data Engineer',
-        skills: ['Python', 'dbt', 'Airflow', 'BigQuery', 'SQL'],
-        projects_count: '50+',
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profileData: {
+            name: resumeData.profile.name,
+            role: resumeData.profile.role,
+            skills: [
+              ...resumeData.skills.languages,
+              ...resumeData.skills.platforms,
+              ...resumeData.skills.infrastructure
+            ],
+            projects_count: '50+',
+          }
+        })
       });
-      setAuditReport(report);
+      if (!res.ok) throw new Error("API Route offline");
+      const data = await res.json();
+      setAuditReport(data.report);
     } catch (e) {
-      setAuditReport('CRITICAL_SYSTEM_ERROR: CONNECTION_TIMEOUT');
+      try {
+        const report = getFallbackAuditReport({
+          name: resumeData.profile.name,
+          role: resumeData.profile.role,
+          skills: [
+            ...resumeData.skills.languages,
+            ...resumeData.skills.platforms,
+            ...resumeData.skills.infrastructure
+          ],
+          projects_count: '50+',
+        });
+        setAuditReport(report);
+      } catch (err) {
+        setAuditReport('CRITICAL_SYSTEM_ERROR: CONNECTION_TIMEOUT');
+      }
     } finally {
       setIsAuditing(false);
     }

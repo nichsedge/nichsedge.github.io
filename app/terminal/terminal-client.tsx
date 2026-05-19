@@ -19,6 +19,8 @@ export default function TerminalClient() {
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [theme, setTheme] = useState<'cyan' | 'matrix' | 'amber' | 'cobalt'>('cyan');
+  const [ghostMode, setGhostMode] = useState(false);
+  const [ghostStatus, setGhostStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -78,23 +80,79 @@ export default function TerminalClient() {
 
     const currentInput = input;
     setInput('');
-    setHistory(prev => [...prev, `ichsanul@portfolio ~ $ ${currentInput}`]);
+    setHistory(prev => [...prev, `${ghostMode ? 'ghost@neural' : 'ichsanul@portfolio'} ~ $ ${currentInput}`]);
     setCmdHistory(prev => [...prev, currentInput]);
     setHistoryIndex(-1);
+
+    // If ghostMode is active, send all input to the AI endpoint (except exit/quit commands)
+    if (ghostMode) {
+      if (cmd === 'exit' || cmd === 'quit') {
+        setGhostMode(false);
+        setHistory(prev => [...prev, "TERMINATING LINK. RETURNING TO STANDARD SHELL.", " "]);
+        return;
+      }
+      setIsProcessing(true);
+      setHistory(prev => [...prev, "ROUTING TELEMETRY TO COGNITIVE CORE...", " "]);
+      try {
+        const res = await fetch('/api/ghost', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: currentInput })
+        });
+        if (!res.ok) throw new Error("API Route unreachable");
+        const data = await res.json();
+        setGhostStatus('LIVE');
+        setHistory(prev => [...prev, `GHOST: ${data.response}`, " "]);
+      } catch (err) {
+        setGhostStatus('LOCAL');
+        const fallback = getFallbackGhostResponse(currentInput);
+        setHistory(prev => [...prev, `GHOST: ${fallback}`, " "]);
+      } finally {
+        setIsProcessing(false);
+      }
+      return;
+    }
 
     if (cmd === 'clear') {
       setHistory([]);
       return;
     }
 
+    // Enter interactive Neural Ghost chat mode
     if (cmd === 'ghost') {
+      setGhostMode(true);
+      setHistory(prev => [
+        ...prev, 
+        "NEURAL_LINK_ESTABLISHED. ENTERING DIRECT COGNITIVE LINK.",
+        "TYPE 'exit' or 'quit' TO RETURN TO STANDARD TERMINAL.",
+        " "
+      ]);
+      return;
+    }
+
+    // Support inline ghost commands: e.g. "ghost who are you?"
+    if (cmd.startsWith('ghost ')) {
+      const query = currentInput.substring(6).trim();
+      if (!query) {
+        setHistory(prev => [...prev, "Usage: ghost <query_or_question>", " "]);
+        return;
+      }
       setIsProcessing(true);
       setHistory(prev => [...prev, "COMMUNICATING WITH NEURAL_GHOST...", " "]);
       try {
-        const response = getFallbackGhostResponse("Introduce yourself as the digital ghost of Ichsanul's portfolio.");
-        setHistory(prev => [...prev, `GHOST: ${response}`, " "]);
+        const res = await fetch('/api/ghost', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
+        });
+        if (!res.ok) throw new Error("API Route unreachable");
+        const data = await res.json();
+        setGhostStatus('LIVE');
+        setHistory(prev => [...prev, `GHOST: ${data.response}`, " "]);
       } catch (err) {
-        setHistory(prev => [...prev, "ERROR: GHOST_UNREACHABLE", " "]);
+        setGhostStatus('LOCAL');
+        const fallback = getFallbackGhostResponse(query);
+        setHistory(prev => [...prev, `GHOST: ${fallback}`, " "]);
       } finally {
         setIsProcessing(false);
       }
@@ -345,7 +403,7 @@ export default function TerminalClient() {
                 initial={{ opacity: 0, x: -5 }}
                 animate={{ opacity: 1, x: 0 }}
                 key={i} 
-                className={line.startsWith('ichsanul@') ? `${themeStyles.accentText} font-bold` : line.startsWith('GHOST:') ? 'text-[#ffffff]' : ''}
+                className={(line.startsWith('ichsanul@') || line.startsWith('ghost@')) ? (line.startsWith('ghost@') ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`) : line.startsWith('GHOST:') ? 'text-[#ffffff]' : ''}
               >
                 {line}
               </motion.div>
@@ -353,7 +411,9 @@ export default function TerminalClient() {
           </AnimatePresence>
           
           <form onSubmit={handleCommand} className="flex items-center gap-2 pt-2">
-            <span className={`${themeStyles.accentText} font-bold`}>ichsanul@portfolio ~ $</span>
+            <span className={`${ghostMode ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`}`}>
+              {ghostMode ? 'ghost@neural ~ $' : 'ichsanul@portfolio ~ $'}
+            </span>
             <input 
               ref={inputRef}
               autoFocus
@@ -378,7 +438,13 @@ export default function TerminalClient() {
           </div>
           <div className="flex gap-4 uppercase tracking-[0.2em] font-bold">
              <span className="opacity-40">V2.0.5</span>
-             <span className={`${themeStyles.accentText} animate-pulse`}>● CONNECTED</span>
+             {ghostStatus === 'LIVE' ? (
+               <span className="text-green-400 font-bold animate-pulse flex items-center gap-1">● LIVE_AI</span>
+             ) : ghostStatus === 'LOCAL' ? (
+               <span className="text-cyan-400 font-bold flex items-center gap-1">● LOCAL_EMULATION</span>
+             ) : (
+               <span className={`${themeStyles.accentText} animate-pulse`}>● CONNECTED</span>
+             )}
           </div>
         </div>
       </div>
