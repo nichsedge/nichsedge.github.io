@@ -1,20 +1,29 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# NICHSEDGE
 
-# Run and deploy your AI Studio app
+Personal portfolio built with Next.js and deployed to GitHub Pages/Cloudflare.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/67420f71-66df-4c67-a6ce-f7a113b205b2
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
+## Local Development (Bun)
 
 1. Install dependencies:
    `bun install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Optional: set `GEMINI_API_KEY` in `.env.local` for AI-powered API routes (`/api/ghost`, `/api/audit`).
+   Without it, routes use local fallback responses.
+3. Start dev server:
    `bun run dev`
+
+## Quality Checks
+
+Run full validation before opening a PR:
+
+`bun run check`
+
+This runs:
+- `bun run lint`
+- `bun run typecheck`
+- `bun run build`
+
+## Build for Static Pages
+
+To generate static output in `out/`:
+
+`bun run build:pages`

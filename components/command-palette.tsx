@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Command, Terminal, FileText, User, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network } from 'lucide-react';
+import { Search, Command, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
 import { getFallbackAuditReport } from '@/lib/ai-fallback';
@@ -63,7 +63,7 @@ export function CommandPalette() {
       if (!res.ok) throw new Error("API Route offline");
       const data = await res.json();
       setAuditReport(data.report);
-    } catch (e) {
+    } catch {
       try {
         const report = getFallbackAuditReport({
           name: resumeData.profile.name,
@@ -76,7 +76,7 @@ export function CommandPalette() {
           projects_count: '50+',
         });
         setAuditReport(report);
-      } catch (err) {
+      } catch {
         setAuditReport('CRITICAL_SYSTEM_ERROR: CONNECTION_TIMEOUT');
       }
     } finally {

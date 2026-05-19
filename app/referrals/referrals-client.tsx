@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Copy, Check, Zap, Server, Network, Terminal, Search, X, ShieldAlert, Cpu } from 'lucide-react';
+import { ExternalLink, Copy, Check, Server, Network, Terminal, Search, X, ShieldAlert, Cpu } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { MatrixRain } from '@/components/matrix-rain';

@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, ArrowRight, Award, GraduationCap, Briefcase, Code, Globe, Heart, Terminal, Database, Cpu, Server, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, Database, Github, Linkedin, Mail } from 'lucide-react';
 
 import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
-import { MediaViewer } from '@/components/media-viewer';
 import { SkillMatrix } from '@/components/skill-matrix';
 import { CareerPipeline } from '@/components/career-pipeline';
 import { KnowledgeGraph } from '@/components/knowledge-graph';
@@ -17,32 +16,10 @@ import { MatrixRain } from '@/components/matrix-rain';
 import { LiveArchitecture } from '@/components/live-architecture';
 import { HumanRuntime } from '@/components/human-runtime';
 import { DecryptedText } from '@/components/decrypted-text';
-import { Redacted } from '@/components/redacted';
 import { InteractiveGrid } from '@/components/interactive-grid';
-import { TiltCard } from '@/components/tilt-card';
 import { DataPipeline } from '@/components/data-pipeline';
 
 import resumeData from '@/data/cv.json';
-
-interface Period {
-  start: string;
-  end: string;
-}
-
-interface WorkItem {
-  company: string;
-  role: string;
-  period: Period;
-  shortDescription: string;
-  fullDescription: string;
-  tech: string[];
-  impact: string[];
-  media?: {
-    type: string;
-    url: string;
-    thumbnail?: string;
-  } | null;
-}
 
 const FADE_UP = {
   initial: { opacity: 0, y: 10 },

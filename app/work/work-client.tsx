@@ -4,14 +4,9 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { 
   Terminal, 
-  ChevronRight, 
-  Server, 
-  Database, 
   Cpu, 
-  Workflow, 
   History,
   ArrowUpRight,
-  Code2,
   Layers,
   Network
 } from 'lucide-react';

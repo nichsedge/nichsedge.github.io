@@ -104,7 +104,7 @@ export default function TerminalClient() {
         const data = await res.json();
         setGhostStatus('LIVE');
         setHistory(prev => [...prev, `GHOST: ${data.response}`, " "]);
-      } catch (err) {
+      } catch {
         setGhostStatus('LOCAL');
         const fallback = getFallbackGhostResponse(currentInput);
         setHistory(prev => [...prev, `GHOST: ${fallback}`, " "]);
@@ -150,7 +150,7 @@ export default function TerminalClient() {
         const data = await res.json();
         setGhostStatus('LIVE');
         setHistory(prev => [...prev, `GHOST: ${data.response}`, " "]);
-      } catch (err) {
+      } catch {
         setGhostStatus('LOCAL');
         const fallback = getFallbackGhostResponse(query);
         setHistory(prev => [...prev, `GHOST: ${fallback}`, " "]);
@@ -382,7 +382,7 @@ export default function TerminalClient() {
   }, [history]);
 
   useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
+    const handleGlobalClick = () => {
       // Focus input if clicked inside terminal container
       if (inputRef.current) {
         inputRef.current.focus();

@@ -11,7 +11,6 @@ const ai = new GoogleGenAI({
 });
 
 const getFallbackReport = (data: any) => {
-  const name = data?.name || "Ichsanul Amal";
   const role = data?.role || "Data Engineer";
   const skills = data?.skills || ['Python', 'dbt', 'Airflow', 'BigQuery', 'SQL'];
   const projectsCount = data?.projects_count || '50+';
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     profileData = body.profileData;
-  } catch (e) {
+  } catch {
     // Ignore JSON parsing errors
   }
 

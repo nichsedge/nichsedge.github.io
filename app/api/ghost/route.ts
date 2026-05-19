@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     query = body.query || "";
-  } catch (e) {
+  } catch {
     // Ignore JSON parsing errors
   }
 

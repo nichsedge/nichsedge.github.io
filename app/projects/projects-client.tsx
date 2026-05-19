@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Star, Code, Cpu, Hash, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
+import { ExternalLink, Star, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import githubData from '@/data/github_repos_all.json';
 import resumeData from '@/data/cv.json';

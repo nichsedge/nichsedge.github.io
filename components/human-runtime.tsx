@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
-import { motion } from 'motion/react';
-import { Cpu, Users, Thermometer, BatteryCharging, AlertTriangle, Coffee, Terminal, Brain, LineChart, BookOpen, Activity, Mic, Circle } from 'lucide-react';
+import { Cpu, Users, Thermometer, BatteryCharging, AlertTriangle, Terminal, Brain, LineChart, BookOpen, Activity, Mic, Circle } from 'lucide-react';
 import { TiltCard } from './tilt-card';
 import { NoiseCancellationWidget } from './noise-cancellation';
 

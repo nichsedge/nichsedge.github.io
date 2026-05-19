@@ -34,7 +34,6 @@ export function DataOracle() {
     setStage(0);
     
     // Simulate thinking stages
-    const stages = ["SCANNING_CURRENT_STACK", "ANALYZING_MARKET_TRENDS", "PROJECTION_GENESIS"];
     for(let i=0; i<3; i++) {
       setStage(i);
       await new Promise(r => setTimeout(r, 800));
@@ -51,7 +50,7 @@ export function DataOracle() {
       const data = await res.json();
       setStatus('LIVE');
       setInsight(data.response);
-    } catch (e) {
+    } catch {
       setStatus('LOCAL');
       setInsight(getFallbackGhostResponse("As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences."));
     } finally {

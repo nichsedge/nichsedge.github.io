@@ -3,14 +3,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion } from 'motion/react';
 import { Zap, ZapOff } from 'lucide-react';
 
 export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () => void }) {
-  const pathname = usePathname();
-  const isHome = pathname === '/';
-
   const links = [
     { name: 'home', href: '/' },
     { name: 'work', href: '/work' },

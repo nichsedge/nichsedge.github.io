@@ -2,8 +2,6 @@
 
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
-import { motion } from 'motion/react';
-import resumeData from '@/data/cv.json';
 
 export function SkillMatrix() {
   const data = [

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Copy, Check, Zap, Server, Network, Terminal, ShieldAlert } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ExternalLink, Copy, Check, Zap, Server, Network, Terminal } from 'lucide-react';
 import { TiltCard } from './tilt-card';
 import referralsData from '@/data/referrals.json';
 

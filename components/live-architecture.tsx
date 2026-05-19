@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Database, Filter, Server, HardDrive, Play, Activity } from 'lucide-react';
+import { Database, Filter, HardDrive, Play, Activity } from 'lucide-react';
 
 type Packet = { id: number; left: number; top: number; type: string };
 
@@ -65,7 +65,7 @@ export function LiveArchitecture() {
         )}
 
         {/* Nodes */}
-        {nodes.map((node, i) => (
+        {nodes.map((node) => (
           <div 
             key={node.name} 
             className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"

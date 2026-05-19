@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Database, Filter, ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
 
 export function DataPipeline() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

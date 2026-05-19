@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Terminal, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 
 export function MainframeBypass() {
   const [triggered, setTriggered] = useState(false);

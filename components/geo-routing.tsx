@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import { Globe, Activity } from 'lucide-react';
-import { motion } from 'motion/react';
 import { useGraphOpen } from '@/hooks/use-graph-open';
 
 export function GeoRouting() {
