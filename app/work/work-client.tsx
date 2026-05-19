@@ -120,7 +120,7 @@ export default function WorkClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bg relative selection:bg-accent/30 selection:text-accent overflow-x-hidden">
+    <div className="min-h-screen bg-bg relative selection:bg-accent/30 selection:text-accent">
       <Navbar isNSM={isNSM} toggleNSM={() => setIsNSM(!isNSM)} />
       <SubNav items={subNavItems} />
       

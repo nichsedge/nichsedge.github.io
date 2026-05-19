@@ -446,6 +446,14 @@ export default function DataLakeClient() {
 
   return (
     <div className="min-h-screen pb-20 bg-bg text-text-2 relative overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: `
+        #main-layout-container {
+          max-width: 1400px !important;
+        }
+        .hud-widget {
+          display: none !important;
+        }
+      `}} />
       <Navbar />
 
       {/* Decorative Glow Grid */}
@@ -735,26 +743,7 @@ export default function DataLakeClient() {
             </div>
           </div>
 
-          {/* Engine Telemetry Console terminal */}
-          <AnimatePresence>
-            {showTelemetryConsole && telemetry.length > 0 && (
-              <motion.div 
-                initial={{ height: 0 }}
-                animate={{ height: 160 }}
-                exit={{ height: 0 }}
-                className="border-b border-border-subtle bg-black/90 p-3.5 font-mono text-[10px] leading-relaxed text-accent/80 overflow-y-auto custom-scrollbar shrink-0 relative"
-              >
-                <div className="sticky top-0 right-0 flex justify-end pb-1 bg-black/90 text-[8px] text-text-3 uppercase tracking-wider select-none font-bold">
-                  // compiler trace output
-                </div>
-                {telemetry.map((log, idx) => (
-                  <div key={idx} className="whitespace-pre-wrap font-mono">
-                    {log}
-                  </div>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+
 
           {/* Query Output / Results Grid */}
           <div className="h-[350px] p-4 bg-bg-1/80 overflow-auto relative custom-scrollbar flex-1 flex flex-col">
@@ -866,6 +855,27 @@ export default function DataLakeClient() {
                </div>
             )}
           </div>
+
+          {/* Engine Telemetry Console terminal */}
+          <AnimatePresence>
+            {showTelemetryConsole && telemetry.length > 0 && (
+              <motion.div 
+                initial={{ height: 0 }}
+                animate={{ height: 160 }}
+                exit={{ height: 0 }}
+                className="border-t border-border-subtle bg-black/90 p-3.5 font-mono text-[10px] leading-relaxed text-accent/80 overflow-y-auto custom-scrollbar shrink-0 relative"
+              >
+                <div className="sticky top-0 right-0 flex justify-end pb-1 bg-black/90 text-[8px] text-text-3 uppercase tracking-wider select-none font-bold">
+                  // compiler trace output
+                </div>
+                {telemetry.map((log, idx) => (
+                  <div key={idx} className="whitespace-pre-wrap font-mono">
+                    {log}
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

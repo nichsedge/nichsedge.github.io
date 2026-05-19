@@ -77,6 +77,22 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" className={`${geistSans.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-6">
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('selected-biome');
+                  if (saved && ['cyber', 'ocean', 'forest'].includes(saved)) {
+                    document.documentElement.classList.add('biome-' + saved);
+                  } else {
+                    document.documentElement.classList.add('biome-cyber');
+                  }
+                } catch (e) {}
+              })();
+            `
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -131,7 +147,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ThreadAllocator />
         <SystemStatsWidget />
         <div className="noise-overlay" />
-        <div className="relative z-10 min-h-screen border-x border-border-subtle max-w-[720px] mx-auto bg-bg shadow-2xl">
+        <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[720px] mx-auto bg-bg shadow-2xl">
           {children}
           <CursorTracker />
           <CommandPalette />

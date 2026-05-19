@@ -32,8 +32,16 @@ export function NeuralNetworkBg() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(0, 225, 207, 0.5)';
-      ctx.strokeStyle = 'rgba(0, 225, 207, 0.15)';
+
+      // Resolve color based on the current biome on document.documentElement
+      let r = 0, g = 225, b = 207; // Default cyber
+      if (document.documentElement.classList.contains('biome-ocean')) {
+        r = 59; g = 130; b = 246;
+      } else if (document.documentElement.classList.contains('biome-forest')) {
+        r = 34; g = 197; b = 94;
+      }
+
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.5)`;
 
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
@@ -59,7 +67,7 @@ export function NeuralNetworkBg() {
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(node2.x, node2.y);
             // fade line based on distance
-            ctx.strokeStyle = `rgba(0, 225, 207, ${0.15 * (1 - dist / maxDist)})`;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${0.15 * (1 - dist / maxDist)})`;
             ctx.stroke();
           }
         }

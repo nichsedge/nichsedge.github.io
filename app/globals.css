@@ -36,16 +36,19 @@
   --border-subtle: rgba(161, 161, 170, 0.15);
 }
 
-body.biome-ocean {
-  --theme-accent: #3b82f6; 
+.biome-ocean {
+  --theme-accent: #3b82f6;
+  --color-accent: #3b82f6;
 }
 
-body.biome-forest {
+.biome-forest {
   --theme-accent: #22c55e;
+  --color-accent: #22c55e;
 }
 
-body.biome-cyber {
+.biome-cyber {
   --theme-accent: #00e1cf;
+  --color-accent: #00e1cf;
 }
 
 body {
@@ -135,7 +138,8 @@ body.sensory-lockdown .text-accent {
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
-body.graph-open .hud-widget {
+body.graph-open .hud-widget,
+body.sensory-lockdown .hud-widget {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
