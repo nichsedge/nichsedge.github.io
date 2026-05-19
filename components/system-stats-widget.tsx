@@ -21,7 +21,7 @@ export function SystemStatsWidget() {
   if (!stats) return null;
 
   return (
-    <div className="fixed top-[18px] right-6 2xl:right-auto 2xl:left-[calc(50%+384px)] z-50 hidden xl:flex items-center gap-4 bg-bg/40 backdrop-blur-md px-3.5 py-1.5 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 uppercase tracking-tighter select-none shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+    <div className="fixed top-[18px] right-6 2xl:right-auto 2xl:left-[calc(50%+384px)] z-50 hidden xl:flex items-center gap-4 bg-bg/40 backdrop-blur-md px-3.5 py-1.5 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 uppercase tracking-tighter select-none shadow-[0_4px_12px_rgba(0,0,0,0.3)] sys-stats-widget">
       <div className="flex items-center gap-1.5 font-bold tracking-widest text-accent/80 pr-1.5">
         <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
         <span>SYS_OK</span>

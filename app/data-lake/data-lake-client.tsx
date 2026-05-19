@@ -453,6 +453,9 @@ export default function DataLakeClient() {
         .hud-widget {
           display: none !important;
         }
+        .sys-stats-widget {
+          display: none !important;
+        }
       `}} />
       <Navbar />
 

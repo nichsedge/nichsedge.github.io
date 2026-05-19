@@ -73,6 +73,8 @@ export default function HomeClient() {
       setShowOverlay(true);
       const timer = setTimeout(() => setShowOverlay(false), 3000);
       return () => clearTimeout(timer);
+    } else {
+      setShowOverlay(false);
     }
   }, [isNSM]);
 
