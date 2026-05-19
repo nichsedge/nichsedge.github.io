@@ -20,7 +20,7 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
   React.useEffect(() => {
     if (type === 'video' && videoRef.current) {
       if (isHovered) {
-        videoRef.current.play().catch(() => {});
+        videoRef.current.play().catch(() => { });
       } else {
         videoRef.current.pause();
         videoRef.current.currentTime = 0;
@@ -29,7 +29,7 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
   }, [isHovered, type]);
 
   return (
-    <div 
+    <div
       className="relative aspect-video bg-bg-1 border border-border-subtle overflow-hidden rounded-sm group/media cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -40,14 +40,14 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
             src={url}
             alt={alt || "Media"}
             fill
-            className={`object-cover transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+            className={`object-contain bg-black/40 transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
             referrerPolicy="no-referrer"
-            onLoadingComplete={() => setIsLoaded(true)}
+            onLoad={() => setIsLoaded(true)}
           />
           {!isLoaded && (
-             <div className="absolute inset-0 flex items-center justify-center bg-bg-1 animate-pulse">
-                <ImageIcon size={20} className="text-text-3 opacity-20" />
-             </div>
+            <div className="absolute inset-0 flex items-center justify-center bg-bg-1 animate-pulse">
+              <ImageIcon size={20} className="text-text-3 opacity-20" />
+            </div>
           )}
         </div>
       ) : (
@@ -59,7 +59,7 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
             muted
             loop
             playsInline
-            className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+            className={`w-full h-full object-contain bg-black/40 transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
           />
           <div className={`absolute inset-0 bg-bg/40 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}>
             <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center text-accent backdrop-blur-sm">
@@ -82,12 +82,12 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
 
       {!isHovered && type === 'video' && (
         <div className="absolute bottom-0 left-0 h-0.5 bg-accent/30 w-full overflow-hidden">
-           <motion.div 
-             className="h-full bg-accent"
-             initial={{ x: "-100%" }}
-             animate={{ x: "0%" }}
-             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-           />
+          <motion.div
+            className="h-full bg-accent"
+            initial={{ x: "-100%" }}
+            animate={{ x: "0%" }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          />
         </div>
       )}
     </div>

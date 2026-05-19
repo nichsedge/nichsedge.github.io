@@ -40,10 +40,11 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
           </React.Fragment>
         ))}
       </div>
-      <div className="hidden md:flex items-center gap-4 text-accent/60 shrink-0 ml-4">
+      <div className="flex items-center gap-2 sm:gap-4 text-accent/60 shrink-0 ml-2 sm:ml-4">
         <Link 
           href="/terminal" 
-          className="hover:text-accent transition-colors group flex items-center bg-accent/5 px-2 py-0.5 rounded-sm border border-accent/20 hover:border-accent/40 whitespace-nowrap"
+          title="Terminal Console"
+          className="hover:text-accent transition-colors group flex items-center bg-accent/5 p-1 sm:px-2 sm:py-0.5 rounded-sm border border-accent/20 hover:border-accent/40 whitespace-nowrap"
         >
           <svg 
             viewBox="0 0 24 24" 
@@ -52,23 +53,24 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
             strokeWidth="2.5" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            className="size-2.5 mr-1.5"
+            className="size-3 sm:size-2.5 sm:mr-1.5"
           >
             <polyline points="4 17 10 11 4 5" />
             <line x1="12" y1="19" x2="20" y2="19" />
           </svg>
-          Terminal
+          <span className="hidden sm:inline">Terminal</span>
         </Link>
         {toggleNSM && (
           <button 
             onClick={toggleNSM}
-            className={`flex items-center gap-2 px-2 py-0.5 border rounded-sm transition-all whitespace-nowrap ${isNSM ? 'bg-accent/20 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40'}`}
+            title={isNSM ? "Disable Neural Link" : "Enable Neural Link"}
+            className={`flex items-center gap-1.5 p-1 sm:px-2 sm:py-0.5 border rounded-sm transition-all whitespace-nowrap ${isNSM ? 'bg-accent/20 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40'}`}
           >
-            {isNSM ? <Zap size={10} className="animate-pulse" /> : <ZapOff size={10} />}
-            <span className="text-[9px] uppercase tracking-tighter">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
+            {isNSM ? <Zap size={11} className="animate-pulse" /> : <ZapOff size={11} />}
+            <span className="text-[9px] uppercase tracking-tighter hidden sm:inline">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
           </button>
         )}
-        <div className="flex xl:hidden items-center gap-2 whitespace-nowrap">
+        <div className="hidden sm:flex xl:hidden items-center gap-2 whitespace-nowrap">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           <span className="text-[10px]">SYS_OK</span>
         </div>

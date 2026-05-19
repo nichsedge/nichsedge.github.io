@@ -8,13 +8,16 @@ import {
   History,
   ArrowUpRight,
   Layers,
-  Network
+  Network,
+  Binary,
+  Award
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
 import { MediaViewer } from '@/components/media-viewer';
 import { GlitchText } from '@/components/glitch-text';
 import { DecryptedText } from '@/components/decrypted-text';
+import { TiltCard } from '@/components/tilt-card';
 
 import resumeData from '@/data/cv.json';
 
@@ -74,6 +77,33 @@ function formatPeriod(period: Period, yearOnly = false): string {
   return `${formatDate(period.start)} — ${formatDate(period.end)}`;
 }
 
+function calculateDuration(period: Period): string {
+  if (!period || !period.start) return '';
+  const start = new Date(period.start);
+  const end = period.end && period.end !== 'Present' ? new Date(period.end) : new Date('2026-05-19');
+  
+  let years = end.getFullYear() - start.getFullYear();
+  let months = end.getMonth() - start.getMonth();
+  
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+  
+  // Include the start month as active
+  months += 1;
+  if (months >= 12) {
+    years++;
+    months -= 12;
+  }
+  
+  const parts = [];
+  if (years > 0) parts.push(`${years} yr${years > 1 ? 's' : ''}`);
+  if (months > 0) parts.push(`${months} mo${months > 1 ? 's' : ''}`);
+  
+  return parts.join(' ');
+}
+
 const FADE_UP = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0 },
@@ -97,6 +127,7 @@ export default function WorkClient() {
     { name: 'Overview', href: '#overview' },
     { name: 'Timeline', href: '#timeline' },
     { name: 'Philosophy', href: '#philosophy' },
+    { name: 'Credentials', href: '#credentials' },
   ];
 
   React.useEffect(() => {
@@ -175,22 +206,51 @@ export default function WorkClient() {
               <motion.div 
                 key={`${role.company}-${role.role}-${idx}`}
                 variants={FADE_UP}
-                className="group relative grid md:grid-cols-12 gap-8 md:gap-4"
+                className="group relative grid md:grid-cols-12 gap-8 md:gap-4 pl-6 md:pl-0"
               >
-                {/* Timeline Connector */}
-                {idx !== work.length - 1 && (
-                  <div className="hidden md:block absolute left-[30px] top-[40px] bottom-[-60px] w-px bg-border-subtle group-hover:bg-accent/40 transition-colors" />
-                )}
+                {/* Period & Temporal Metadata */}
+                <div className="md:col-span-3 flex flex-col items-start md:items-end md:text-right pr-0 md:pr-8 relative">
+                  {/* Timeline Connector Line */}
+                  <div 
+                    className={`absolute left-[-18px] md:left-auto md:right-[-9px] w-px bg-border-subtle group-hover:bg-accent/40 transition-all z-10 ${
+                      idx === 0 
+                        ? 'top-[6px] bottom-[-96px]' 
+                        : idx === work.length - 1 
+                          ? 'top-0 bottom-[calc(100%-12px)]' 
+                          : 'top-0 bottom-[-96px]'
+                    }`} 
+                  />
 
-                {/* Period & Circle */}
-                <div className="md:col-span-3 flex md:flex-col items-start gap-4">
-                  <div className="relative">
-                    <div className="w-[60px] h-[60px] rounded-full border border-border-subtle flex items-center justify-center bg-bg group-hover:border-accent group-hover:shadow-[0_0_15px_rgba(0,225,207,0.2)] transition-all shrink-0">
-                      <span className="text-[10px] font-mono text-text-3 group-hover:text-accent">{formatPeriod(role.period).split(' ')[0]}</span>
+                  {/* Glowing Temporal Node Dot */}
+                  <div className="absolute left-[-24px] md:left-auto md:right-[-15px] top-[6px] z-20">
+                    <div className="w-[12px] h-[12px] md:w-[13px] md:h-[13px] rounded-full border border-border-subtle bg-bg flex items-center justify-center group-hover:border-accent group-hover:shadow-[0_0_12px_rgba(0,225,207,0.4)] transition-all">
+                      <div className="w-1.5 h-1.5 rounded-full bg-border-subtle group-hover:bg-accent transition-all duration-300" />
                     </div>
                   </div>
-                  <div className="font-mono text-[9px] text-text-3 tracking-[0.2em] md:pt-4">
+
+                  {/* Year Range Header */}
+                  <div className="font-mono text-[10px] text-accent font-bold tracking-[0.25em] uppercase mb-1">
+                    {formatPeriod(role.period, true)}
+                  </div>
+                  
+                  {/* Precise Month Period */}
+                  <div className="font-mono text-[11px] text-text-0 font-medium">
                     {formatPeriod(role.period)}
+                  </div>
+
+                  {/* Active Uptime / Duration Metric */}
+                  <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg-1/80 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 group-hover:text-accent group-hover:border-accent/30 transition-all select-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    <span>{calculateDuration(role.period)}</span>
+                  </div>
+
+                  {/* Status Indicator */}
+                  <div className="mt-1 font-mono text-[8px] tracking-wider uppercase font-bold">
+                    {role.period.end === null || role.period.end === 'Present' ? (
+                      <span className="text-accent/90">[ SYS_STATUS: ACTIVE ]</span>
+                    ) : (
+                      <span className="text-text-3/60">[ SYS_STATUS: ARCHIVED ]</span>
+                    )}
                   </div>
                 </div>
 
@@ -340,6 +400,147 @@ export default function WorkClient() {
                 </div>
               </div>
            </motion.div>
+        </section>
+        {/* Credentials Section */}
+        <section id="credentials" className="mt-48 pt-24 border-t border-border-subtle">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="space-y-12"
+          >
+            <div className="flex items-center gap-4 mb-16">
+              <h2 className="text-xl font-bold text-text-0 tracking-tight flex items-center gap-3">
+                <Binary className="text-accent" size={20} /> Credentials & Verified System Specs
+              </h2>
+              <div className="h-px flex-1 bg-gradient-to-r from-border-subtle to-transparent" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Firmware & Verified Protocols */}
+              <TiltCard>
+                <div className="h-full border border-border-subtle bg-bg-1/50 p-6 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Binary size={100} />
+                  </div>
+                  <h3 className="font-mono text-accent text-[12px] uppercase tracking-widest font-bold mb-6 flex items-center gap-2">
+                    <Binary size={14} /> Firmware & Verified Protocols
+                  </h3>
+                  
+                  <div className="space-y-6 text-[12px] font-mono leading-relaxed">
+                    {/* Education */}
+                    <div>
+                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SYSTEM_BOOT_FIRMWARE:</div>
+                      <ul className="space-y-3">
+                        {resumeData.education.map((edu: any, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <span className="text-accent">├─</span>
+                            <div>
+                              <strong className="text-text-0 block">{edu.degree}</strong>
+                              <span className="text-text-2">{edu.institution}</span>
+                              <span className="text-text-3 text-[10px] ml-2">({edu.period.start.split('-')[0]} — {edu.period.end.split('-')[0]})</span>
+                              {edu.details && (
+                                <p className="text-[10px] text-text-3 font-sans mt-0.5">{edu.details}</p>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Certificates */}
+                    <div>
+                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SECURITY_KEYCHAIN_PROTOCOLS:</div>
+                      <ul className="space-y-2 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
+                        {resumeData.certificates.map((cert: any, idx: number) => (
+                          <li key={idx} className="flex items-center justify-between gap-2 border-b border-border-subtle/30 pb-1.5 last:border-0 last:pb-0">
+                            <div className="truncate">
+                              <span className="text-accent mr-1.5 font-bold">●</span>
+                              <span className="text-text-1 group-hover:text-text-0 transition-colors" title={cert.title}>{cert.title}</span>
+                              <span className="text-text-3 text-[10px] block font-sans">{cert.issuer} ({cert.date})</span>
+                            </div>
+                            {cert.link && (
+                              <a 
+                                href={cert.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="text-[9px] text-accent/70 hover:text-accent border border-accent/20 hover:border-accent/50 px-1.5 py-0.5 rounded-sm bg-accent/5 transition-all uppercase tracking-tighter shrink-0 flex items-center gap-1 font-mono"
+                              >
+                                verify_hash
+                              </a>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </TiltCard>
+
+              {/* Nodes & Speech Codecs */}
+              <TiltCard>
+                <div className="h-full border border-border-subtle bg-bg-1/50 p-6 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Award size={100} />
+                  </div>
+                  <h3 className="font-mono text-accent text-[12px] uppercase tracking-widest font-bold mb-6 flex items-center gap-2">
+                    <Award size={14} /> Nodes & Speech Codecs
+                  </h3>
+                  
+                  <div className="space-y-6 text-[12px] font-mono leading-relaxed">
+                    {/* Spoken Languages */}
+                    <div>
+                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// TRANSLATION_CODECS:</div>
+                      <ul className="space-y-2">
+                        {resumeData.spoken_languages.map((lang: any, idx: number) => (
+                          <li key={idx} className="flex items-center gap-2.5">
+                            <span className="text-accent">├─</span>
+                            <div>
+                              <strong className="text-text-0">{lang.language}</strong>
+                              <span className="text-text-3 text-[10px] ml-2">[{lang.proficiency.split(' (')[0]}]</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Organizations */}
+                    <div>
+                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// ACTIVE_ROUTING_NODES:</div>
+                      <ul className="space-y-3">
+                        {resumeData.organizations.map((org: any, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <span className="text-accent">├─</span>
+                            <div>
+                              <strong className="text-text-0 block">{org.name}</strong>
+                              <span className="text-text-2">{org.role}</span>
+                              <span className="text-text-3 text-[10px] ml-2">({org.start_date.split('-')[0]} — {org.end_date.split('-')[0] || 'Present'})</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Awards */}
+                    <div>
+                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// BENCHMARK_ACCOLADES:</div>
+                      <ul className="space-y-2">
+                        {resumeData.awards.map((aw: any, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="text-accent font-bold">★</span>
+                            <div>
+                              <span className="text-text-1 font-bold">{aw.title}</span>
+                              <span className="text-text-3 text-[10px] block font-sans">{aw.issuer} ({aw.date})</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </TiltCard>
+            </div>
+          </motion.div>
         </section>
       </main>
 

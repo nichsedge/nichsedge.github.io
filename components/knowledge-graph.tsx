@@ -289,15 +289,21 @@ export function KnowledgeGraph() {
           
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="absolute top-3 right-4 z-10 text-text-3 hover:text-accent bg-bg/50 backdrop-blur border border-border-subtle p-1.5 rounded-sm transition-colors hidden md:block"
+            className="absolute top-3 right-4 z-10 text-text-3 hover:text-accent bg-bg/50 backdrop-blur border border-border-subtle p-1.5 rounded-sm transition-colors flex items-center justify-center"
             title={isExpanded ? "Minimize" : "Maximize"}
           >
             {isExpanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
           </button>
 
-          <div ref={containerRef} className="w-full h-full cursor-crosshair" />
+          <div 
+            ref={containerRef} 
+            className={`w-full h-full cursor-crosshair ${isExpanded ? 'pointer-events-auto' : 'pointer-events-none md:pointer-events-auto'}`} 
+          />
           <div className="absolute bottom-3 right-4 font-mono text-[8px] text-text-3 opacity-50 italic pointer-events-none">
-            (scroll to zoom, drag to pan, drag nodes to rearrange)
+            {isExpanded 
+              ? '(scroll to zoom, drag to pan, drag nodes to rearrange)' 
+              : '(tap expand icon to interact)'
+            }
           </div>
         </div>
       </div>

@@ -57,7 +57,7 @@ export function BiomeSelector() {
   return (
     <div 
       ref={containerRef}
-      className="fixed bottom-[112px] sm:bottom-[136px] right-4 sm:right-6 z-[900] flex flex-col items-end gap-2"
+      className="fixed bottom-[136px] right-4 sm:right-6 z-[900] flex flex-col items-end gap-2"
     >
       <AnimatePresence>
         {isOpen && (

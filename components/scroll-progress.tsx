@@ -30,7 +30,7 @@ export function ScrollProgress() {
        <div className="w-1 h-3 bg-accent/30 z-10" />
        <div className="w-1 h-1 rounded-full bg-accent/30 z-10" />
        
-       <div className="absolute top-1/2 -translate-y-1/2 -rotate-90 right-2 md:right-4 font-mono text-[8px] text-accent uppercase tracking-[0.3em] font-bold whitespace-nowrap opacity-50">
+       <div className="absolute top-1/2 -translate-y-1/2 -rotate-90 right-2 md:right-4 font-mono text-[8px] text-accent uppercase tracking-[0.3em] font-bold whitespace-nowrap opacity-50 hidden lg:block">
          PTR: {hexString}
        </div>
     </div>

@@ -51,6 +51,11 @@
   --color-accent: #00e1cf;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 115px; /* Offset to prevent content from being covered by sticky Navbar (56px) + SubNav (40px) */
+}
+
 body {
   background-color: var(--bg);
   color: var(--text-2);

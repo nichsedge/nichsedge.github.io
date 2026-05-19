@@ -66,6 +66,33 @@ const DB: Record<string, any[]> = {
     degree: e.degree,
     period: formatPeriod(e.period, true)
   })),
+  certificates: (resumeData.certificates || []).map((c: any, idx: number) => ({
+    id: idx + 1,
+    title: c.title,
+    issuer: c.issuer,
+    date: c.date,
+    credential_id: c.credential_id || 'N/A',
+    link: c.link || ''
+  })),
+  awards: (resumeData.awards || []).map((a: any, idx: number) => ({
+    id: idx + 1,
+    title: a.title,
+    issuer: a.issuer,
+    date: a.date,
+    description: a.description
+  })),
+  organizations: (resumeData.organizations || []).map((o: any, idx: number) => ({
+    id: idx + 1,
+    name: o.name,
+    role: o.role,
+    period: `${o.start_date} — ${o.end_date || 'Present'}`,
+    description: o.description || 'N/A'
+  })),
+  spoken_languages: (resumeData.spoken_languages || []).map((l: any, idx: number) => ({
+    id: idx + 1,
+    language: l.language,
+    proficiency: l.proficiency
+  })),
   referrals: referralsData.map((node: any, idx: number) => ({
     id: idx + 1,
     name: node.name,
@@ -97,6 +124,33 @@ const SCHEMA_DETAILS = {
     { name: 'degree', type: 'VARCHAR(100)', primary: false, desc: 'Major concentration level attained' },
     { name: 'period', type: 'VARCHAR(50)', primary: false, desc: 'Enrolled academic span years' },
   ],
+  certificates: [
+    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
+    { name: 'title', type: 'VARCHAR(150)', primary: false, desc: 'Title of the certification' },
+    { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: 'Issuing organization' },
+    { name: 'date', type: 'VARCHAR(20)', primary: false, desc: 'Date of issuance' },
+    { name: 'credential_id', type: 'VARCHAR(50)', primary: false, desc: 'Unique certificate credential ID' },
+    { name: 'link', type: 'TEXT', primary: false, desc: 'Verification web link' }
+  ],
+  awards: [
+    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
+    { name: 'title', type: 'VARCHAR(100)', primary: false, desc: 'Title of the accolade or award' },
+    { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: 'Awarding organization or context' },
+    { name: 'date', type: 'VARCHAR(20)', primary: false, desc: 'Date awarded' },
+    { name: 'description', type: 'TEXT', primary: false, desc: 'Brief description of the accomplishment' }
+  ],
+  organizations: [
+    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
+    { name: 'name', type: 'VARCHAR(100)', primary: false, desc: 'Organization name' },
+    { name: 'role', type: 'VARCHAR(100)', primary: false, desc: 'Assigned role or position' },
+    { name: 'period', type: 'VARCHAR(50)', primary: false, desc: 'Time period of active participation' },
+    { name: 'description', type: 'TEXT', primary: false, desc: 'Role description and impact details' }
+  ],
+  spoken_languages: [
+    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
+    { name: 'language', type: 'VARCHAR(50)', primary: false, desc: 'Spoken language classification' },
+    { name: 'proficiency', type: 'VARCHAR(100)', primary: false, desc: 'Proficiency benchmark index level' }
+  ],
   referrals: [
     { name: 'id', type: 'INTEGER', primary: true, desc: 'Portal routing gateway identifier' },
     { name: 'name', type: 'VARCHAR(100)', primary: false, desc: 'Affiliated pipeline software application' },
@@ -111,8 +165,11 @@ const SAVED_QUERIES = [
   { name: 'Get all experience', query: 'SELECT * FROM experience;' },
   { name: 'Languages only', query: "SELECT * FROM skills WHERE category = 'Language';" },
   { name: 'Education history', query: 'SELECT * FROM education;' },
+  { name: 'Certificates portfolio', query: 'SELECT * FROM certificates;' },
+  { name: 'Awards & achievements', query: 'SELECT * FROM awards;' },
+  { name: 'Active organizations', query: 'SELECT * FROM organizations;' },
+  { name: 'Spoken transcoders', query: 'SELECT * FROM spoken_languages;' },
   { name: 'Active referrals/gateways', query: 'SELECT * FROM referrals;' },
-  { name: 'Filter high level skills', query: "SELECT item, level FROM skills WHERE category = 'Platform' OR level = 'Cloud-Native';" },
   { name: 'Describe skills schema', query: 'DESCRIBE skills;' }
 ];
 
@@ -478,7 +535,7 @@ export default function DataLakeClient() {
         </motion.div>
       </header>
 
-      <div className="flex flex-col lg:flex-row border-b border-border-subtle h-[750px] relative z-10">
+      <div className="flex flex-col lg:flex-row border-b border-border-subtle h-auto lg:h-[750px] relative z-10">
         
         {/* Expanded Navigation Sidebar */}
         <div className="w-full lg:w-72 border-r border-border-subtle bg-bg-1/90 flex flex-col h-[300px] lg:h-full overflow-hidden shrink-0">
@@ -654,10 +711,10 @@ export default function DataLakeClient() {
         </div>
 
         {/* Main SQL Console Workspace */}
-        <div className="flex-1 flex flex-col bg-bg overflow-hidden h-full">
+        <div className="flex-1 flex flex-col bg-bg overflow-hidden h-auto lg:h-full">
           
           {/* Query Editor Section */}
-          <div className="flex-1 border-b border-border-subtle p-4 flex flex-col relative bg-bg/85 min-h-0 overflow-y-auto">
+          <div className="flex-1 border-b border-border-subtle p-4 flex flex-col relative bg-bg/85 min-h-[300px] lg:min-h-0 lg:overflow-y-auto">
             
             {/* Editor Utilities Bar */}
             <div className="flex items-center justify-between mb-2 pb-2 border-b border-border-subtle/50 font-mono text-[9px] uppercase tracking-wider select-none">
@@ -683,7 +740,7 @@ export default function DataLakeClient() {
             </div>
 
             {/* Quick Templates Toolbar */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none font-mono text-[9px] text-text-3 shrink-0">
+            <div className="flex flex-wrap items-center gap-2 pb-2 font-mono text-[9px] text-text-3 shrink-0">
               <span className="select-none shrink-0">// CONSTRUCT:</span>
               {[
                 { label: 'SELECT * FROM', text: 'SELECT * FROM ' },
@@ -749,7 +806,7 @@ export default function DataLakeClient() {
 
 
           {/* Query Output / Results Grid */}
-          <div className="h-[350px] p-4 bg-bg-1/80 overflow-auto relative custom-scrollbar flex-1 flex flex-col">
+          <div className="h-auto min-h-[250px] lg:h-[350px] p-4 bg-bg-1/80 overflow-auto relative custom-scrollbar flex-1 flex flex-col">
             
             {isExecuting ? (
                <div className="flex-1 flex flex-col items-center justify-center text-accent/60 font-mono text-[11px] tracking-[0.2em] gap-4">
@@ -814,7 +871,7 @@ export default function DataLakeClient() {
                  {/* Dynamic Table/Chart view container */}
                  <div className="flex-1 overflow-auto min-h-0 bg-bg/35 border border-border-subtle/50 rounded-sm custom-scrollbar p-1">
                    {viewMode === 'table' ? (
-                     <table className="w-full text-left font-mono text-[12px] border-collapse">
+                     <table className="w-full min-w-[650px] text-left font-mono text-[12px] border-collapse">
                        <thead className="text-text-3 bg-bg-1/80 sticky top-0 z-20">
                          <tr>
                            {Object.keys(results[0] || {}).map(k => (

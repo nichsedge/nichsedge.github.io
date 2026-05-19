@@ -19,7 +19,7 @@ export function FocusShield() {
       <button 
         onClick={() => setShieldActive(!shieldActive)}
         title={shieldActive ? "Disable Sensory Lockdown" : "Enable Sensory Lockdown"}
-        className={`fixed bottom-16 sm:bottom-20 right-4 sm:right-6 z-[999] p-2 sm:p-3 rounded-full border transition-all outline-none focus:outline-none focus:ring-0 ${
+        className={`fixed bottom-20 right-4 sm:right-6 z-[999] p-2 sm:p-3 rounded-full border transition-all outline-none focus:outline-none focus:ring-0 ${
           shieldActive 
             ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_20px_rgba(0,225,207,0.3)] animate-pulse' 
             : 'bg-bg-1 border-border-subtle text-text-3 hover:text-accent hover:border-accent/30'
@@ -34,7 +34,7 @@ export function FocusShield() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-[112px] sm:bottom-[136px] right-14 sm:right-20 z-[999] bg-bg border border-accent p-3 sm:p-4 font-mono text-[9px] sm:text-[10px] w-56 sm:w-64 uppercase tracking-widest text-accent"
+            className="fixed bottom-[136px] right-14 sm:right-20 z-[999] bg-bg border border-accent p-3 sm:p-4 font-mono text-[9px] sm:text-[10px] w-56 sm:w-64 uppercase tracking-widest text-accent"
           >
             <div className="flex items-center gap-2 mb-2 font-bold">
               <ShieldAlert size={14} className="animate-pulse" /> SENSORY LOCKDOWN ACTIVE

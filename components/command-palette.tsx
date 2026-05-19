@@ -159,9 +159,10 @@ export function CommandPalette() {
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-bg-1 border border-border-subtle p-2.5 rounded-sm text-text-3 hover:text-accent transition-all group shadow-xl"
+        title="Open Command Palette (Ctrl+K)"
+        className="fixed bottom-6 right-4 sm:right-6 z-40 bg-bg-1 border border-border-subtle p-2 sm:p-3 rounded-full text-text-3 hover:text-accent transition-all flex items-center justify-center group shadow-xl outline-none focus:outline-none focus:ring-0"
       >
-        <Command size={18} className="group-hover:scale-110 transition-transform" />
+        <Command className="size-4 sm:size-[18px] group-hover:scale-110 transition-transform" />
       </button>
 
       <AnimatePresence>

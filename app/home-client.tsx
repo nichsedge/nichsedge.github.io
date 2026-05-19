@@ -178,7 +178,7 @@ export default function HomeClient() {
             </p>
             <div className="space-y-4">
               <SkillMatrix />
-              <div className="grid grid-cols-3 gap-2 md:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                 <div className="bg-bg-1 p-3 md:p-4 border border-border-subtle group hover:border-accent/30 transition-colors">
                   <div className="font-mono text-[9px] uppercase tracking-widest text-accent mb-2">Languages</div>
                   <div className="flex flex-wrap gap-1.5">
