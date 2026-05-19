@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Terminal as TerminalIcon, Home, Zap, Loader2, Cpu, Globe, Database } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
+import referralsData from '@/data/referrals.json';
 
 export default function TerminalClient() {
   const [input, setInput] = useState('');
@@ -250,7 +251,8 @@ export default function TerminalClient() {
             "  SKILLS        - LIST LOADED MODULES",
             "  LS            - LIST VIRTUAL DIRECTORY CONTENT",
             "  CAT <file>    - DISPLAY CONTENT OF A VIRTUAL FILE",
-            "  THEME <name>  - CHANGE TERMINAL STYLE (CYAN, MATRIX, AMBER, COBALT)"
+            "  THEME <name>  - CHANGE TERMINAL STYLE (CYAN, MATRIX, AMBER, COBALT)",
+            "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS"
           ];
           break;
         case 'whoami':
@@ -321,6 +323,22 @@ export default function TerminalClient() {
             "      |||||      LOC: Jakarta, ID"
           ];
           break;
+        case 'referrals':
+        case 'gateways':
+          response = [
+            "+----------------------------------------------------------------------------------+",
+            "|                     ACTIVE INGESTION GATEWAYS (REFERRALS)                        |",
+            "+----------------------+-----------------------+-----------------------------------+",
+            "| NAME                 | CATEGORY              | ROUTING CODE                      |",
+            "+----------------------+-----------------------+-----------------------------------+",
+            ...referralsData.map(node => 
+              `| ${node.name.padEnd(20)} | ${node.category.padEnd(21)} | ${node.code.padEnd(33)} |`
+            ),
+            "+----------------------+-----------------------+-----------------------------------+",
+            "| TIP: Navigate to /referrals in your browser to view the interactive dashboard.   |",
+            "+----------------------------------------------------------------------------------+"
+          ];
+          break;
         default:
           response = [`COMMAND_NOT_FOUND: ${cmd}. TYPE 'HELP' FOR ASSISTANCE.`];
       }
@@ -349,7 +367,7 @@ export default function TerminalClient() {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'ls', 'cat'];
+      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'ls', 'cat', 'referrals', 'gateways'];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
         setInput(match);
