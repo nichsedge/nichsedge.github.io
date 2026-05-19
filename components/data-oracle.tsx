@@ -6,12 +6,18 @@ import { Sparkles, Brain, ArrowRight, Loader2, Cpu, Database, Network } from 'lu
 import { AreaChart, Area, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
 
+type MetricPoint = {
+  time: number;
+  cpu: number;
+  mem: number;
+};
+
 export function DataOracle() {
   const [insight, setInsight] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [stage, setStage] = useState(0);
   const [status, setStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
-  const [metrics, setMetrics] = useState<any[]>(Array.from({length: 10}).map((_, i) => ({ time: i, cpu: 10, mem: 20 })));
+  const [metrics, setMetrics] = useState<MetricPoint[]>(Array.from({length: 10}).map((_, i) => ({ time: i, cpu: 10, mem: 20 })));
 
   useEffect(() => {
     if (!isLoading) return;

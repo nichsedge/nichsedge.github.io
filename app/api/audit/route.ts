@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
+import { getFallbackAuditReport } from "@/lib/ai-fallback";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY || "",
@@ -10,25 +11,19 @@ const ai = new GoogleGenAI({
   }
 });
 
-const getFallbackReport = (data: any) => {
-  const role = data?.role || "Data Engineer";
-  const skills = data?.skills || ['Python', 'dbt', 'Airflow', 'BigQuery', 'SQL'];
-  const projectsCount = data?.projects_count || '50+';
-  
-  return `[SYSTEM_AUDIT_REPORT]
-STATUS: OPTIMIZED_CORE_STABLE (100% Uptime)
-OBSERVATIONS:
-• Neural synapses operating at peak frequency with ${skills.slice(0, 3).join('/')} pipeline synchronicity.
-• Ingestion pipelines show zero packet loss across ${projectsCount} localized projects.
-• Core stack analysis reveals absolute proficiency in ${skills.join(', ')}.
-• System integrity shows extreme resilience to high-volume telemetry ingestion.
-VERDICT: A highly optimized ${role} architecting invisible, bulletproof data nervous systems.`;
+type AuditRequestBody = {
+  profileData?: {
+    name?: string;
+    role?: string;
+    skills?: string[];
+    projects_count?: string;
+  };
 };
 
 export async function POST(req: NextRequest) {
-  let profileData: any = null;
+  let profileData: AuditRequestBody["profileData"] | null = null;
   try {
-    const body = await req.json();
+    const body = (await req.json()) as AuditRequestBody;
     profileData = body.profileData;
   } catch {
     // Ignore JSON parsing errors
@@ -36,7 +31,7 @@ export async function POST(req: NextRequest) {
 
   if (!process.env.GEMINI_API_KEY) {
     console.warn("GEMINI_API_KEY is not set. Using local fallback.");
-    return NextResponse.json({ report: getFallbackReport(profileData) });
+    return NextResponse.json({ report: getFallbackAuditReport(profileData) });
   }
 
   try {
@@ -60,6 +55,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ report: response.text });
   } catch (error) {
     console.error("AI Audit Error (falling back to local generator):", error);
-    return NextResponse.json({ report: getFallbackReport(profileData) });
+    return NextResponse.json({ report: getFallbackAuditReport(profileData) });
   }
 }

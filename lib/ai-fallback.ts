@@ -1,6 +1,18 @@
 import resumeData from "@/data/cv.json";
 
-export function getFallbackAuditReport(data: any) {
+type AuditProfileData = {
+  name?: string;
+  role?: string;
+  skills?: string[];
+  projects_count?: string;
+};
+
+type Period = {
+  start?: string | null;
+  end?: string | null;
+};
+
+export function getFallbackAuditReport(data: AuditProfileData | null | undefined) {
   const name = data?.name || "Ichsanul Amal";
   const role = data?.role || "Data Engineer";
   const skills = data?.skills || ["Python", "dbt", "Airflow", "BigQuery", "SQL"];
@@ -9,10 +21,10 @@ export function getFallbackAuditReport(data: any) {
   return `[SYSTEM_AUDIT_REPORT]\nSTATUS: OPTIMIZED_CORE_STABLE (100% Uptime)\nOBSERVATIONS:\n• Neural synapses operating at peak frequency with ${skills.slice(0, 3).join("/")} pipeline synchronicity.\n• Ingestion pipelines show zero packet loss across ${projectsCount} localized projects.\n• Core stack analysis reveals absolute proficiency in ${skills.join(", ")}.\n• System integrity shows extreme resilience to high-volume telemetry ingestion.\nVERDICT: A highly optimized ${name} ${role} architecting invisible, bulletproof data nervous systems.`;
 }
 
-const formatPeriod = (period: any) => {
+const formatPeriod = (period: string | Period | null | undefined) => {
   if (!period) return "";
   if (typeof period === "string") return period;
-  const formatDate = (d: string | null) => {
+  const formatDate = (d: string | null | undefined) => {
     if (!d || d === "Present") return "Present";
     const parts = d.split("-");
     if (parts.length < 2) return d;
