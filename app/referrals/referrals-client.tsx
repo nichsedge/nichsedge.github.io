@@ -9,6 +9,7 @@ import { MatrixRain } from '@/components/matrix-rain';
 import { TiltCard } from '@/components/tilt-card';
 import { DecryptedText } from '@/components/decrypted-text';
 import referralsData from '@/data/referrals.json';
+import { useWideLayout } from '@/hooks/use-wide-layout';
 
 interface Referral {
   id: string;
@@ -20,7 +21,8 @@ interface Referral {
   status: string;
 }
 
-export default function ReferralsClient() {
+export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  useWideLayout('lg');
   const [isNSM, setIsNSM] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -71,23 +73,26 @@ export default function ReferralsClient() {
           </div>
 
           <span className="font-mono text-[10px] text-accent uppercase tracking-[0.3em] font-bold block mb-3">
-            <DecryptedText text="05 — PORTAL PIPELINE" speed={25} />
+            <DecryptedText text={locale === 'id' ? "05 — PORTAL PIPELINE INGESTI" : "05 — PORTAL PIPELINE"} speed={25} />
           </span>
           <h1 className="text-3xl md:text-5xl font-bold text-text-0 tracking-tight font-sans mb-4">
-            Ingestion <span className="text-accent underline decoration-accent/20 underline-offset-4">Gateways</span>
+            {locale === 'id' ? 'Gerbang' : 'Ingestion'} <span className="text-accent underline decoration-accent/20 underline-offset-4">{locale === 'id' ? 'Ingesti' : 'Gateways'}</span>
           </h1>
           <p className="text-[13px] leading-relaxed text-text-3 max-w-[600px] font-light">
-            A comprehensive terminal list of secure affiliate routes, software trials, and cognitive workspace portals. Sync with channels below to download benefit payloads.
+            {locale === 'id' ? 
+              'Daftar terminal komprehensif dari rute afiliasi aman, uji coba perangkat lunak, dan portal ruang kerja kognitif. Sinkronkan dengan saluran di bawah untuk mengunduh muatan manfaat.' :
+              'A comprehensive terminal list of secure affiliate routes, software trials, and cognitive workspace portals. Sync with channels below to download benefit payloads.'
+            }
           </p>
         </div>
 
         {/* Dashboard Status Telemetry Bar */}
         <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Ingestion Status', value: 'ONLINE', icon: Server, color: 'text-green-400' },
-            { label: 'Total Channels', value: referralsData.length, icon: Network, color: 'text-accent' },
-            { label: 'Filtered Portals', value: filteredNodes.length, icon: Cpu, color: 'text-accent' },
-            { label: 'Active Category', value: selectedCategory, icon: Terminal, color: 'text-accent' }
+            { label: locale === 'id' ? 'Status Ingesti' : 'Ingestion Status', value: 'ONLINE', icon: Server, color: 'text-green-400' },
+            { label: locale === 'id' ? 'Total Saluran' : 'Total Channels', value: referralsData.length, icon: Network, color: 'text-accent' },
+            { label: locale === 'id' ? 'Portal Terfilter' : 'Filtered Portals', value: filteredNodes.length, icon: Cpu, color: 'text-accent' },
+            { label: locale === 'id' ? 'Kategori Aktif' : 'Active Category', value: selectedCategory, icon: Terminal, color: 'text-accent' }
           ].map((stat, i) => (
             <div key={i} className="border border-border-subtle bg-bg-1/40 p-4 font-mono rounded-sm select-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -116,7 +121,7 @@ export default function ReferralsClient() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="search portals by name, benefits, keywords..."
+                placeholder={locale === 'id' ? 'cari portal berdasarkan nama, manfaat, kata kunci...' : 'search portals by name, benefits, keywords...'}
                 className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
               />
               {searchQuery && (
@@ -206,7 +211,7 @@ export default function ReferralsClient() {
 
                           {/* Benefit payload description */}
                           <p className="font-mono text-[10px] leading-relaxed text-text-2 bg-bg/60 border-l border-accent p-3 mb-6 relative overflow-hidden">
-                            <span className="text-accent/60 block text-[8px] mb-1 font-bold uppercase tracking-wider">// PAYLOAD BENEFITS:</span>
+                            <span className="text-accent/60 block text-[8px] mb-1 font-bold uppercase tracking-wider">// {locale === 'id' ? 'MANFAAT MUATAN:' : 'PAYLOAD BENEFITS:'}</span>
                             {node.benefit}
                           </p>
                         </div>
@@ -233,12 +238,12 @@ export default function ReferralsClient() {
                               {isCopied ? (
                                 <>
                                   <Check size={11} className="shrink-0" />
-                                  <span>SAVED</span>
+                                  <span>{locale === 'id' ? 'TERSALIN' : 'SAVED'}</span>
                                 </>
                               ) : (
                                 <>
                                   <Copy size={11} className="shrink-0 group-hover:scale-110 transition-transform" />
-                                  <span>COPY</span>
+                                  <span>{locale === 'id' ? 'SALIN' : 'COPY'}</span>
                                 </>
                               )}
                             </button>
@@ -250,7 +255,7 @@ export default function ReferralsClient() {
                               rel="noopener noreferrer"
                               className="py-2 px-2.5 bg-accent text-bg hover:bg-white border border-transparent font-mono text-[9px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5 hover:shadow-[0_0_12px_rgba(0,225,207,0.25)] transition-all select-none rounded-sm"
                             >
-                              <span>ROUTE</span>
+                              <span>{locale === 'id' ? 'RUTE' : 'ROUTE'}</span>
                               <ExternalLink size={10} className="shrink-0" />
                             </a>
                           </div>
@@ -269,16 +274,19 @@ export default function ReferralsClient() {
               >
                 <ShieldAlert className="text-red-500 mx-auto mb-4 animate-bounce" size={32} />
                 <h3 className="text-red-400 text-[12px] uppercase tracking-widest font-bold mb-2">
-                  [ERROR: NO PORTAL SIGNATURES MATCHED]
+                  {locale === 'id' ? '[KESALAHAN: TIDAK ADA KATA KUNCI PORTAL YANG COCOK]' : '[ERROR: NO PORTAL SIGNATURES MATCHED]'}
                 </h3>
                 <p className="text-text-3 text-[10px] leading-relaxed">
-                  The current ingestion query: <strong className="text-red-400">"{searchQuery}"</strong> did not yield matching channel routes in <span className="text-text-1">referrals.json</span>. Re-enter query telemetry or reset filters.
+                  {locale === 'id' ? 
+                    <>Kueri ingesti saat ini: <strong className="text-red-400">"{searchQuery}"</strong> tidak menghasilkan rute saluran yang cocok di <span className="text-text-1">referrals.json</span>. Masukkan kembali telemetri kueri atau atur ulang filter.</> :
+                    <>The current ingestion query: <strong className="text-red-400">"{searchQuery}"</strong> did not yield matching channel routes in <span className="text-text-1">referrals.json</span>. Re-enter query telemetry or reset filters.</>
+                  }
                 </p>
                 <button
                   onClick={() => { setSearchQuery(''); setSelectedCategory('ALL'); }}
                   className="mt-4 px-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white transition-colors uppercase text-[9px] tracking-widest"
                 >
-                  Reset Telemetry Filters
+                  {locale === 'id' ? 'Reset Filter Telemetri' : 'Reset Telemetry Filters'}
                 </button>
               </motion.div>
             )}
@@ -294,11 +302,11 @@ export default function ReferralsClient() {
             <span>© 2026 NICHSEDGE</span>
             <span className="opacity-20">|</span>
             <span className="animate-pulse flex items-center gap-1">
-              <div className="w-1 h-1 rounded-full bg-accent" /> SYSTEM_STABLE
+              <div className="w-1 h-1 rounded-full bg-accent" /> {locale === 'id' ? 'SISTEM_STABIL' : 'SYSTEM_STABLE'}
             </span>
           </div>
           <div>
-            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">Scroll_to_Top</a>
+            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">{locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}</a>
           </div>
         </div>
       </footer>

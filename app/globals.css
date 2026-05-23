@@ -144,9 +144,29 @@ body.sensory-lockdown .text-accent {
 }
 
 body.graph-open .hud-widget,
-body.sensory-lockdown .hud-widget {
+body.sensory-lockdown .hud-widget,
+body.wide-layout .hud-widget,
+body.wide-layout .sys-stats-widget {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
   transform: translateY(10px);
 }
+
+/* WIDE LAYOUT OVERRIDES */
+#main-layout-container {
+  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.wide-layout-md #main-layout-container {
+  max-width: 1000px !important;
+}
+
+body.wide-layout-lg #main-layout-container {
+  max-width: 1200px !important;
+}
+
+body.wide-layout-xl #main-layout-container {
+  max-width: 1400px !important;
+}
+

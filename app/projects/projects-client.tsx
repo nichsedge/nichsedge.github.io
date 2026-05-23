@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Star, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import githubData from '@/data/github_repos_all.json';
-import resumeData from '@/data/cv.json';
+import resumeDataEN from '@/data/cv.json';
+import resumeDataID from '@/data/cv_id.json';
 import { MediaViewer } from '@/components/media-viewer';
+import { useWideLayout } from '@/hooks/use-wide-layout';
 import {
   BarChart,
   Bar,
@@ -22,7 +24,9 @@ const FADE_UP = {
   transition: { duration: 0.5 }
 };
 
-export default function ProjectsClient() {
+export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
+  useWideLayout('lg');
   const [search, setSearch] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [showAllLangs, setShowAllLangs] = useState(false);
@@ -132,11 +136,14 @@ export default function ProjectsClient() {
       <header className="pt-20 pb-12 px-6 border-b border-border-subtle">
         <motion.div {...FADE_UP}>
           <div className="font-mono text-[10px] text-accent uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-accent rounded-full" /> Archives // Projects
+            <span className="w-1.5 h-1.5 bg-accent rounded-full" /> {locale === 'id' ? 'Arsip // Proyek' : 'Archives // Projects'}
           </div>
-          <h1 className="text-4xl font-bold text-text-0 mb-6">Engineering Archive</h1>
+          <h1 className="text-4xl font-bold text-text-0 mb-6">{locale === 'id' ? 'Arsip Engineering' : 'Engineering Archive'}</h1>
           <p className="text-text-3 text-[14px] max-w-xl leading-relaxed font-light">
-            A filtered list of open-source projects, experiments, and production-grade tools built for the modern data stack.
+            {locale === 'id' ? 
+              'Daftar proyek open-source terkurasi, eksperimen, dan alat tingkat produksi yang dibangun untuk modern data stack.' : 
+              'A filtered list of open-source projects, experiments, and production-grade tools built for the modern data stack.'
+            }
           </p>
         </motion.div>
 
@@ -152,11 +159,11 @@ export default function ProjectsClient() {
             </div>
           </div>
           <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Unique_Stacks</div>
+            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Stack_Unik' : 'Unique_Stacks'}</div>
             <div className="text-[14px] font-medium text-text-0">{stats.langCount}</div>
           </div>
           <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Primary_Focus</div>
+            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Fokus_Utama' : 'Primary_Focus'}</div>
             <div className="text-[14px] font-medium text-text-0 truncate">#{stats.topTopic}</div>
           </div>
         </div>
@@ -170,14 +177,14 @@ export default function ProjectsClient() {
           <div className="flex-1 space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="font-mono text-[10px] text-text-3 tracking-[0.2em] uppercase flex items-center gap-2">
-                <PieChartIcon size={14} className="text-accent" /> Tech Composition
+                <PieChartIcon size={14} className="text-accent" /> {locale === 'id' ? 'Komposisi Teknologi' : 'Tech Composition'}
               </h3>
               {allLangData.length > 5 && (
                 <button
                   onClick={() => setShowAllLangs(!showAllLangs)}
                   className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
                 >
-                  {showAllLangs ? 'Show Top 5' : `Show All (${allLangData.length})`}
+                  {showAllLangs ? (locale === 'id' ? 'Top 5 saja' : 'Show Top 5') : `${locale === 'id' ? 'Semua' : 'Show All'} (${allLangData.length})`}
                   <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllLangs ? '-rotate-90' : 'rotate-90'}`} />
                 </button>
               )}
@@ -211,7 +218,10 @@ export default function ProjectsClient() {
           <div className="w-full md:w-1/3 space-y-4">
             <div className="border-l border-border-subtle pl-4 h-full flex flex-col justify-start gap-4">
               <p className="text-[11px] text-text-2 font-light italic leading-relaxed">
-                &quot;Languages are tools for the mission. This overview reflects a journey across layers of the stack.&quot;
+                {locale === 'id' ? 
+                  '\"Bahasa pemrograman adalah alat untuk menjalankan misi. Gambaran umum ini mencerminkan perjalanan melintasi berbagai lapisan stack.\"' :
+                  '\"Languages are tools for the mission. This overview reflects a journey across layers of the stack.\"'
+                }
               </p>
               <div
                 className="space-y-2 overflow-y-auto pr-2 scrollbar-thin transition-all duration-300"
@@ -241,7 +251,7 @@ export default function ProjectsClient() {
             <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${search ? 'text-accent' : 'text-text-3'}`} />
             <input
               type="text"
-              placeholder="Search projects..."
+              placeholder={locale === 'id' ? 'Cari proyek...' : 'Search projects...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-bg-1 border border-border-subtle rounded-sm py-2 pl-9 pr-4 text-[12px] font-mono outline-none focus:border-accent/40 focus:bg-bg-1/80 transition-all focus:shadow-[0_0_12px_rgba(0,225,207,0.05)] text-text-0"
@@ -253,7 +263,7 @@ export default function ProjectsClient() {
               onClick={() => setSelectedTopics([])}
               className="self-start md:self-auto font-mono text-[9px] uppercase tracking-widest text-red-400 hover:text-red-300 transition-colors border border-red-500/20 px-2 py-1 rounded-sm bg-red-500/5 hover:bg-red-500/10 flex items-center gap-1"
             >
-              Reset Filters ({selectedTopics.length})
+              {locale === 'id' ? 'Reset Filter' : 'Reset Filters'} ({selectedTopics.length})
             </button>
           )}
         </div>
@@ -361,7 +371,7 @@ export default function ProjectsClient() {
                   rel="noopener noreferrer"
                   className="text-text-0 hover:text-accent transition-colors flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase"
                 >
-                  Source <ExternalLink size={12} />
+                  {locale === 'id' ? 'Sumber' : 'Source'} <ExternalLink size={12} />
                 </a>
               </div>
             </motion.div>
@@ -371,8 +381,12 @@ export default function ProjectsClient() {
 
       {filteredRepos.length === 0 && (
         <div className="py-24 text-center">
-          <div className="font-mono text-[11px] text-text-3 uppercase tracking-[0.2em] mb-4">NO_MATCHES_FOUND</div>
-          <button onClick={() => { setSearch(''); setSelectedTopics([]); }} className="text-accent underline underline-offset-4 text-[12px] font-mono hover:text-text-0">Reset query buffer</button>
+          <div className="font-mono text-[11px] text-text-3 uppercase tracking-[0.2em] mb-4">
+            {locale === 'id' ? 'TIDAK_ADA_PROYEK_YANG_COCOK' : 'NO_MATCHES_FOUND'}
+          </div>
+          <button onClick={() => { setSearch(''); setSelectedTopics([]); }} className="text-accent underline underline-offset-4 text-[12px] font-mono hover:text-text-0">
+            {locale === 'id' ? 'Atur ulang buffer kueri' : 'Reset query buffer'}
+          </button>
         </div>
       )}
     </div>

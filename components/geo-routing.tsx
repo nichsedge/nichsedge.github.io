@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import { Globe, Activity } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { useGraphOpen } from '@/hooks/use-graph-open';
 
 export function GeoRouting() {
@@ -22,12 +22,12 @@ export function GeoRouting() {
     let animationId: number;
 
     const nodes = [
-      { lat: 0.5, lon: 0.1 },
-      { lat: -0.3, lon: 0.8 },
-      { lat: 0.7, lon: -0.5 },
-      { lat: -0.6, lon: -0.2 },
-      { lat: 0.2, lon: 1.2 },
-      { lat: 0.8, lon: 1.8 },
+      { name: 'CMH', lat: 0.45, lon: 0.82 },  // Cimahi
+      { name: 'BDG', lat: 0.48, lon: 0.86 },  // Bandung
+      { name: 'JKT', lat: 0.41, lon: 0.72 },  // Jakarta
+      { name: 'SIN', lat: 0.32, lon: 0.58 },  // Singapore
+      { name: 'SUB', lat: 0.54, lon: 1.05 },  // Surabaya
+      { name: 'IKN', lat: 0.28, lon: 1.28 },  // Balikpapan / Nusantara
     ];
 
     const draw = () => {
@@ -74,12 +74,18 @@ export function GeoRouting() {
         const z = r * Math.sin(theta) * Math.sin(phi);
 
         if (z > 0) {
+          // Draw active connection lines
           ctx.beginPath();
-          ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
           ctx.fillStyle = accent;
           ctx.fill();
           
-          if (idx > 0 && Math.random() > 0.6) {
+          // Draw text label on canvas
+          ctx.fillStyle = `${accent}cc`;
+          ctx.font = 'bold 7px var(--font-mono), monospace';
+          ctx.fillText(node.name, x + 5, y - 2);
+          
+          if (idx > 0 && Math.random() > 0.4) {
              const prev = nodes[idx - 1];
              const pTheta = prev.lat * Math.PI;
              const pPhi = prev.lon * Math.PI + time * 0.8;
@@ -88,22 +94,34 @@ export function GeoRouting() {
              const pz = r * Math.sin(pTheta) * Math.sin(pPhi);
              
              if (pz > 0) {
-                 ctx.beginPath();
-                 ctx.moveTo(x, y);
-                 // draw an arc
-                 const cpx = (x + px) / 2;
-                 const cpy = (y + py) / 2 - 20;
-                 ctx.quadraticCurveTo(cpx, cpy, px, py);
-                 ctx.strokeStyle = accent;
-                 ctx.globalAlpha = 0.6;
-                 ctx.stroke();
-                 ctx.globalAlpha = 1.0;
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  const cpx = (x + px) / 2;
+                  const cpy = (y + py) / 2 - 15;
+                  ctx.quadraticCurveTo(cpx, cpy, px, py);
+                  ctx.strokeStyle = accent;
+                  ctx.globalAlpha = 0.5;
+                  ctx.stroke();
+                  ctx.globalAlpha = 1.0;
              }
           }
         }
       });
 
-      time += 0.02;
+      // High-performance DOM status readout updates (avoiding React re-renders)
+      const nodeEl = document.getElementById('geo-routing-node');
+      const pingEl = document.getElementById('geo-routing-ping');
+      if (nodeEl && pingEl) {
+        const cycle = Math.floor(time * 0.3) % nodes.length;
+        const activeNode = nodes[cycle];
+        const nextNode = nodes[(cycle + 1) % nodes.length];
+        nodeEl.innerText = `${activeNode.name} >> ${nextNode.name}`;
+        
+        const simulatedPing = Math.floor(Math.sin(time * 2) * 2 + 8) + (cycle * 2);
+        pingEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-2 h-2 animate-pulse mr-1 inline-block"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>${simulatedPing}ms`;
+      }
+
+      time += 0.015;
       animationId = requestAnimationFrame(draw);
     };
 
@@ -118,13 +136,13 @@ export function GeoRouting() {
     }`}>
        <div className="bg-bg/40 backdrop-blur-md border border-border-subtle p-3 rounded-sm w-full">
          <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-widest text-[#71717a] mb-2 font-bold justify-between pb-1 border-b border-border-subtle/50 w-full">
-            <span className="flex items-center gap-1.5"><Globe size={10} className="text-accent" /> Global Routing</span>
+            <span className="flex items-center gap-1.5"><Globe size={10} className="text-accent" /> Geo Routing Ingestion</span>
          </div>
-         <canvas ref={canvasRef} className="block opacity-80 mix-blend-screen mx-auto" />
+         <canvas ref={canvasRef} className="block opacity-85 mix-blend-screen mx-auto" />
          
          <div className="mt-2 pt-2 border-t border-border-subtle/30 flex justify-between items-center w-full opacity-70">
-            <span className="font-mono text-[8px] text-text-3">ASIA-SE1</span>
-            <span className="font-mono text-[8px] text-accent flex items-center gap-1"><Activity size={8}/> 14ms</span>
+            <span id="geo-routing-node" className="font-mono text-[8px] text-text-3">CMH &gt;&gt; JKT</span>
+            <span id="geo-routing-ping" className="font-mono text-[8px] text-accent flex items-center gap-1">6ms</span>
          </div>
        </div>
     </div>

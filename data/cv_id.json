@@ -1,0 +1,393 @@
+{
+  "profile": {
+    "name": "Ichsanul Amal",
+    "role": "Data Engineer",
+    "location": "Cimahi, Jawa Barat, Indonesia",
+    "tagline": "Saya membangun sistem yang memindahkan dan mentransformasi data.",
+    "specialization": "data lake terukur, pipeline ETL berthroughput tinggi, dan arsitektur database yang tangguh.",
+    "currentFocus": "mendorong operasi otomatis dan analitik kualitas data.",
+    "email": "muhammad.ichsanul19@gmail.com",
+    "github": "https://github.com/nichsedge",
+    "linkedin": "https://www.linkedin.com/in/ichsanulamal19/",
+    "twitter": "https://twitter.com/nichsedge"
+  },
+  "work": [
+    {
+      "company": "Accenture",
+      "role": "Data Engineering, Governance, and Management Analyst",
+      "period": {
+        "start": "2024-09-01",
+        "end": null
+      },
+      "shortDescription": "Merancang platform data kelas enterprise dan struktur tata kelola untuk lingkungan analitik berskala tinggi.",
+      "fullDescription": "Mendorong standar data engineering enterprise, tata kelola data, dan pipeline manajemen data. Bermitra dengan pemangku kepentingan lintas fungsi untuk menentukan spesifikasi metadata dan menegakkan aturan tata kelola di seluruh data lake.",
+      "tech": [
+        "Python",
+        "SQL",
+        "Airflow",
+        "BigQuery",
+        "Data Governance",
+        "Metadata Management",
+        "Data Engineering"
+      ],
+      "impact": [
+        "Memelopori verifikasi kualitas data enterprise dan kerangka kerja tata kelola metadata di seluruh pipeline platform data."
+      ],
+      "projects": [
+        {
+          "role": "Vibe Coder",
+          "period": {
+            "start": "2025-05-01",
+            "end": "2025-10-31"
+          },
+          "shortDescription": "Meneliti kerangka kerja AI agentic dan membangun alur kerja pengembangan produk otomatis menggunakan ADK, AutoGen, dan LangChain.",
+          "fullDescription": "Memimpin penelitian dan rekayasa prototipe untuk aplikasi berbasis LLM agent. Mengevaluasi platform pengembang AI terdepan dan membangun alat multi-agent untuk mengotomatiskan serta merampingkan siklus pengembangan perangkat lunak.",
+          "tech": [
+            "LangChain",
+            "AutoGen",
+            "Google ADK",
+            "Gemini",
+            "TypeScript",
+            "Next.js",
+            "AI Agents"
+          ],
+          "impact": [
+            "Meneliti dan membangun prototipe menggunakan framework AI agentic seperti LangChain, AutoGen, dan Google Agent Development Kit (ADK).",
+            "Mengevaluasi dan membandingkan alat pengembang AI tercanggih (Gemini CLI, Lovable, Cursor, Cline, Replit) untuk mengotomatiskan alur kerja rekayasa.",
+            "Membangun prototipe aplikasi manajemen proyek full-stack, mengintegrasikan agen AI untuk mengoordinasikan dan membantu alur kerja pengembangan."
+          ]
+        },
+        {
+          "role": "Data Quality Engineer (Proyek Telekomunikasi)",
+          "period": {
+            "start": "2024-09-01",
+            "end": "2025-04-30"
+          },
+          "shortDescription": "Merancang dimensi verifikasi kualitas data dan pipeline orkestrasi Airflow ETL, memigrasikan ribuan konfigurasi untuk klien telekomunikasi.",
+          "fullDescription": "Memelopori model kualitas data penjualan dan pelanggan untuk klien telekomunikasi terkemuka. Merumuskan stored procedure, mengoptimalkan kueri PostgreSQL, dan mengotomatiskan migrasi konfigurasi masif.",
+          "tech": [
+            "Python",
+            "Airflow",
+            "PostgreSQL",
+            "Hive",
+            "Oracle",
+            "SQL",
+            "Tableau",
+            "ETL",
+            "Data Quality"
+          ],
+          "impact": [
+            "Mengembangkan model dimensi kualitas data pelanggan dan penjualan di industri telekomunikasi.",
+            "Mengotomatiskan migrasi konfigurasi untuk sekitar 4.000 komponen menggunakan skrip Python kustom, memangkas beban kerja manual.",
+            "Membangun dan memantau Airflow DAGs untuk operasi ETL ad-hoc dan pemantauan sistem yang proaktif.",
+            "Membuat prosedur SQL yang kompleks, fungsi analitik window, dan menyajikan data mart bisnis untuk visualisasi Tableau.",
+            "Melakukan analisis akar penyebab masalah (root-cause), resolusi bug, dan memperluas asersi UAT untuk platform DQ inti."
+          ]
+        }
+      ]
+    },
+    {
+      "company": "NTI (Proyek Telkomsel)",
+      "role": "Database Engineer",
+      "period": {
+        "start": "2023-08-01",
+        "end": "2024-04-30"
+      },
+      "shortDescription": "Merancang model data dan pipeline ETL menggunakan Airflow dan dbt, memaksimalkan kinerja database melalui optimalisasi kueri, pengindeksan, dan pemartisian.",
+      "fullDescription": "Mengelola arsitektur basis data dan pipeline ingesti untuk unit Network Service Measurement, mengintegrasikan berbagai format (REST API, CSV, RDBMS) dan memperkenalkan dbt untuk mempercepat pengembangan analitik SQL.",
+      "tech": [
+        "dbt",
+        "PostgreSQL",
+        "BigQuery",
+        "Airflow",
+        "ETL",
+        "SQL"
+      ],
+      "impact": [
+        "Mengembangkan dan mengoptimalkan model data untuk unit Network Service Measurement & Benchmarking.",
+        "Mengelola dan memantau database (BigQuery, PostgreSQL) serta pipeline ETL menggunakan Airflow, meningkatkan ingesti data dari berbagai sumber (database, CSV, REST API).",
+        "Meningkatkan kinerja PostgreSQL melalui pengindeksan, pemartisian (partitioning), dan fungsi window analitik; membuat fungsi bersarang, stored procedure, serta memelihara FDW database.",
+        "Menginisiasi penggunaan data build tool (dbt) untuk SQL modular dan pengembangan yang lebih cepat."
+      ]
+    },
+    {
+      "company": "Lab IR-NLP CSUI",
+      "role": "Research Intern",
+      "period": {
+        "start": "2023-02-01",
+        "end": "2023-06-30"
+      },
+      "shortDescription": "Merekayasa aplikasi web dan dasbor analitik teks e-learning, melakukan analisis sentimen berbasis aspek pada umpan balik mahasiswa.",
+      "fullDescription": "Meneliti dan mengintegrasikan model pemrosesan bahasa alami (NLP) untuk mengekstrak tren sentimen dari umpan balik akademis, merancang aplikasi Flask yang responsif untuk memvisualisasikan metrik sistem secara keseluruhan.",
+      "tech": [
+        "Python",
+        "Flask",
+        "NLP",
+        "Sentiment Analysis",
+        "Dashboard"
+      ],
+      "impact": [
+        "Menganalisis dan mengintegrasikan data umpan balik mahasiswa dari sistem e-learning menggunakan Python.",
+        "Melakukan analisis sentimen berbasis aspek dan membangun dasbor yang ramah pengguna untuk menilai berbagai aspek pembelajaran.",
+        "Merancang, mengembangkan, dan menerapkan aplikasi web & database menggunakan Flask serta mengintegrasikannya dengan alat visualisasi data."
+      ]
+    },
+    {
+      "company": "Traveloka",
+      "role": "Data Engineer Intern",
+      "period": {
+        "start": "2022-08-01",
+        "end": "2022-12-31"
+      },
+      "shortDescription": "Membangun model data warehouse yang terukur dan pipeline ETL di BigQuery dan Airflow sesuai dengan prinsip pemodelan dimensional Kimball.",
+      "fullDescription": "Bekerja dalam Core Data Team untuk merancang model warehouse berkinerja tinggi untuk unit bisnis hotel dan transportasi, mengoptimalkan pemanfaatan sumber daya, dan memantau efisiensi biaya BigQuery.",
+      "tech": [
+        "BigQuery",
+        "dbt",
+        "Airflow",
+        "Python",
+        "SQL",
+        "Kimball"
+      ],
+      "impact": [
+        "Menerapkan model data warehouse untuk unit bisnis hotel dan transportasi, menggunakan SQL dan dbt (data build tool).",
+        "Memigrasikan dan mengoptimalkan aset data warehouse menggunakan BigQuery dan Python sesuai dengan prinsip Kimball.",
+        "Memantau pipeline ETL dan melakukan backfill data menggunakan Airflow.",
+        "Mengembangkan dasbor menggunakan Google Data Studio untuk memantau dan mengoptimalkan sumber daya BigQuery."
+      ]
+    },
+    {
+      "company": "Universitas Indonesia",
+      "role": "Asisten Dosen",
+      "period": {
+        "start": "2020-09-01",
+        "end": "2022-01-31"
+      },
+      "shortDescription": "Mengajar dan mengevaluasi mahasiswa sarjana dalam mata kuliah pemrograman dasar Python, Kalkulus, dan Sistem Operasi.",
+      "fullDescription": "Mengoordinasikan sesi lab dan mengevaluasi tugas praktikum, berfungsi sebagai penghubung akademis utama untuk ratusan mahasiswa selama kuliah komputasi dasar.",
+      "tech": [
+        "Python",
+        "Calculus",
+        "Operating Systems"
+      ],
+      "impact": [
+        "Menjadi Asisten Dosen untuk mata kuliah Pemrograman Dasar (Python), Kalkulus, dan Sistem Operasi.",
+        "Menilai dan membantu mahasiswa dalam sesi praktikum lab mingguan, pengerjaan tugas, dan demo tugas (wawancara evaluasi)."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "idx-bei",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/idx-bei.png"
+      }
+    },
+    {
+      "name": "sansfinance",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/sansfinance.png"
+      }
+    },
+    {
+      "name": "atracker",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/atracker.png"
+      }
+    }
+  ],
+  "skills": {
+    "languages": [
+      "Python",
+      "SQL",
+      "JavaScript",
+      "Java",
+      "Go",
+      "Shell",
+      "C#",
+      "Kotlin (Vibe Code)"
+    ],
+    "infrastructure": [
+      "GCP",
+      "AWS",
+      "Linux",
+      "Docker",
+      "Kubernetes"
+    ],
+    "ides": [
+      "Visual Studio Code",
+      "Google Antigravity",
+      "Android Studio",
+      "Codex",
+      "Claude Code"
+    ],
+    "platforms": [
+      "Airflow",
+      "dbt",
+      "BigQuery",
+      "PostgreSQL",
+      "Hive",
+      "Oracle",
+      "Spark",
+      "Kafka",
+      "Hadoop",
+      "Looker Studio",
+      "SQL Server"
+    ],
+    "core": [
+      "DATA_PIPELINES",
+      "DATA_WAREHOUSING",
+      "STREAM_PROCESSING",
+      "SYSTEM_AUTOMATION",
+      "AI_INTEGRATION",
+      "AGENTIC_AI",
+      "DATA_QUALITY_GOVERNANCE",
+      "Hermes Agent (AI)"
+    ]
+  },
+  "narrative": {
+    "philosophy": "Keandalan Tanpa Suara. Infrastruktur data terbaik adalah yang beroperasi hening di latar belakang, bekerja sempurna tanpa cela sehingga bisnis tidak pernah perlu mempertanyakannya. Ini adalah fondasi bersih dan tepercaya yang melahirkan keputusan penuh keyakinan.",
+    "intro": "Dalam engineering modern, tantangan sesungguhnya bukanlah sekadar menskalakan node atau menulis kueri lebih cepat—tetapi menanamkan kepercayaan mutlak pada data itu sendiri. Sebagai Data Engineer, saya membangun pipeline data yang berfungsi sebagai sistem saraf pusat organisasi yang andal.",
+    "conclusion": "Baik itu mengoptimalkan kueri untuk memangkas waktu eksekusi hingga 50% atau mengotomatiskan migrasi ribuan konfigurasi komponen sistem, fokus saya adalah merancang platform tangguh yang mampu memulihkan dirinya sendiri dan mengubah kompleksitas operasional menjadi wawasan bersih yang siap pakai."
+  },
+  "education": [
+    {
+      "institution": "Universitas Indonesia",
+      "degree": "B.Sc. dalam Ilmu Komputer (Sistem Informasi)",
+      "period": {
+        "start": "2019-09-01",
+        "end": "2023-08-31"
+      },
+      "details": "Lulus dengan IPK 3.77/4.0. Spesialisasi dalam Sistem Basis Data, Sistem Operasi, dan Pemrograman Dasar."
+    },
+    {
+      "institution": "SMA Negeri 4 Bandung",
+      "degree": "Ijazah SMA",
+      "period": {
+        "start": "2016-07-01",
+        "end": "2019-06-30"
+      },
+      "details": "Fokus pada Ilmu Pengetahuan Alam (IPA). Pemenang Olimpiade Fisika tingkat sekolah dan mewakili sekolah di tingkat kota."
+    }
+  ],
+  "contact": {
+    "terminal_hint": "Akses via ichsanul@data.hq",
+    "socials": [
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/nichsedge"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://www.linkedin.com/in/ichsanulamal19/"
+      }
+    ]
+  },
+  "certificates": [
+    {
+      "title": "Generative AI",
+      "issuer": "Udacity",
+      "date": "2025-08",
+      "link": "https://www.udacity.com/certificate/e/6913bf48-5c8c-11f0-aeb4-f7971f128067"
+    },
+    {
+      "title": "Data Engineering dengan AWS",
+      "issuer": "Udacity",
+      "date": "2025-07",
+      "link": "https://www.udacity.com/certificate/e/36ab80b2-51a2-11f0-b43a-1f6a5d8b2818"
+    },
+    {
+      "title": "Build intelligent agents dengan Agent Development Kit (ADK)",
+      "issuer": "Google Cloud Skills Boost",
+      "date": "2025-07",
+      "credential_id": "16939219",
+      "link": "https://partner.cloudskillsboost.google/public_profiles/332ac046-6731-4ca5-a724-b37a0bf662d5/badges/16939219"
+    },
+    {
+      "title": "DevOps Engineering - Git, GitHub, Maven, JUnit, Log4j",
+      "issuer": "Udemy",
+      "date": "2021-06",
+      "link": "https://www.udemy.com/certificate/UC-eee64d99-184d-48b5-bb23-de5354aed4eb/"
+    },
+    {
+      "title": "Data Engineering - ETL, Web Scraping, Big Data, SQL, Power BI",
+      "issuer": "Udemy",
+      "date": "2021-11",
+      "link": "https://www.udemy.com/certificate/UC-284a6015-3733-4df4-a131-0df0b21a7df3/"
+    },
+    {
+      "title": "Belajar Dasar Pemrograman JavaScript",
+      "issuer": "Dicoding Indonesia",
+      "date": "2022-01",
+      "credential_id": "RVZK155LNPD5",
+      "link": "https://www.dicoding.com/certificates/RVZK155LNPD5"
+    },
+    {
+      "title": "Cloud Practitioner Essentials (AWS Cloud)",
+      "issuer": "Dicoding Indonesia",
+      "date": "2021-08",
+      "credential_id": "2VX326O0QPYQ",
+      "link": "https://www.dicoding.com/certificates/2VX326O0QPYQ"
+    },
+    {
+      "title": "Data Science di Google Cloud",
+      "issuer": "Qwiklabs",
+      "date": "2021-09",
+      "link": "https://www.cloudskillsboost.google/public_profiles/e6b091ab-7cba-4bb8-afb4-ddb8cb0c72d7"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Teknologi Terbaik (Best Technology)",
+      "issuer": "Tokopedia Devcamp 2022 Hackathon",
+      "date": "2022-10",
+      "description": "Berkontribusi pada pengembangan backend menggunakan Flask dan pengumpulan data menggunakan RasaHQ Framework untuk membuat chatbot rekomendasi hadiah sebagai tim."
+    },
+    {
+      "title": "Partisipasi Aktif sebagai Mentee",
+      "issuer": "Deall Career Mentoring Festival (DCMF)",
+      "date": "2022-12",
+      "description": "Terlibat aktif dalam sesi bimbingan karir yang membahas praktik terbaik industri, pengembangan profesional, dan karir rekayasa sistem data."
+    },
+    {
+      "title": "Juara Olimpiade Fisika",
+      "issuer": "SMAN 4 Bandung",
+      "date": "2017-12",
+      "description": "Meraih juara pertama dalam Olimpiade Fisika tingkat sekolah dan mewakili sekolah ke tingkat kota Bandung."
+    }
+  ],
+  "organizations": [
+    {
+      "name": "ILUNI UI",
+      "role": "Teknologi dan Inovasi (Grid) - Database & Analitik",
+      "start_date": "2025-10",
+      "end_date": "Present"
+    },
+    {
+      "name": "BETIS Fasilkom UI",
+      "role": "Staf Bidang Akademik",
+      "start_date": "2019-11",
+      "end_date": "2020-06",
+      "description": "BETIS adalah program bimbingan belajar untuk membantu siswa SMA kurang mampu dalam mempersiapkan diri menghadapi ujian masuk universitas. Merekrut dan mengelola tutor bahasa Inggris serta merancang kurikulum untuk 50+ siswa."
+    }
+  ],
+  "spoken_languages": [
+    {
+      "language": "Inggris",
+      "proficiency": "Kemampuan Kerja Profesional (Skor 77 pada EF SET / Proficient)"
+    },
+    {
+      "language": "Indonesia",
+      "proficiency": "Penutur Asli atau Kemampuan Bilingual"
+    }
+  ],
+  "interests": [
+    "Keuangan & Investasi",
+    "Filsafat",
+    "Futsal",
+    "Film"
+  ]
+}

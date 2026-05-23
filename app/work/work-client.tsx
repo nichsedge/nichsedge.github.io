@@ -19,7 +19,8 @@ import { GlitchText } from '@/components/glitch-text';
 import { DecryptedText } from '@/components/decrypted-text';
 import { TiltCard } from '@/components/tilt-card';
 
-import resumeData from '@/data/cv.json';
+import resumeDataEN from '@/data/cv.json';
+import resumeDataID from '@/data/cv_id.json';
 
 interface Period {
   start: string;
@@ -56,18 +57,21 @@ interface WorkItem {
   projects?: ProjectItem[];
 }
 
-function formatPeriod(period: Period, yearOnly = false): string {
+function formatPeriod(period: Period, yearOnly = false, locale = 'en'): string {
   if (!period) return '';
   
   const formatDate = (dateStr: string | null): string => {
-    if (!dateStr || dateStr === 'Present') return 'Present';
+    if (!dateStr || dateStr === 'Present') return locale === 'id' ? 'Sekarang' : 'Present';
     const parts = dateStr.split('-');
     const year = parts[0];
     if (yearOnly) return year;
     
     if (parts.length < 2) return dateStr;
     const month = parseInt(parts[1], 10);
-    const months = [
+    const months = locale === 'id' ? [
+      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+    ] : [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
@@ -77,7 +81,7 @@ function formatPeriod(period: Period, yearOnly = false): string {
   return `${formatDate(period.start)} — ${formatDate(period.end)}`;
 }
 
-function calculateDuration(period: Period): string {
+function calculateDuration(period: Period, locale = 'en'): string {
   if (!period || !period.start) return '';
   const start = new Date(period.start);
   const end = period.end && period.end !== 'Present' ? new Date(period.end) : new Date('2026-05-19');
@@ -98,8 +102,13 @@ function calculateDuration(period: Period): string {
   }
   
   const parts = [];
-  if (years > 0) parts.push(`${years} yr${years > 1 ? 's' : ''}`);
-  if (months > 0) parts.push(`${months} mo${months > 1 ? 's' : ''}`);
+  if (locale === 'id') {
+    if (years > 0) parts.push(`${years} thn`);
+    if (months > 0) parts.push(`${months} bln`);
+  } else {
+    if (years > 0) parts.push(`${years} yr${years > 1 ? 's' : ''}`);
+    if (months > 0) parts.push(`${months} mo${months > 1 ? 's' : ''}`);
+  }
   
   return parts.join(' ');
 }
@@ -118,12 +127,18 @@ const STAGGER_CONTAINER = {
   }
 };
 
-export default function WorkClient() {
+export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
   const [isNSM, setIsNSM] = React.useState(false);
   const work = resumeData.work as unknown as WorkItem[];
   const { narrative, profile } = resumeData;
 
-  const subNavItems = [
+  const subNavItems = locale === 'id' ? [
+    { name: 'Ikhtisar', href: '#overview' },
+    { name: 'Linimasa', href: '#timeline' },
+    { name: 'Filosofi', href: '#philosophy' },
+    { name: 'Kredensial', href: '#credentials' },
+  ] : [
     { name: 'Overview', href: '#overview' },
     { name: 'Timeline', href: '#timeline' },
     { name: 'Philosophy', href: '#philosophy' },
@@ -165,16 +180,23 @@ export default function WorkClient() {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold text-text-0 tracking-tighter leading-none mb-8">
-              Enabling systems to <span className="text-accent italic font-light"><GlitchText text="think" /></span> and <span className="text-accent italic font-light"><GlitchText text="scale" /></span>.
+              {locale === 'id' ? (
+                <>Membuat sistem mampu <span className="text-accent italic font-light"><GlitchText text="berpikir" /></span> dan <span className="text-accent italic font-light"><GlitchText text="berkembang" /></span>.</>
+              ) : (
+                <>Enabling systems to <span className="text-accent italic font-light"><GlitchText text="think" /></span> and <span className="text-accent italic font-light"><GlitchText text="scale" /></span>.</>
+              )}
             </h1>
 
             <div className="grid md:grid-cols-2 gap-12 pt-8">
               <p className="text-[15px] text-text-2 leading-relaxed font-light">
-                My work exists at the friction point between messy real-world data and clean, actionable intelligence. I specialize in building the "nervous systems" of modern organizations—the pipelines, warehouses, and streaming engines that turn noise into signal. 
+                {locale === 'id' ? 
+                  "Pekerjaan saya berfokus pada titik temu antara data dunia nyata yang berantakan dan kecerdasan bersih yang siap pakai. Saya berspesialisasi dalam membangun \"sistem saraf\" organisasi modern—pipeline, data warehouse, dan streaming engine yang mengubah kebisingan menjadi sinyal penting." :
+                  "My work exists at the friction point between messy real-world data and clean, actionable intelligence. I specialize in building the \"nervous systems\" of modern organizations—the pipelines, warehouses, and streaming engines that turn noise into signal."
+                }
               </p>
               <div className="bg-bg-1/40 border border-border-subtle p-6 rounded-sm backdrop-blur-sm">
                 <div className="flex items-center gap-2 font-mono text-[9px] text-text-3 uppercase mb-4 tracking-widest">
-                  <Cpu size={12} /> Technical Core
+                  <Cpu size={12} /> {locale === 'id' ? 'Inti Teknis' : 'Technical Core'}
                 </div>
                 <div className="grid grid-cols-2 gap-y-2 gap-x-4 font-mono text-[11px] text-accent/80">
                   <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full"/> DISTRIBUTED_SYS</div>
@@ -191,7 +213,7 @@ export default function WorkClient() {
         <section id="timeline" className="space-y-12">
           <div className="flex items-center gap-4 mb-16">
             <h2 className="text-xl font-bold text-text-0 tracking-tight flex items-center gap-3">
-              <History className="text-accent" size={20} /> Professional Archive
+              <History className="text-accent" size={20} /> {locale === 'id' ? 'Arsip Profesional' : 'Professional Archive'}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-border-subtle to-transparent" />
           </div>
@@ -230,26 +252,26 @@ export default function WorkClient() {
 
                   {/* Year Range Header */}
                   <div className="font-mono text-[10px] text-accent font-bold tracking-[0.25em] uppercase mb-1">
-                    {formatPeriod(role.period, true)}
+                    {formatPeriod(role.period, true, locale)}
                   </div>
                   
                   {/* Precise Month Period */}
                   <div className="font-mono text-[11px] text-text-0 font-medium">
-                    {formatPeriod(role.period)}
+                    {formatPeriod(role.period, false, locale)}
                   </div>
 
                   {/* Active Uptime / Duration Metric */}
                   <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg-1/80 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 group-hover:text-accent group-hover:border-accent/30 transition-all select-none">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                    <span>{calculateDuration(role.period)}</span>
+                    <span>{calculateDuration(role.period, locale)}</span>
                   </div>
 
                   {/* Status Indicator */}
                   <div className="mt-1 font-mono text-[8px] tracking-wider uppercase font-bold">
                     {role.period.end === null || role.period.end === 'Present' ? (
-                      <span className="text-accent/90">[ SYS_STATUS: ACTIVE ]</span>
+                      <span className="text-accent/90">{locale === 'id' ? '[ SYS_STATUS: AKTIF ]' : '[ SYS_STATUS: ACTIVE ]'}</span>
                     ) : (
-                      <span className="text-text-3/60">[ SYS_STATUS: ARCHIVED ]</span>
+                      <span className="text-text-3/60">{locale === 'id' ? '[ SYS_STATUS: ARSIP ]' : '[ SYS_STATUS: ARCHIVED ]'}</span>
                     )}
                   </div>
                 </div>
@@ -302,10 +324,10 @@ export default function WorkClient() {
                     <div className="mt-8 pt-8 border-t border-border-subtle/50 space-y-8">
                       <div className="flex items-center gap-2 font-mono text-[9px] text-accent uppercase tracking-widest">
                         <Layers size={12} className="animate-pulse" />
-                        <span>NEURAL_NODE_SUBSECTIONS // ACTIVE_PROJECTS</span>
+                        <span>{locale === 'id' ? 'SUBSEKSI_NODE_SARAF // PROYEK_AKTIF' : 'NEURAL_NODE_SUBSECTIONS // ACTIVE_PROJECTS'}</span>
                       </div>
                       
-                      <div className="relative pl-6 border-l border-border-subtle/60 space-y-10">
+                      <div className="relative pl-6 border-l border-l-border-subtle/60 space-y-10">
                         {role.projects.map((project, pIdx) => (
                           <div key={`${project.role}-${pIdx}`} className="relative group/project space-y-3">
                             {/* Connector dot */}
@@ -315,7 +337,7 @@ export default function WorkClient() {
                               <h4 className="text-[16px] font-bold text-text-0 group-hover/project:text-accent transition-colors">
                                 {project.role}
                               </h4>
-                              <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period)}</span>
+                              <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period, false, locale)}</span>
                             </div>
                             
                             <p className="text-[13px] text-text-2 leading-relaxed font-light font-sans max-w-xl">
@@ -374,13 +396,17 @@ export default function WorkClient() {
              viewport={{ once: true }}
              className="max-w-3xl"
            >
-              <h2 className="text-3xl font-bold text-text-0 mb-10 italic">The "Why" Behind the Pipes.</h2>
+              <h2 className="text-3xl font-bold text-text-0 mb-10 italic">{locale === 'id' ? 'Alasan di Balik Saluran Data.' : 'The "Why" Behind the Pipes.'}</h2>
               <div className="space-y-8 text-text-2 text-[15px] leading-relaxed font-light">
                 <p>
                   {narrative.intro}
                 </p>
                 <p>
-                  My philosophy on data engineering is simple: **{narrative.philosophy.split('**')[1]}**. {narrative.philosophy.split('**')[2]}
+                  {locale === 'id' ? (
+                    <>Filosofi saya tentang data engineering cukup sederhana: <strong>{narrative.philosophy.split('**')[1] || 'Keandalan Tanpa Suara'}</strong>. {narrative.philosophy.split('**')[2] || 'Infrastruktur data terbaik adalah yang beroperasi hening...'}</>
+                  ) : (
+                    <>My philosophy on data engineering is simple: **{narrative.philosophy.split('**')[1]}**. {narrative.philosophy.split('**')[2]}</>
+                  )}
                 </p>
                 <p>
                   {narrative.conclusion}
@@ -411,7 +437,7 @@ export default function WorkClient() {
           >
             <div className="flex items-center gap-4 mb-16">
               <h2 className="text-xl font-bold text-text-0 tracking-tight flex items-center gap-3">
-                <Binary className="text-accent" size={20} /> Credentials & Verified System Specs
+                <Binary className="text-accent" size={20} /> {locale === 'id' ? 'Kredensial & Spesifikasi Sistem Terverifikasi' : 'Credentials & Verified System Specs'}
               </h2>
               <div className="h-px flex-1 bg-gradient-to-r from-border-subtle to-transparent" />
             </div>
@@ -424,7 +450,7 @@ export default function WorkClient() {
                     <Binary size={100} />
                   </div>
                   <h3 className="font-mono text-accent text-[12px] uppercase tracking-widest font-bold mb-6 flex items-center gap-2">
-                    <Binary size={14} /> Firmware & Verified Protocols
+                    <Binary size={14} /> {locale === 'id' ? 'Firmware & Protokol Terverifikasi' : 'Firmware & Verified Protocols'}
                   </h3>
                   
                   <div className="space-y-6 text-[12px] font-mono leading-relaxed">
@@ -484,7 +510,7 @@ export default function WorkClient() {
                     <Award size={100} />
                   </div>
                   <h3 className="font-mono text-accent text-[12px] uppercase tracking-widest font-bold mb-6 flex items-center gap-2">
-                    <Award size={14} /> Nodes & Speech Codecs
+                    <Award size={14} /> {locale === 'id' ? 'Node & Kodek Komunikasi' : 'Nodes & Speech Codecs'}
                   </h3>
                   
                   <div className="space-y-6 text-[12px] font-mono leading-relaxed">
@@ -547,8 +573,8 @@ export default function WorkClient() {
       <footer className="py-24 border-t border-border-subtle bg-bg-1 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="text-center md:text-left space-y-4">
-             <div className="font-mono text-[10px] text-accent tracking-[0.4em] uppercase">Ready to connect?</div>
-             <h3 className="text-3xl font-bold text-text-0 tracking-tight">Let's build something systemic.</h3>
+             <div className="font-mono text-[10px] text-accent tracking-[0.4em] uppercase">{locale === 'id' ? 'Siap terhubung?' : 'Ready to connect?'}</div>
+             <h3 className="text-3xl font-bold text-text-0 tracking-tight">{locale === 'id' ? 'Mari bangun sesuatu yang sistemik.' : "Let's build something systemic."}</h3>
           </div>
           <div className="flex gap-8 font-mono text-[11px] text-text-3 uppercase tracking-widest">
             <a href={`mailto:${profile.email}`} className="hover:text-accent transition-colors">{profile.email}</a>

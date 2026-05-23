@@ -6,22 +6,53 @@ import { Terminal as TerminalIcon, Home, Zap, Loader2, Cpu, Globe, Database } fr
 import { useRouter } from 'next/navigation';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
 import referralsData from '@/data/referrals.json';
+import { useWideLayout } from '@/hooks/use-wide-layout';
+import { generateSystemStats } from '@/lib/data-hub';
 
-export default function TerminalClient() {
+export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  useWideLayout('lg');
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<string[]>([
-    "PORTFOLIO_OS V2.0.5 (May 2026)",
-    "AUTHENTICATION: SUCCESS (AS GUEST)",
-    "INITIALIZING NEURAL_GHOST PROTOCOL...",
-    "TYPE 'HELP' FOR LIST OF COMMANDS",
-    " "
-  ]);
+  const [history, setHistory] = useState<string[]>(
+    locale === 'id' ? [
+      "PORTFOLIO_OS V2.0.5 (Mei 2026)",
+      "AUTENTIKASI: BERHASIL (SEBAGAI GUEST)",
+      "MENGINISIASI PROTOKOL NEURAL_GHOST...",
+      "KETIK 'HELP' UNTUK DAFTAR PERINTAH",
+      " "
+    ] : [
+      "PORTFOLIO_OS V2.0.5 (May 2026)",
+      "AUTHENTICATION: SUCCESS (AS GUEST)",
+      "INITIALIZING NEURAL_GHOST PROTOCOL...",
+      "TYPE 'HELP' FOR LIST OF COMMANDS",
+      " "
+    ]
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [theme, setTheme] = useState<'cyan' | 'matrix' | 'amber' | 'cobalt'>('cyan');
   const [ghostMode, setGhostMode] = useState(false);
   const [ghostStatus, setGhostStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
+
+  const [activeSimulation, setActiveSimulation] = useState<'pipeline' | null>(null);
+  const [simFrame, setSimFrame] = useState(0);
+  const [simTelemetry, setSimTelemetry] = useState({
+    ingestRate: 0,
+    processedCount: 0,
+    errorCount: 0,
+    bufferFill: 0,
+    elapsed: 0
+  });
+  const [simLogs, setSimLogs] = useState<string[]>([]);
+
+  const simTelemetryRef = useRef({
+    ingestRate: 0,
+    processedCount: 0,
+    errorCount: 0,
+    bufferFill: 0,
+    elapsed: 0
+  });
+  const simLogsEndRef = useRef<HTMLDivElement>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -111,6 +142,11 @@ export default function TerminalClient() {
       } finally {
         setIsProcessing(false);
       }
+      return;
+    }
+
+    if (cmd === 'pipeline' || cmd === 'monitor') {
+      setActiveSimulation('pipeline');
       return;
     }
 
@@ -214,14 +250,48 @@ export default function TerminalClient() {
           "Available files: bio.txt, achievements.md, system_logs.log"
         ];
       }
+    } else if (cmd.startsWith('biome')) {
+      const parts = cmd.split(' ');
+      const targetBiome = parts[1];
+      if (!targetBiome) {
+        let activeBiome = 'cyber';
+        if (typeof document !== 'undefined') {
+          if (document.documentElement.classList.contains('biome-ocean')) activeBiome = 'ocean';
+          else if (document.documentElement.classList.contains('biome-forest')) activeBiome = 'forest';
+        }
+        response = [
+          "CURRENT_BIOME: " + activeBiome.toUpperCase(),
+          "AVAILABLE_BIOMES: CYBER, OCEAN, FOREST",
+          "USAGE: biome <biome_name>"
+        ];
+      } else if (['cyber', 'ocean', 'forest'].includes(targetBiome)) {
+        if (typeof window !== 'undefined') {
+          document.documentElement.classList.remove('biome-cyber', 'biome-ocean', 'biome-forest');
+          document.documentElement.classList.add(`biome-${targetBiome}`);
+          localStorage.setItem('selected-biome', targetBiome);
+          window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: targetBiome }));
+        }
+        response = [
+          `ENVIRONMENT BIOME OVERRIDDEN TO ${targetBiome.toUpperCase()}`,
+          "SYNCHRONIZING SYSTEM WIDGETS... SUCCESS"
+        ];
+      } else {
+        response = [
+          `UNKNOWN_BIOME: ${targetBiome}`,
+          "AVAILABLE_BIOMES: CYBER, OCEAN, FOREST"
+        ];
+      }
     } else if (cmd.startsWith('theme')) {
       const parts = cmd.split(' ');
       const targetTheme = parts[1];
       if (!targetTheme) {
         response = [
-          "CURRENT_THEME: " + theme.toUpperCase(),
-          "AVAILABLE_THEMES: CYAN, MATRIX, AMBER, COBALT",
-          "USAGE: theme <theme_name>"
+          "CURRENT_TERMINAL_THEME: " + theme.toUpperCase(),
+          "AVAILABLE_TERMINAL_THEMES: CYAN, MATRIX, AMBER, COBALT",
+          "USAGE: theme <theme_name>",
+          " ",
+          "INFO: To change the global site environment biome, use the 'biome' command.",
+          "USAGE: biome <cyber|ocean|forest>"
         ];
       } else if (['cyan', 'matrix', 'amber', 'cobalt'].includes(targetTheme)) {
         setTheme(targetTheme as any);
@@ -238,7 +308,25 @@ export default function TerminalClient() {
     } else {
       switch(cmd) {
         case 'help':
-          response = [
+          response = locale === 'id' ? [
+            "PERINTAH_YANG_TERSEDIA:",
+            "  PROJECTS      - LIHAT ARSIP ENGINEERING",
+            "  HOME          - KEMBALI KE BERANDA (HQ)",
+            "  GARDEN        - BUKA KEBUN DIGITAL",
+            "  GHOST         - KONSULTASI DENGAN AI KECERDASAN PROYEK",
+            "  HACK          - INISIASI PROTOKOL PENETRASI CEPAT",
+            "  CLEAR         - BERSIHKAN BUFFER KONSOL",
+            "  NEOFETCH      - IKHTISAR SISTEM",
+            "  WHOAMI        - TAMPILKAN PROFIL USER AKTIF",
+            "  SKILLS        - DAFTAR MODUL YANG DIMUAT",
+            "  LS            - TAMPILKAN DIREKTORI VIRTUAL",
+            "  CAT <file>    - TAMPILKAN ISI FILE VIRTUAL",
+            "  THEME <name>  - UBAH TEMA TERMINAL (CYAN, MATRIX, AMBER, COBALT)",
+            "  BIOME <name>  - UBAH BIOMA ENVIRONMENT SITE (CYBER, OCEAN, FOREST)",
+            "  STATUS        - LAPORAN DIAGNOSTIK LIVE MONITOR SISTEM",
+            "  REFERRALS     - DAFTAR GERBANG INGESTI EKSTERNAL",
+            "  PIPELINE      - LIVE SIMULATOR PIPELINE DATA"
+          ] : [
             "AVAILABLE_COMMANDS:",
             "  PROJECTS      - VIEW ENGINEERING ARCHIVE",
             "  HOME          - RETURN TO HQ",
@@ -252,7 +340,10 @@ export default function TerminalClient() {
             "  LS            - LIST VIRTUAL DIRECTORY CONTENT",
             "  CAT <file>    - DISPLAY CONTENT OF A VIRTUAL FILE",
             "  THEME <name>  - CHANGE TERMINAL STYLE (CYAN, MATRIX, AMBER, COBALT)",
-            "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS"
+            "  BIOME <name>  - CHANGE GLOBAL ENVIRONMENT BIOME (CYBER, OCEAN, FOREST)",
+            "  STATUS        - PRINT LIVE SYSTEM MONITOR DIAGNOSTIC REPORT",
+            "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS",
+            "  PIPELINE      - LIVE DATA PIPELINE SIMULATOR"
           ];
           break;
         case 'whoami':
@@ -323,6 +414,26 @@ export default function TerminalClient() {
             "      |||||      LOC: Jakarta, ID"
           ];
           break;
+        case 'status':
+        case 'diagnose':
+          const stats = generateSystemStats();
+          response = [
+            "+--------------------------------------------------+",
+            "|         SYSTEM MONITOR DIAGNOSTIC REPORT         |",
+            "+----------------------+---------------------------+",
+            `| TIMESTAMP            | ${new Date().toISOString().substring(0, 19).replace('T', ' ').padEnd(25)} |`,
+            `| UPTIME               | ${stats.uptime.padEnd(25)} |`,
+            `| THROUGHPUT           | ${stats.throughput.padEnd(25)} |`,
+            `| LATENCY              | ${stats.latency.padEnd(25)} |`,
+            `| CPU LOAD             | ${stats.cpuLoad.padEnd(25)} |`,
+            `| ACTIVE NODES         | ${String(stats.activeNodes).padEnd(25)} |`,
+            `| COGNITIVE CORE       | NEURAL_GHOST ACTIVE (100%)|`,
+            `| LAKE ENGINE          | STANDBY (0 IN-FLIGHT)     |`,
+            "+----------------------+---------------------------+",
+            "| STATUS: ALL SYSTEMS RUNNING WITHIN DESIGN SPEC   |",
+            "+--------------------------------------------------+"
+          ];
+          break;
         case 'referrals':
         case 'gateways':
           response = [
@@ -367,7 +478,7 @@ export default function TerminalClient() {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'ls', 'cat', 'referrals', 'gateways'];
+      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor'];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
         setInput(match);
@@ -380,6 +491,204 @@ export default function TerminalClient() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [history]);
+
+  // Conveyor belt animator for ASCII pipeline diagram
+  const getBelt = (frame: number, length: number = 8) => {
+    const chars = ['>', '>', '·', '·'];
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars[(i - frame + 100) % chars.length];
+    }
+    return result;
+  };
+
+  const getProgressBar = (percentage: number) => {
+    const totalBlocks = 15;
+    const filledBlocks = Math.round((percentage / 100) * totalBlocks);
+    const emptyBlocks = Math.max(0, totalBlocks - filledBlocks);
+    const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+    return `[${bar}] ${percentage}%`;
+  };
+
+  const getProgressBarMini = (percentage: number) => {
+    const totalBlocks = 6;
+    const filledBlocks = Math.round((percentage / 100) * totalBlocks);
+    const emptyBlocks = Math.max(0, totalBlocks - filledBlocks);
+    const bar = '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks);
+    return `${bar} ${percentage}%`;
+  };
+
+  const renderAsciiDiagram = () => {
+    const c1 = getBelt(simFrame, 8);
+    const c2 = getBelt(simFrame + 1, 8);
+    const c3 = getBelt(simFrame + 2, 8);
+
+    return `
+[ SOURCES ]             [ BUFFER QUEUE ]             [ PROCESS ENGINE ]             [ DATA LAKE ]
+postgres  --+          +----------------+          +--------------------+          +---------------+
+crawler   --+-- ${c1} -|   ${getProgressBarMini(simTelemetry.bufferFill)}   |--- ${c2} -| dbt-spark active   |--- ${c3} -| BigQuery Lake |
+kafka_hub --+          +----------------+          +--------------------+          +---------------+
+`;
+  };
+
+  // Main simulation tick interval
+  useEffect(() => {
+    if (activeSimulation !== 'pipeline') return;
+
+    // Initialize telemetry data
+    const initialTelemetry = {
+      ingestRate: 104230,
+      processedCount: 12543900,
+      errorCount: 0,
+      bufferFill: 54,
+      elapsed: 0
+    };
+    setSimTelemetry(initialTelemetry);
+    simTelemetryRef.current = initialTelemetry;
+    setSimFrame(0);
+    
+    // Set up initial rolling logs
+    const initialLogs = [
+      `[0.0s] [SYSTEM] Initializing stream simulator pipeline v2.4...`,
+      `[0.0s] [CONNECT] Connected to postgres://prod-rds-db:5432/core`,
+      `[0.0s] [CONNECT] Handshake completed with kafka://kafka-broker-1:9092`,
+      `[0.0s] [SYSTEM] Listening on topics: telemetry.user_actions, staging.transactions`,
+      `[0.0s] [DBT] Initializing incremental model build context...`,
+      `[0.0s] [SPARK] SparkSession initialized. Master node: spark://spark-master-01:7077`
+    ];
+    setSimLogs(initialLogs);
+
+    let currentLogs = [...initialLogs];
+
+    const logTemplates = [
+      // Kafka ingestion
+      (elapsed: string, records: string) => `[${elapsed}s] [INFO] [KAFKA] Consumed ${records} messages from topic: telemetry.user_actions.`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [KAFKA] Rebalancing consumer group 'pipeline-consumers'... OK.`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [KAFKA] Committed offsets for partition #0, #1, #2.`,
+      // Postgres/Scrapers ingestion
+      (elapsed: string, records: string) => `[${elapsed}s] [INFO] [SCRAPER] Ingested ${records} raw documents from web-crawler-node-04.`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [POSTGRES] Queried replication logs. Found 0 schema modifications.`,
+      // Spark/dbt transformation
+      (elapsed: string) => `[${elapsed}s] [INFO] [SPARK] Running micro-batch execution on executor node_0x4492.`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [DBT] Compiling model: staging.stg_user_actions... success.`,
+      (elapsed: string, records: string) => `[${elapsed}s] [SUCCESS] [DBT] Merged ${records} rows into target table warehouse.dim_users.`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [SPARK] GC run finished. Cleared 1.4GB heap memory.`,
+      // BigQuery loads
+      (elapsed: string, records: string) => `[${elapsed}s] [SUCCESS] [BIGQUERY] Loaded parquet partition to core_lake.user_telemetry (+${records} rows).`,
+      (elapsed: string) => `[${elapsed}s] [INFO] [BIGQUERY] Cluster health: green. Query cache hit rate: 94.2%.`,
+      // Common warnings/errors
+      (elapsed: string) => `[${elapsed}s] [WARNING] [DBT] Model: warehouse.fact_billing timed out. Retrying execution batch...`,
+      (elapsed: string) => `[${elapsed}s] [WARNING] [KAFKA] Consumer heartbeat delayed (142ms). Session remained active.`,
+      (elapsed: string) => `[${elapsed}s] [ERROR] [POSTGRES] SSL handshake timeout. Attempting socket reconnect... Reconnected.`
+    ];
+
+    const intervalId = setInterval(() => {
+      // 1. Telemetry updates
+      const nextIngest = Math.floor(95000 + Math.random() * 20000);
+      const processedIncrement = Math.floor(nextIngest * 0.4);
+      
+      const fillDiff = Math.floor(Math.random() * 7) - 3; // -3 to +3
+      const nextFill = Math.max(10, Math.min(95, simTelemetryRef.current.bufferFill + fillDiff));
+      
+      let errorDiff = 0;
+      if (Math.random() < 0.03) {
+        errorDiff = 1;
+      }
+
+      const nextTelemetry = {
+        ingestRate: nextIngest,
+        processedCount: simTelemetryRef.current.processedCount + processedIncrement,
+        errorCount: simTelemetryRef.current.errorCount + errorDiff,
+        bufferFill: nextFill,
+        elapsed: Number((simTelemetryRef.current.elapsed + 0.4).toFixed(1))
+      };
+
+      setSimTelemetry(nextTelemetry);
+      simTelemetryRef.current = nextTelemetry;
+
+      // 2. Frame progression for conveyors
+      setSimFrame(prev => (prev + 1) % 4);
+
+      // 3. Dynamic log stream
+      if (Math.random() < 0.75) {
+        const elapsedStr = nextTelemetry.elapsed.toFixed(1);
+        const recordsFormatted = new Intl.NumberFormat().format(Math.floor(nextIngest * 0.4));
+        
+        let logText = "";
+        if (errorDiff > 0) {
+          logText = `[${elapsedStr}s] [ERROR] [PIPELINE] Detected malformed packet in stream. Routing to dead-letter queue.`;
+        } else {
+          const randomIndex = Math.floor(Math.random() * logTemplates.length);
+          const template = logTemplates[randomIndex];
+          if (template.length === 2) {
+            logText = template(elapsedStr, recordsFormatted);
+          } else {
+            logText = template(elapsedStr, "");
+          }
+        }
+
+        currentLogs = [...currentLogs, logText];
+        if (currentLogs.length > 15) {
+          currentLogs.shift();
+        }
+        setSimLogs(currentLogs);
+      }
+    }, 400);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [activeSimulation]);
+
+  // Capturing keyboard cancellation handler
+  useEffect(() => {
+    if (activeSimulation !== 'pipeline') return;
+
+    const handleKeyDownGlobal = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Exit simulation mode
+      setActiveSimulation(null);
+
+      // Print summary exit log to main terminal history
+      const endCount = simTelemetryRef.current.processedCount;
+      const endSeconds = simTelemetryRef.current.elapsed;
+      const formattedProcessed = new Intl.NumberFormat().format(Math.floor(endCount));
+
+      setHistory(prev => [
+        ...prev,
+        "==================================================",
+        `[PIPELINE SIMULATION INTERRUPTED BY USER]`,
+        `  ELAPSED TIME      : ${endSeconds.toFixed(1)}s`,
+        `  RECORDS PROCESSED : ${formattedProcessed}`,
+        `  AVG INGEST SPEED  : ~105,000 msg/s`,
+        `  FATAL ERRORS      : ${simTelemetryRef.current.errorCount}`,
+        `  INTEGRITY CHECK   : PASS (99.99% accuracy)`,
+        "==================================================",
+        " "
+      ]);
+
+      // Refocus the standard shell command input
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 50);
+    };
+
+    window.addEventListener('keydown', handleKeyDownGlobal, true);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDownGlobal, true);
+    };
+  }, [activeSimulation]);
+
+  // Auto scroll logs stream
+  useEffect(() => {
+    if (activeSimulation === 'pipeline') {
+      simLogsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [simLogs, activeSimulation]);
 
   useEffect(() => {
     const handleGlobalClick = () => {
@@ -414,38 +723,117 @@ export default function TerminalClient() {
         </div>
 
         {/* Content */}
-        <div ref={scrollRef} className="p-6 h-[75vh] overflow-y-auto space-y-1 text-[13px] relative z-10 scrollbar-none">
-          <AnimatePresence mode="popLayout">
-            {history.map((line, i) => (
-              <motion.div 
-                initial={{ opacity: 0, x: -5 }}
-                animate={{ opacity: 1, x: 0 }}
-                key={i} 
-                className={(line.startsWith('ichsanul@') || line.startsWith('ghost@')) ? (line.startsWith('ghost@') ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`) : line.startsWith('GHOST:') ? 'text-[#ffffff]' : ''}
-              >
-                {line}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          
-          <form onSubmit={handleCommand} className="flex items-center gap-2 pt-2">
-            <span className={`${ghostMode ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`}`}>
-              {ghostMode ? 'ghost@neural ~ $' : 'ichsanul@portfolio ~ $'}
-            </span>
-            <input 
-              ref={inputRef}
-              autoFocus
-              disabled={isProcessing}
-              type="text" 
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent border-none outline-none text-[#ffffff] focus:ring-0 p-0 disabled:opacity-50"
-              spellCheck={false}
-              autoComplete="off"
-            />
-            {isProcessing && <Loader2 size={12} className={`${themeStyles.accentText} animate-spin`} />}
-          </form>
+        <div ref={scrollRef} className={`p-6 h-[75vh] space-y-1 text-[13px] relative z-10 scrollbar-none ${activeSimulation === 'pipeline' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+          {activeSimulation === 'pipeline' ? (
+            <div className="flex flex-col h-full space-y-4 select-none">
+              {/* Header Info */}
+              <div className={`flex justify-between items-center border-b ${themeStyles.border} pb-2`}>
+                <div className="flex items-center gap-2">
+                  <span className={`${themeStyles.accentText} font-bold animate-pulse`}>●</span>
+                  <span className="font-bold tracking-wider uppercase text-xs md:text-sm">Stream Pipeline Monitor v2.4</span>
+                </div>
+                <div className="flex gap-4 text-[10px] md:text-xs opacity-60">
+                  <span>ELAPSED: {simTelemetry.elapsed.toFixed(1)}s</span>
+                  <span>STATUS: ACTIVE</span>
+                </div>
+              </div>
+
+              {/* ASCII Flow Diagram */}
+              <div className={`p-4 bg-[#000000]/40 border ${themeStyles.border} rounded font-mono text-[9px] sm:text-[11px] md:text-xs overflow-x-auto whitespace-pre leading-normal ${themeStyles.accentText} text-center`}>
+                {renderAsciiDiagram()}
+              </div>
+
+              {/* Telemetry Metrics Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className={`p-3 bg-[#000000]/40 border ${themeStyles.border} rounded flex flex-col justify-between`}>
+                  <span className="text-[10px] uppercase tracking-wider opacity-50">Ingest Speed</span>
+                  <span className={`text-xs sm:text-sm md:text-base font-bold ${themeStyles.accentText}`}>
+                    {new Intl.NumberFormat().format(simTelemetry.ingestRate)} msg/s
+                  </span>
+                </div>
+                <div className={`p-3 bg-[#000000]/40 border ${themeStyles.border} rounded flex flex-col justify-between`}>
+                  <span className="text-[10px] uppercase tracking-wider opacity-50">Processed</span>
+                  <span className="text-xs sm:text-sm md:text-base font-bold text-white">
+                    {new Intl.NumberFormat().format(Math.floor(simTelemetry.processedCount))}
+                  </span>
+                </div>
+                <div className={`p-3 bg-[#000000]/40 border ${themeStyles.border} rounded flex flex-col justify-between`}>
+                  <span className="text-[10px] uppercase tracking-wider opacity-50">Buffer Fill</span>
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-white whitespace-nowrap">
+                    {getProgressBar(simTelemetry.bufferFill)}
+                  </span>
+                </div>
+                <div className={`p-3 bg-[#000000]/40 border ${themeStyles.border} rounded flex flex-col justify-between`}>
+                  <span className="text-[10px] uppercase tracking-wider opacity-50">Error Count</span>
+                  <span className={`text-xs sm:text-sm md:text-base font-bold ${simTelemetry.errorCount > 0 ? 'text-red-500 animate-pulse font-extrabold' : 'text-green-400'}`}>
+                    {simTelemetry.errorCount} Fails
+                  </span>
+                </div>
+              </div>
+
+              {/* Simulated Log Output Panel */}
+              <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                <div className="text-[10px] uppercase tracking-wider opacity-50 mb-1 flex justify-between items-center">
+                  <span>Runtime Logs Stream</span>
+                  <span className="animate-pulse text-[10px] text-green-400 flex items-center gap-1">● RECEIVING</span>
+                </div>
+                <div className={`flex-1 p-3 bg-[#000000]/60 border ${themeStyles.border} rounded overflow-y-auto font-mono text-[10px] md:text-[11px] space-y-1 scrollbar-none`}>
+                  {simLogs.map((log, index) => {
+                    let logColor = "";
+                    if (log.includes("[ERROR]")) logColor = "text-red-400 font-bold";
+                    else if (log.includes("[WARNING]")) logColor = "text-yellow-400";
+                    else if (log.includes("[SUCCESS]")) logColor = "text-green-400 font-bold";
+                    else if (log.includes("[SYSTEM]")) logColor = "text-cyan-400";
+                    return (
+                      <div key={index} className={`whitespace-pre-wrap leading-tight ${logColor || 'text-zinc-300'}`}>
+                        {log}
+                      </div>
+                    );
+                  })}
+                  <div ref={simLogsEndRef} />
+                </div>
+              </div>
+
+              {/* Interruption Prompt Footer */}
+              <div className="text-center text-[9px] md:text-[10px] opacity-40 uppercase tracking-widest animate-pulse py-1">
+                PRESS ANY KEY TO HALT MONITORING AND RETURN TO TERMINAL
+              </div>
+            </div>
+          ) : (
+            <>
+              <AnimatePresence mode="popLayout">
+                {history.map((line, i) => (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    key={i} 
+                    className={(line.startsWith('ichsanul@') || line.startsWith('ghost@')) ? (line.startsWith('ghost@') ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`) : line.startsWith('GHOST:') ? 'text-[#ffffff]' : ''}
+                  >
+                    {line}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+              
+              <form onSubmit={handleCommand} className="flex items-center gap-2 pt-2">
+                <span className={`${ghostMode ? 'text-rose-400 font-bold animate-pulse' : `${themeStyles.accentText} font-bold`}`}>
+                  {ghostMode ? 'ghost@neural ~ $' : 'ichsanul@portfolio ~ $'}
+                </span>
+                <input 
+                  ref={inputRef}
+                  autoFocus
+                  disabled={isProcessing}
+                  type="text" 
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 bg-transparent border-none outline-none text-[#ffffff] focus:ring-0 p-0 disabled:opacity-50"
+                  spellCheck={false}
+                  autoComplete="off"
+                />
+                {isProcessing && <Loader2 size={12} className={`${themeStyles.accentText} animate-spin`} />}
+              </form>
+            </>
+          )}
         </div>
 
         {/* Footer info */}

@@ -12,7 +12,7 @@ type MetricPoint = {
   mem: number;
 };
 
-export function DataOracle() {
+export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const [insight, setInsight] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [stage, setStage] = useState(0);
@@ -46,7 +46,9 @@ export function DataOracle() {
     }
 
     try {
-      const query = "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
+      const query = locale === 'id' 
+        ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
+        : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
       const res = await fetch('/api/ghost', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +60,10 @@ export function DataOracle() {
       setInsight(data.response);
     } catch {
       setStatus('LOCAL');
-      setInsight(getFallbackGhostResponse("As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences."));
+      const queryFallback = locale === 'id'
+        ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
+        : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
+      setInsight(getFallbackGhostResponse(queryFallback));
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +79,7 @@ export function DataOracle() {
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h3 className="text-xl font-bold text-text-0 flex items-center gap-3">
-              <Sparkles size={20} className="text-accent" /> Use the Data Oracle
+              <Sparkles size={20} className="text-accent" /> {locale === 'id' ? 'Gunakan Oracle Data' : 'Use the Data Oracle'}
             </h3>
             {status && (
               <span className={`font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 border ${
@@ -87,7 +92,9 @@ export function DataOracle() {
             )}
           </div>
           <p className="text-[13px] text-text-3 font-light mb-8 max-w-lg leading-relaxed">
-             Connect your current expertise to the future. Our neural projection engine analyzes your stack to predict the next wave of data evolution.
+             {locale === 'id' 
+               ? 'Hubungkan keahlian Anda saat ini ke masa depan. Mesin proyeksi neural kami menganalisis stack Anda untuk memprediksi gelombang evolusi data berikutnya.' 
+               : 'Connect your current expertise to the future. Our neural projection engine analyzes your stack to predict the next wave of data evolution.'}
           </p>
 
           {!insight && !isLoading ? (
@@ -95,7 +102,7 @@ export function DataOracle() {
               onClick={requestPrediction}
               className="flex items-center gap-4 bg-accent/10 border border-accent/40 px-6 py-3 rounded-sm group/btn hover:bg-accent/20 transition-all text-accent font-mono text-[11px] uppercase tracking-[0.2em] font-bold"
             >
-              Initiate Projection <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+              {locale === 'id' ? 'Mulai Proyeksi' : 'Initiate Projection'} <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
             </button>
           ) : isLoading ? (
             <div className="space-y-6">
@@ -118,7 +125,7 @@ export function DataOracle() {
                 onClick={() => setInsight(null)}
                 className="mt-6 text-[9px] uppercase tracking-widest text-text-3 hover:text-accent transition-colors block"
                >
-                 Wipe Buffer
+                 {locale === 'id' ? 'Hapus Buffer' : 'Wipe Buffer'}
                </button>
             </motion.div>
           )}

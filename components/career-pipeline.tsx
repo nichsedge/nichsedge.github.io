@@ -4,38 +4,38 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Database, Cog, Layout, Terminal, Server } from 'lucide-react';
 
-const steps = [
-  {
-    id: 'source',
-    label: 'Raw Data Sources',
-    icon: <Database size={16} />,
-    color: 'text-text-3',
-    items: ['PostgreSQL', 'Oracle', 'Hive', 'Web Scraping']
-  },
-  {
-    id: 'transform',
-    label: 'Transformation Engine',
-    icon: <Cog size={16} />,
-    color: 'text-accent',
-    items: ['dbt', 'Python', 'Apache Spark', 'SQL']
-  },
-  {
-    id: 'orchestrate',
-    label: 'Orchestration',
-    icon: <Server size={16} />,
-    color: 'text-text-2',
-    items: ['Apache Airflow', 'Cron Jobs', 'Bash Scripts']
-  },
-  {
-    id: 'output',
-    label: 'Analytical Storage',
-    icon: <Layout size={16} />,
-    color: 'text-accent',
-    items: ['BigQuery', 'Snowflake', 'Dashboards']
-  }
-];
+export function CareerPipeline({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  const steps = [
+    {
+      id: 'source',
+      label: locale === 'id' ? 'Sumber Data Mentah' : 'Raw Data Sources',
+      icon: <Database size={16} />,
+      color: 'text-text-3',
+      items: ['PostgreSQL', 'Oracle', 'Hive', 'Web Scraping']
+    },
+    {
+      id: 'transform',
+      label: locale === 'id' ? 'Mesin Transformasi' : 'Transformation Engine',
+      icon: <Cog size={16} />,
+      color: 'text-accent',
+      items: ['dbt', 'Python', 'Apache Spark', 'SQL']
+    },
+    {
+      id: 'orchestrate',
+      label: locale === 'id' ? 'Orkestrasi' : 'Orchestration',
+      icon: <Server size={16} />,
+      color: 'text-text-2',
+      items: ['Apache Airflow', 'Cron Jobs', 'Bash Scripts']
+    },
+    {
+      id: 'output',
+      label: locale === 'id' ? 'Penyimpanan Analitis' : 'Analytical Storage',
+      icon: <Layout size={16} />,
+      color: 'text-accent',
+      items: ['BigQuery', 'Snowflake', 'Dashboards']
+    }
+  ];
 
-export function CareerPipeline() {
   return (
     <div className="w-full py-8 overflow-x-auto">
       <div className="min-w-[800px] flex items-start justify-between relative px-4">
@@ -77,11 +77,11 @@ export function CareerPipeline() {
       <div className="mt-8 px-4 py-3 bg-accent/5 border border-dashed border-accent/20 rounded-sm">
         <p className="font-mono text-[10px] text-accent flex items-center gap-2">
           <Terminal size={12} />
-          <span>SYSTEM_STATUS: OK</span>
+          <span>{locale === 'id' ? 'STATUS_SISTEM: OK' : 'SYSTEM_STATUS: OK'}</span>
           <span className="opacity-40">|</span>
           <span>LATENCY: 14ms</span>
           <span className="opacity-40">|</span>
-          <span className="animate-pulse">● PIPELINE_ACTIVE</span>
+          <span className="animate-pulse">● {locale === 'id' ? 'PIPELINE_AKTIF' : 'PIPELINE_ACTIVE'}</span>
         </p>
       </div>
     </div>

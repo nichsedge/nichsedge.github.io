@@ -7,173 +7,200 @@ import {
   AlertCircle, BarChart2, History, Cpu, Download, FileDown, 
   Trash2, Sparkles, ChevronDown, ChevronRight, Check, Plus
 } from 'lucide-react';
-import resumeData from '@/data/cv.json';
+import resumeDataEN from '@/data/cv.json';
+import resumeDataID from '@/data/cv_id.json';
 import referralsData from '@/data/referrals.json';
 import { Navbar } from '@/components/navbar';
 import { DataVisualizer } from '@/components/data-visualizer';
+import { useWideLayout } from '@/hooks/use-wide-layout';
 
-const formatPeriod = (period: any, yearOnly = false) => {
-  if (!period) return '';
-  if (typeof period === 'string') return period;
-  const formatDate = (d: string | null) => {
-    if (!d || d === 'Present') return 'Present';
-    const parts = d.split('-');
-    const year = parts[0];
-    if (yearOnly) return year;
-    if (parts.length < 2) return d;
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${months[parseInt(parts[1], 10) - 1]} ${year}`;
-  };
-  return `${formatDate(period.start)} — ${formatDate(period.end)}`;
-};
+export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
+  const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
 
-// Dynamically generate DB from resumeData
-const DB: Record<string, any[]> = {
-  experience: (() => {
-    const list: any[] = [];
-    let id = 1;
-    resumeData.work.forEach(w => {
-      list.push({
-        id: id++,
-        role: w.role,
-        company: w.company,
-        period: formatPeriod(w.period),
-        tech_stack: w.tech.join(', '),
-      });
-      if (w.projects) {
-        w.projects.forEach(p => {
+  // Reactively build DB from localized resumeData
+  const DB: Record<string, any[]> = React.useMemo(() => {
+    const formatPeriodLocal = (period: any, yearOnly = false) => {
+      if (!period) return '';
+      if (typeof period === 'string') return period;
+      const formatDate = (d: string | null) => {
+        if (!d || d === 'Present') return locale === 'id' ? 'Sekarang' : 'Present';
+        const parts = d.split('-');
+        const year = parts[0];
+        if (yearOnly) return year;
+        if (parts.length < 2) return d;
+        const months = locale === 'id' ? [
+          'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+          'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+        ] : [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        return `${months[parseInt(parts[1], 10) - 1]} ${year}`;
+      };
+      return `${formatDate(period.start)} — ${formatDate(period.end)}`;
+    };
+
+    return {
+      experience: (() => {
+        const list: any[] = [];
+        let id = 1;
+        resumeData.work.forEach(w => {
           list.push({
             id: id++,
-            role: p.role,
-            company: `${w.company} // ${p.role}`,
-            period: formatPeriod(p.period),
-            tech_stack: p.tech.join(', '),
+            role: w.role,
+            company: w.company,
+            period: formatPeriodLocal(w.period),
+            tech_stack: w.tech.join(', '),
           });
+          if (w.projects) {
+            w.projects.forEach(p => {
+              list.push({
+                id: id++,
+                role: p.role,
+                company: `${w.company} // ${p.role}`,
+                period: formatPeriodLocal(p.period),
+                tech_stack: p.tech.join(', '),
+              });
+            });
+          }
         });
-      }
-    });
-    return list;
-  })(),
-  skills: [
-    ...resumeData.skills.languages.map((l, i) => ({ id: i, category: 'Language', item: l, level: 'Primary' })),
-    ...resumeData.skills.platforms.map((p, i) => ({ id: i + 100, category: 'Platform', item: p, level: 'Advanced' })),
-    ...resumeData.skills.infrastructure.map((inf, i) => ({ id: i + 200, category: 'Infrastructure', item: inf, level: 'Cloud-Native' })),
-    ...(resumeData.skills.ides || []).map((ide, i) => ({ id: i + 300, category: 'IDE/Tool', item: ide, level: 'Development' })),
-  ],
-  education: resumeData.education.map((e, idx) => ({
-    id: idx + 1,
-    institution: e.institution,
-    degree: e.degree,
-    period: formatPeriod(e.period, true)
-  })),
-  certificates: (resumeData.certificates || []).map((c: any, idx: number) => ({
-    id: idx + 1,
-    title: c.title,
-    issuer: c.issuer,
-    date: c.date,
-    credential_id: c.credential_id || 'N/A',
-    link: c.link || ''
-  })),
-  awards: (resumeData.awards || []).map((a: any, idx: number) => ({
-    id: idx + 1,
-    title: a.title,
-    issuer: a.issuer,
-    date: a.date,
-    description: a.description
-  })),
-  organizations: (resumeData.organizations || []).map((o: any, idx: number) => ({
-    id: idx + 1,
-    name: o.name,
-    role: o.role,
-    period: `${o.start_date} — ${o.end_date || 'Present'}`,
-    description: o.description || 'N/A'
-  })),
-  spoken_languages: (resumeData.spoken_languages || []).map((l: any, idx: number) => ({
-    id: idx + 1,
-    language: l.language,
-    proficiency: l.proficiency
-  })),
-  referrals: referralsData.map((node: any, idx: number) => ({
-    id: idx + 1,
-    name: node.name,
-    category: node.category,
-    code: node.code,
-    benefit: node.benefit,
-    status: node.status
-  }))
-};
+        return list;
+      })(),
+      skills: [
+        ...resumeData.skills.languages.map((l, i) => ({ id: i, category: 'Language', item: l, level: 'Primary' })),
+        ...resumeData.skills.platforms.map((p, i) => ({ id: i + 100, category: 'Platform', item: p, level: 'Advanced' })),
+        ...resumeData.skills.infrastructure.map((inf, i) => ({ id: i + 200, category: 'Infrastructure', item: inf, level: 'Cloud-Native' })),
+        ...(resumeData.skills.ides || []).map((ide, i) => ({ id: i + 300, category: 'IDE/Tool', item: ide, level: 'Development' })),
+      ],
+      education: resumeData.education.map((e, idx) => ({
+        id: idx + 1,
+        institution: e.institution,
+        degree: e.degree,
+        period: formatPeriodLocal(e.period, true)
+      })),
+      certificates: (resumeData.certificates || []).map((c: any, idx: number) => ({
+        id: idx + 1,
+        title: c.title,
+        issuer: c.issuer,
+        date: c.date,
+        credential_id: c.credential_id || 'N/A',
+        link: c.link || ''
+      })),
+      awards: (resumeData.awards || []).map((a: any, idx: number) => ({
+        id: idx + 1,
+        title: a.title,
+        issuer: a.issuer,
+        date: a.date,
+        description: a.description
+      })),
+      organizations: (resumeData.organizations || []).map((o: any, idx: number) => ({
+        id: idx + 1,
+        name: o.name,
+        role: o.role,
+        period: `${o.start_date} — ${o.end_date || (locale === 'id' ? 'Sekarang' : 'Present')}`,
+        description: o.description || 'N/A'
+      })),
+      spoken_languages: (resumeData.spoken_languages || []).map((l: any, idx: number) => ({
+        id: idx + 1,
+        language: l.language,
+        proficiency: l.proficiency
+      })),
+      referrals: referralsData.map((node: any, idx: number) => ({
+        id: idx + 1,
+        name: node.name,
+        category: node.category,
+        code: node.code,
+        benefit: node.benefit,
+        status: node.status
+      }))
+    };
+  }, [resumeData, locale]);
 
-// Explicit structural details for Schema Explorer
-const SCHEMA_DETAILS = {
-  experience: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
-    { name: 'role', type: 'VARCHAR(100)', primary: false, desc: 'Corporate role or project assignment' },
-    { name: 'company', type: 'VARCHAR(100)', primary: false, desc: 'Company name or project route' },
-    { name: 'period', type: 'VARCHAR(50)', primary: false, desc: 'Duration interval formatted text' },
-    { name: 'tech_stack', type: 'TEXT', primary: false, desc: 'Comma-separated keywords stack used' },
-  ],
-  skills: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Unique capability identifier' },
-    { name: 'category', type: 'VARCHAR(50)', primary: false, desc: 'Capability segment (Language, Infrastructure, Platform)' },
-    { name: 'item', type: 'VARCHAR(100)', primary: false, desc: 'Specific technology tool/language signature' },
-    { name: 'level', type: 'VARCHAR(50)', primary: false, desc: 'Proficiency level index representation' },
-  ],
-  education: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Academic sequence key identifier' },
-    { name: 'institution', type: 'VARCHAR(100)', primary: false, desc: 'Academic institution university name' },
-    { name: 'degree', type: 'VARCHAR(100)', primary: false, desc: 'Major concentration level attained' },
-    { name: 'period', type: 'VARCHAR(50)', primary: false, desc: 'Enrolled academic span years' },
-  ],
-  certificates: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
-    { name: 'title', type: 'VARCHAR(150)', primary: false, desc: 'Title of the certification' },
-    { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: 'Issuing organization' },
-    { name: 'date', type: 'VARCHAR(20)', primary: false, desc: 'Date of issuance' },
-    { name: 'credential_id', type: 'VARCHAR(50)', primary: false, desc: 'Unique certificate credential ID' },
-    { name: 'link', type: 'TEXT', primary: false, desc: 'Verification web link' }
-  ],
-  awards: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
-    { name: 'title', type: 'VARCHAR(100)', primary: false, desc: 'Title of the accolade or award' },
-    { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: 'Awarding organization or context' },
-    { name: 'date', type: 'VARCHAR(20)', primary: false, desc: 'Date awarded' },
-    { name: 'description', type: 'TEXT', primary: false, desc: 'Brief description of the accomplishment' }
-  ],
-  organizations: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
-    { name: 'name', type: 'VARCHAR(100)', primary: false, desc: 'Organization name' },
-    { name: 'role', type: 'VARCHAR(100)', primary: false, desc: 'Assigned role or position' },
-    { name: 'period', type: 'VARCHAR(50)', primary: false, desc: 'Time period of active participation' },
-    { name: 'description', type: 'TEXT', primary: false, desc: 'Role description and impact details' }
-  ],
-  spoken_languages: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Primary key record identifier' },
-    { name: 'language', type: 'VARCHAR(50)', primary: false, desc: 'Spoken language classification' },
-    { name: 'proficiency', type: 'VARCHAR(100)', primary: false, desc: 'Proficiency benchmark index level' }
-  ],
-  referrals: [
-    { name: 'id', type: 'INTEGER', primary: true, desc: 'Portal routing gateway identifier' },
-    { name: 'name', type: 'VARCHAR(100)', primary: false, desc: 'Affiliated pipeline software application' },
-    { name: 'category', type: 'VARCHAR(50)', primary: false, desc: 'Ingestion classification tag' },
-    { name: 'code', type: 'VARCHAR(50)', primary: false, desc: 'Affiliate pipeline link payload key' },
-    { name: 'benefit', type: 'VARCHAR(255)', primary: false, desc: 'Download payload payload specifications' },
-    { name: 'status', type: 'VARCHAR(20)', primary: false, desc: 'Tunnel pathway connection state' },
-  ],
-};
+  // Explicit structural details for Schema Explorer (reactively translated)
+  const SCHEMA_DETAILS = React.useMemo(() => {
+    return {
+      experience: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik pengenal' : 'Primary key record identifier' },
+        { name: 'role', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Peran korporat atau penugasan proyek' : 'Corporate role or project assignment' },
+        { name: 'company', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nama perusahaan atau rute proyek' : 'Company name or project route' },
+        { name: 'period', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Teks terformat untuk durasi' : 'Duration interval formatted text' },
+        { name: 'tech_stack', type: 'TEXT', primary: false, desc: locale === 'id' ? 'Stack kata kunci dipisahkan koma' : 'Comma-separated keywords stack used' },
+      ],
+      skills: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'Pengenal kapabilitas unik' : 'Unique capability identifier' },
+        { name: 'category', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Segmen kemampuan (Language, Infrastructure, Platform)' : 'Capability segment (Language, Infrastructure, Platform)' },
+        { name: 'item', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nama teknologi/bahasa pemrograman' : 'Specific technology tool/language signature' },
+        { name: 'level', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Representasi indeks tingkat keahlian' : 'Proficiency level index representation' },
+      ],
+      education: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'Kunci identifikasi urutan akademis' : 'Academic sequence key identifier' },
+        { name: 'institution', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nama institusi/universitas akademis' : 'Academic institution university name' },
+        { name: 'degree', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Tingkat konsentrasi jurusan yang diperoleh' : 'Major concentration level attained' },
+        { name: 'period', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Tahun masa pendaftaran studi akademis' : 'Enrolled academic span years' },
+      ],
+      certificates: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik pengenal' : 'Primary key record identifier' },
+        { name: 'title', type: 'VARCHAR(150)', primary: false, desc: locale === 'id' ? 'Nama judul sertifikasi' : 'Title of the certification' },
+        { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Organisasi penerbit sertifikat' : 'Issuing organization' },
+        { name: 'date', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Tanggal penerbitan' : 'Date of issuance' },
+        { name: 'credential_id', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'ID unik kredensial sertifikat' : 'Unique certificate credential ID' },
+        { name: 'link', type: 'TEXT', primary: false, desc: locale === 'id' ? 'Tautan verifikasi web' : 'Verification web link' }
+      ],
+      awards: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik pengenal' : 'Primary key record identifier' },
+        { name: 'title', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nama penghargaan atau penghormatan' : 'Title of the accolade or award' },
+        { name: 'issuer', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Organisasi pemberi penghargaan' : 'Awarding organization or context' },
+        { name: 'date', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Tanggal diberikan' : 'Date awarded' },
+        { name: 'description', type: 'TEXT', primary: false, desc: locale === 'id' ? 'Deskripsi singkat pencapaian' : 'Brief description of the accomplishment' }
+      ],
+      organizations: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik pengenal' : 'Primary key record identifier' },
+        { name: 'name', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nama organisasi' : 'Organization name' },
+        { name: 'role', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Peran atau jabatan yang diampu' : 'Assigned role or position' },
+        { name: 'period', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Durasi partisipasi aktif' : 'Time period of active participation' },
+        { name: 'description', type: 'TEXT', primary: false, desc: locale === 'id' ? 'Deskripsi peran dan detail dampak' : 'Role description and impact details' }
+      ],
+      spoken_languages: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik pengenal' : 'Primary key record identifier' },
+        { name: 'language', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Klasifikasi bahasa yang digunakan' : 'Spoken language classification' },
+        { name: 'proficiency', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Tingkat indeks kefasihan kompetensi' : 'Proficiency benchmark index level' }
+      ],
+      referrals: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'Pengenal gerbang perutean portal' : 'Portal routing gateway identifier' },
+        { name: 'name', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Aplikasi perangkat lunak terafiliasi' : 'Affiliated pipeline software application' },
+        { name: 'category', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Tag klasifikasi ingesti data' : 'Ingestion classification tag' },
+        { name: 'code', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Kunci muatan pipa rujukan afiliasi' : 'Affiliate pipeline link payload key' },
+        { name: 'benefit', type: 'VARCHAR(255)', primary: false, desc: locale === 'id' ? 'Spesifikasi detail muatan unduhan' : 'Download payload payload specifications' },
+        { name: 'status', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Status koneksi jalur pipa rujukan' : 'Tunnel pathway connection state' },
+      ],
+    };
+  }, [locale]);
 
-const SAVED_QUERIES = [
-  { name: 'Get all experience', query: 'SELECT * FROM experience;' },
-  { name: 'Languages only', query: "SELECT * FROM skills WHERE category = 'Language';" },
-  { name: 'Education history', query: 'SELECT * FROM education;' },
-  { name: 'Certificates portfolio', query: 'SELECT * FROM certificates;' },
-  { name: 'Awards & achievements', query: 'SELECT * FROM awards;' },
-  { name: 'Active organizations', query: 'SELECT * FROM organizations;' },
-  { name: 'Spoken transcoders', query: 'SELECT * FROM spoken_languages;' },
-  { name: 'Active referrals/gateways', query: 'SELECT * FROM referrals;' },
-  { name: 'Describe skills schema', query: 'DESCRIBE skills;' }
-];
+  const SAVED_QUERIES = React.useMemo(() => {
+    return locale === 'id' ? [
+      { name: 'Dapatkan semua pengalaman', query: 'SELECT * FROM experience;' },
+      { name: 'Bahasa pemrograman saja', query: "SELECT * FROM skills WHERE category = 'Language';" },
+      { name: 'Riwayat pendidikan', query: 'SELECT * FROM education;' },
+      { name: 'Portofolio sertifikasi', query: 'SELECT * FROM certificates;' },
+      { name: 'Penghargaan & prestasi', query: 'SELECT * FROM awards;' },
+      { name: 'Organisasi aktif', query: 'SELECT * FROM organizations;' },
+      { name: 'Bahasa komunikasi', query: 'SELECT * FROM spoken_languages;' },
+      { name: 'Gerbang rujukan aktif', query: 'SELECT * FROM referrals;' },
+      { name: 'Deskripsikan skema keterampilan', query: 'DESCRIBE skills;' }
+    ] : [
+      { name: 'Get all experience', query: 'SELECT * FROM experience;' },
+      { name: 'Languages only', query: "SELECT * FROM skills WHERE category = 'Language';" },
+      { name: 'Education history', query: 'SELECT * FROM education;' },
+      { name: 'Certificates portfolio', query: 'SELECT * FROM certificates;' },
+      { name: 'Awards & achievements', query: 'SELECT * FROM awards;' },
+      { name: 'Active organizations', query: 'SELECT * FROM organizations;' },
+      { name: 'Spoken transcoders', query: 'SELECT * FROM spoken_languages;' },
+      { name: 'Active referrals/gateways', query: 'SELECT * FROM referrals;' },
+      { name: 'Describe skills schema', query: 'DESCRIBE skills;' }
+    ];
+  }, [locale]);
 
-export default function DataLakeClient() {
+  useWideLayout('xl');
   const [query, setQuery] = useState('SELECT * FROM experience;');
   const [results, setResults] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -375,9 +402,55 @@ export default function DataLakeClient() {
           logs.push(`[PLANNER] Row evaluation complete. [Rows remaining: ${data.length}]`);
         }
         
-        // Parse GROUP BY (for aggregation)
+        // Parse global aggregates (COUNT, AVG, SUM, MIN, MAX without GROUP BY)
+        const hasAggregates = /count\((.+?)\)|avg\((.+?)\)|sum\((.+?)\)|min\((.+?)\)|max\((.+?)\)/i.test(columnsPart);
         const groupByMatch = q.match(/group\s+by\s+(\w+)/i);
-        if (groupByMatch) {
+        
+        if (hasAggregates && !groupByMatch) {
+          logs.push(`[PLANNER] Processing global aggregates across ${data.length} records.`);
+          const cols = columnsPart.split(",").map(c => c.trim());
+          const projectedRow: Record<string, any> = {};
+          
+          cols.forEach(col => {
+            const countMatch = col.match(/count\((.+?)\)/i);
+            const avgMatch = col.match(/avg\((.+?)\)/i);
+            const sumMatch = col.match(/sum\((.+?)\)/i);
+            const minMatch = col.match(/min\((.+?)\)/i);
+            const maxMatch = col.match(/max\((.+?)\)/i);
+            
+            if (countMatch) {
+              const arg = countMatch[1].trim();
+              if (arg === '*' || arg === '1') {
+                projectedRow[col] = data.length;
+              } else {
+                projectedRow[col] = data.filter(r => r[arg] !== undefined && r[arg] !== null).length;
+              }
+            } else if (avgMatch) {
+              const arg = avgMatch[1].trim();
+              const vals = data.map(r => Number(r[arg])).filter(v => !isNaN(v));
+              const avg = vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0;
+              projectedRow[col] = parseFloat(avg.toFixed(2));
+            } else if (sumMatch) {
+              const arg = sumMatch[1].trim();
+              const vals = data.map(r => Number(r[arg])).filter(v => !isNaN(v));
+              projectedRow[col] = vals.reduce((s, v) => s + v, 0);
+            } else if (minMatch) {
+              const arg = minMatch[1].trim();
+              const vals = data.map(r => Number(r[arg])).filter(v => !isNaN(v));
+              projectedRow[col] = vals.length > 0 ? Math.min(...vals) : null;
+            } else if (maxMatch) {
+              const arg = maxMatch[1].trim();
+              const vals = data.map(r => Number(r[arg])).filter(v => !isNaN(v));
+              projectedRow[col] = vals.length > 0 ? Math.max(...vals) : null;
+            } else {
+              // Standard field fallback
+              projectedRow[col] = data.length > 0 ? data[0][col] : null;
+            }
+          });
+          
+          data = [projectedRow];
+          logs.push(`[PLANNER] Consolidated aggregates into 1 summary row.`);
+        } else if (groupByMatch) {
           const groupCol = groupByMatch[1].trim();
           logs.push(`[PLANNER] Transforming dataset via aggregation: GROUP BY [${groupCol}]`);
           
@@ -417,31 +490,57 @@ export default function DataLakeClient() {
           }
         }
         
-        // Parse ORDER BY
-        const orderByMatch = q.match(/order\s+by\s+(\w+)(?:\s+(asc|desc))?/i);
+        // Parse ORDER BY (supporting multi-column sort, e.g. ORDER BY stars DESC, name ASC)
+        const orderByMatch = q.match(/order\s+by\s+([^;]+)/i);
         if (orderByMatch) {
-          const sortCol = orderByMatch[1].trim();
-          const direction = (orderByMatch[2] || 'asc').trim().toLowerCase();
-          logs.push(`[PLANNER] Sorting dataset ORDER BY '${sortCol}' [${direction}]`);
+          const sortSpecs = orderByMatch[1].split(',').map(s => s.trim());
+          logs.push(`[PLANNER] Sorting dataset ORDER BY: ${sortSpecs.join(', ')}`);
           
           data.sort((a, b) => {
-            const valA = a[sortCol];
-            const valB = b[sortCol];
-            if (typeof valA === 'number' && typeof valB === 'number') {
-              return direction === 'desc' ? valB - valA : valA - valB;
+            for (const spec of sortSpecs) {
+              const specParts = spec.split(/\s+/);
+              const sortCol = specParts[0];
+              const direction = (specParts[1] || 'asc').toLowerCase();
+              
+              const valA = a[sortCol];
+              const valB = b[sortCol];
+              
+              if (valA === valB) continue;
+              
+              if (typeof valA === 'number' && typeof valB === 'number') {
+                return direction === 'desc' ? valB - valA : valA - valB;
+              }
+              return direction === 'desc'
+                ? String(valB || '').localeCompare(String(valA || ''))
+                : String(valA || '').localeCompare(String(valB || ''));
             }
-            return direction === 'desc' 
-              ? String(valB || '').localeCompare(String(valA || ''))
-              : String(valA || '').localeCompare(String(valB || ''));
+            return 0;
           });
         }
         
-        // Parse LIMIT
-        const limitMatch = q.match(/limit\s+(\d+)/i);
-        if (limitMatch) {
-          const limitNum = parseInt(limitMatch[1], 10);
+        // Parse LIMIT (supporting standard, LIMIT offset, count, and LIMIT count OFFSET offset)
+        let limitNum = data.length;
+        let offsetNum = 0;
+        
+        const limitOffsetMatch = q.match(/limit\s+(\d+)\s+offset\s+(\d+)/i);
+        const limitCommaMatch = q.match(/limit\s+(\d+)\s*,\s*(\d+)/i);
+        const standardLimitMatch = q.match(/limit\s+(\d+)(?!\s*,\s*\d+|\s+offset\s+\d+)/i);
+        
+        if (limitOffsetMatch) {
+          limitNum = parseInt(limitOffsetMatch[1], 10);
+          offsetNum = parseInt(limitOffsetMatch[2], 10);
+          logs.push(`[PLANNER] Executing LIMIT offset scan: SKIP ${offsetNum}, FETCH ${limitNum}`);
+        } else if (limitCommaMatch) {
+          offsetNum = parseInt(limitCommaMatch[1], 10);
+          limitNum = parseInt(limitCommaMatch[2], 10);
+          logs.push(`[PLANNER] Executing LIMIT offset scan: SKIP ${offsetNum}, FETCH ${limitNum}`);
+        } else if (standardLimitMatch) {
+          limitNum = parseInt(standardLimitMatch[1], 10);
           logs.push(`[PLANNER] Truncating dataset matching LIMIT: ${limitNum}`);
-          data = data.slice(0, limitNum);
+        }
+        
+        if (offsetNum > 0 || limitNum < data.length) {
+          data = data.slice(offsetNum, offsetNum + limitNum);
         }
         
         const tEnd = performance.now();
@@ -503,17 +602,6 @@ export default function DataLakeClient() {
 
   return (
     <div className="min-h-screen pb-20 bg-bg text-text-2 relative overflow-hidden">
-      <style dangerouslySetInnerHTML={{ __html: `
-        #main-layout-container {
-          max-width: 1400px !important;
-        }
-        .hud-widget {
-          display: none !important;
-        }
-        .sys-stats-widget {
-          display: none !important;
-        }
-      `}} />
       <Navbar />
 
       {/* Decorative Glow Grid */}
@@ -523,14 +611,16 @@ export default function DataLakeClient() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="font-mono text-[10px] text-accent uppercase tracking-[0.25em] mb-3 flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" /> 
-            DATA ARCHIVES // DATA_LAKE_WORKSPACE
+            {locale === 'id' ? 'ARSIP DATA // DATA_LAKE_WORKSPACE' : 'DATA ARCHIVES // DATA_LAKE_WORKSPACE'}
           </div>
           <h1 className="text-4xl font-bold text-text-0 mb-4 tracking-tight font-sans">
             Virtual SQL <span className="text-accent underline decoration-accent/20 underline-offset-4">Lake</span>
           </h1>
           <p className="text-text-3 text-[13px] max-w-xl leading-relaxed font-light">
-            Query and analyze raw resume datasets in real-time. 
-            Write custom SQL queries, investigate relational schemas, or compile dynamic chart structures.
+            {locale === 'id' ? 
+              'Kueri dan analisis dataset resume mentah secara real-time. Tulis kueri SQL kustom, selidiki skema relasional, atau susun struktur grafik dinamis.' :
+              'Query and analyze raw resume datasets in real-time. Write custom SQL queries, investigate relational schemas, or compile dynamic chart structures.'
+            }
           </p>
         </motion.div>
       </header>
@@ -546,19 +636,19 @@ export default function DataLakeClient() {
               onClick={() => setSidebarTab('schema')}
               className={`flex-1 py-3 text-center border-r border-border-subtle transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'schema' ? 'bg-bg-1 text-accent border-b-2 border-b-accent' : 'text-text-3 hover:text-text-1 bg-bg'}`}
             >
-              <Database size={10} /> SCHEMA
+              <Database size={10} /> {locale === 'id' ? 'SKEMA' : 'SCHEMA'}
             </button>
             <button 
               onClick={() => setSidebarTab('saved')}
               className={`flex-1 py-3 text-center border-r border-border-subtle transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'saved' ? 'bg-bg-1 text-accent border-b-2 border-b-accent' : 'text-text-3 hover:text-text-1 bg-bg'}`}
             >
-              <Code size={10} /> SAVED
+              <Code size={10} /> {locale === 'id' ? 'SIMPANAN' : 'SAVED'}
             </button>
             <button 
               onClick={() => setSidebarTab('history')}
               className={`flex-1 py-3 text-center transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'history' ? 'bg-bg-1 text-accent border-b-2 border-b-accent' : 'text-text-3 hover:text-text-1 bg-bg'}`}
             >
-              <History size={10} /> HISTORY
+              <History size={10} /> {locale === 'id' ? 'RIWAYAT' : 'HISTORY'}
             </button>
           </div>
 
@@ -569,7 +659,7 @@ export default function DataLakeClient() {
             {sidebarTab === 'schema' && (
               <div className="space-y-4">
                 <div className="text-[9px] font-mono uppercase tracking-widest text-text-3 mb-2 flex items-center gap-1.5">
-                  <Database size={11} className="text-accent" /> relational databases
+                  <Database size={11} className="text-accent" /> {locale === 'id' ? 'basis data relasional' : 'relational databases'}
                 </div>
                 
                 <div className="space-y-2">
@@ -610,7 +700,7 @@ export default function DataLakeClient() {
                                   onClick={() => insertTextAtCursor(table)}
                                   className="w-full text-left p-1 border border-dashed border-border-subtle hover:border-accent hover:text-accent rounded-sm text-[9px] flex items-center justify-between transition-colors bg-bg/25"
                                 >
-                                  <span>[insert table]</span>
+                                  <span>{locale === 'id' ? '[masukkan tabel]' : '[insert table]'}</span>
                                   <Plus size={8} />
                                 </button>
                                 
@@ -656,7 +746,7 @@ export default function DataLakeClient() {
             {sidebarTab === 'saved' && (
               <div className="space-y-3">
                 <div className="text-[9px] font-mono uppercase tracking-widest text-text-3 mb-2 flex items-center gap-1.5">
-                  <Code size={11} className="text-accent" /> predefined routines
+                  <Code size={11} className="text-accent" /> {locale === 'id' ? 'rutinitas yang ditentukan' : 'predefined routines'}
                 </div>
                 
                 <div className="space-y-2">
@@ -682,12 +772,12 @@ export default function DataLakeClient() {
             {sidebarTab === 'history' && (
               <div className="space-y-3">
                 <div className="text-[9px] font-mono uppercase tracking-widest text-text-3 mb-2 flex items-center gap-1.5">
-                  <History size={11} className="text-accent" /> cache trace execution
+                  <History size={11} className="text-accent" /> {locale === 'id' ? 'riwayat eksekusi cache' : 'cache trace execution'}
                 </div>
                 
                 {history.length === 0 ? (
                   <div className="text-center py-8 font-mono text-[10px] text-text-3 opacity-50 select-none">
-                    [HISTORY_EMPTY]
+                    {locale === 'id' ? '[RIWAYAT_KOSONG]' : '[HISTORY_EMPTY]'}
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -719,7 +809,7 @@ export default function DataLakeClient() {
             {/* Editor Utilities Bar */}
             <div className="flex items-center justify-between mb-2 pb-2 border-b border-border-subtle/50 font-mono text-[9px] uppercase tracking-wider select-none">
               <div className="flex items-center gap-2 text-text-3">
-                <Terminal size={12} className="text-accent" /> BigQuery_Mock_Console
+                <Terminal size={12} className="text-accent" /> {locale === 'id' ? 'Konsol_Mock_BigQuery' : 'BigQuery_Mock_Console'}
               </div>
               <div className="flex items-center gap-3">
                 <button 
@@ -734,7 +824,7 @@ export default function DataLakeClient() {
                   title="Clear Query Canvas"
                   className="hover:text-red-400 transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded-sm hover:bg-bg-1 border border-transparent hover:border-border-subtle"
                 >
-                  <Trash2 size={9} /> CLEAR
+                  <Trash2 size={9} /> {locale === 'id' ? 'BERSIH' : 'CLEAR'}
                 </button>
               </div>
             </div>

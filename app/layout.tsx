@@ -46,6 +46,19 @@ export const metadata: Metadata = {
       { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+  alternates: {
+    canonical: 'https://nichsedge.github.io',
+    languages: {
+      'en': 'https://nichsedge.github.io',
+      'id': 'https://nichsedge.github.io/id',
+    },
+  },
+  other: {
+    'geo.region': 'ID-JB',
+    'geo.placename': 'Cimahi',
+    'geo.position': '-6.8722;107.5414',
+    'ICBM': '-6.8722, 107.5414',
+  },
   manifest: '/manifest.webmanifest',
 };
 
@@ -97,40 +110,66 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Ichsanul Amal",
-              "url": "https://nichsedge.github.io",
-              "jobTitle": "Data Engineer & System Architect",
-              "email": "muhammad.ichsanul19@gmail.com",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Cimahi",
-                "addressRegion": "West Java",
-                "addressCountry": "Indonesia"
-              },
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Accenture"
-              },
-              "alumniOf": {
-                "@type": "EducationalOrganization",
-                "name": "University of Indonesia"
-              },
-              "sameAs": [
-                "https://github.com/nichsedge",
-                "https://www.linkedin.com/in/ichsanulamal19/",
-                "https://twitter.com/nichsedge"
-              ],
-              "knowsAbout": [
-                "Data Engineering",
-                "ETL Pipelines",
-                "dbt",
-                "Apache Airflow",
-                "PostgreSQL",
-                "BigQuery",
-                "Python",
-                "SQL",
-                "Systems Architecture"
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": "https://nichsedge.github.io/#person",
+                  "name": "Ichsanul Amal",
+                  "url": "https://nichsedge.github.io",
+                  "jobTitle": "Data Engineer & System Architect",
+                  "email": "muhammad.ichsanul19@gmail.com",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Cimahi",
+                    "addressRegion": "West Java",
+                    "addressCountry": "Indonesia"
+                  },
+                  "worksFor": {
+                    "@type": "Organization",
+                    "name": "Accenture"
+                  },
+                  "alumniOf": {
+                    "@type": "EducationalOrganization",
+                    "name": "University of Indonesia"
+                  },
+                  "sameAs": [
+                    "https://github.com/nichsedge",
+                    "https://www.linkedin.com/in/ichsanulamal19/",
+                    "https://twitter.com/nichsedge"
+                  ],
+                  "knowsAbout": [
+                    "Data Engineering",
+                    "ETL Pipelines",
+                    "dbt",
+                    "Apache Airflow",
+                    "PostgreSQL",
+                    "BigQuery",
+                    "Python",
+                    "SQL",
+                    "Systems Architecture"
+                  ]
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://nichsedge.github.io/#service",
+                  "name": "Ichsanul Amal - Data Engineering & Consulting Services",
+                  "image": "https://nichsedge.github.io/icon.png",
+                  "url": "https://nichsedge.github.io",
+                  "telephone": "",
+                  "priceRange": "$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Cimahi",
+                    "addressRegion": "West Java",
+                    "addressCountry": "Indonesia"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": -6.8722,
+                    "longitude": 107.5414
+                  },
+                  "description": "Enterprise-grade data engineering, pipeline automation, custom data warehousing, and system orchestration services based in Cimahi, West Java, Indonesia."
+                }
               ]
             })
           }}
