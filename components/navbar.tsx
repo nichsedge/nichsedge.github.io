@@ -54,10 +54,12 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
         ))}
       </div>
       <div className="flex items-center gap-1.5 sm:gap-2 text-accent/60 shrink-0 ml-2 sm:ml-3">
-        <Link 
-          href={isIndonesian ? "/id/terminal/" : "/terminal"} 
-          title={isIndonesian ? "Konsol Terminal" : "Terminal Console"}
-          className="hover:text-accent transition-colors group flex items-center bg-accent/5 p-1 sm:px-2 sm:py-0.5 rounded-sm border border-accent/20 hover:border-accent/40 whitespace-nowrap"
+        <button 
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent('open-command-palette'));
+          }}
+          title={isIndonesian ? "Cari Telemetri (Ctrl+K)" : "Search Telemetry (Ctrl+K)"}
+          className="hover:text-accent transition-colors group flex items-center bg-accent/5 px-2 py-0.5 rounded-sm border border-accent/20 hover:border-accent/40 whitespace-nowrap cursor-pointer"
         >
           <svg 
             viewBox="0 0 24 24" 
@@ -68,11 +70,12 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
             strokeLinejoin="round" 
             className="size-3 sm:size-2.5 sm:mr-1.5"
           >
-            <polyline points="4 17 10 11 4 5" />
-            <line x1="12" y1="19" x2="20" y2="19" />
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <span className="hidden sm:inline">{isIndonesian ? 'Terminal' : 'Terminal'}</span>
-        </Link>
+          <span className="hidden sm:inline">{isIndonesian ? 'Cari' : 'Search'}</span>
+          <span className="hidden md:inline ml-1.5 opacity-40 text-[8px] font-mono">[Ctrl+K]</span>
+        </button>
         {toggleNSM && (
           <button 
             onClick={toggleNSM}

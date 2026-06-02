@@ -25,7 +25,7 @@ export function CommandPalette() {
     { id: 'home', label: 'Go to Home', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/') },
     { id: 'projects', label: 'View Projects', icon: <FileText size={14} />, category: 'Navigation', action: () => router.push('/projects') },
     { id: 'data-lake', label: 'Data Lake (SQL View)', icon: <Database size={14} />, category: 'Navigation', action: () => router.push('/data-lake') },
-    { id: 'terminal', label: 'Open Terminal', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal') },
+    { id: 'terminal', label: 'Open Terminal Console', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal') },
     { id: 'referrals', label: 'View Referrals (Gateways)', icon: <Network size={14} />, category: 'Navigation', action: () => router.push('/referrals') },
     { id: 'dev-mode', label: 'Toggle Diagnostics (X-Ray)', icon: <Code size={14} />, category: 'System', action: () => document.body.classList.toggle('dev-mode') },
     { id: 'reboot', label: 'Reboot Master Node', icon: <Power size={14} />, category: 'System', action: () => { sessionStorage.removeItem('booted'); window.location.reload(); } },
@@ -89,6 +89,15 @@ export function CommandPalette() {
       runAudit();
     }
   }, [auditOpen]);
+
+  // Handle open command palette event from other components (like Navbar)
+  useEffect(() => {
+    const handleOpenPaletteEvent = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('open-command-palette', handleOpenPaletteEvent);
+    return () => window.removeEventListener('open-command-palette', handleOpenPaletteEvent);
+  }, []);
 
   const filteredCommands = commands.filter(c => 
     c.label.toLowerCase().includes(query.toLowerCase()) || 
@@ -235,14 +244,14 @@ export function CommandPalette() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="relative w-full max-w-xl bg-bg border border-border-focus shadow-2xl overflow-hidden rounded-sm"
+              className="relative w-full max-w-xl bg-[#09090b]/95 backdrop-blur-xl border border-accent/20 shadow-[0_0_50px_rgba(0,225,207,0.05)] overflow-hidden rounded-sm"
             >
-              <div className="flex items-center px-4 py-3 border-b border-border-subtle">
-                <Search size={16} className="text-text-3 mr-3" />
+              <div className="flex items-center px-4 py-3 border-b border-border-subtle/30 bg-black/10">
+                <Search size={14} className="text-text-3 mr-3" />
                 <input 
                   autoFocus
                   placeholder="Type a command or search..."
-                  className="flex-1 bg-transparent border-none outline-none text-[13px] text-text-0 focus:ring-0 placeholder:text-text-3 font-mono"
+                  className="flex-1 bg-transparent border-none outline-none text-[13px] text-text-0 focus:ring-0 placeholder:text-text-3/60 font-mono tracking-wide"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
@@ -253,7 +262,7 @@ export function CommandPalette() {
                   <div className="space-y-1">
                     {Array.from(new Set(filteredCommands.map(c => c.category))).map(cat => (
                       <div key={cat}>
-                        <div className="px-3 py-1.5 text-[9px] font-bold text-text-3 uppercase tracking-[0.2em]">{cat}</div>
+                        <div className="px-3 py-1.5 text-[8px] font-bold text-text-3/80 uppercase tracking-[0.25em]">{cat}</div>
                         {filteredCommands.filter(c => c.category === cat).map(cmd => {
                           const isSelected = filteredCommands[selectedIndex]?.id === cmd.id;
                           return (
@@ -263,15 +272,17 @@ export function CommandPalette() {
                               data-selected={isSelected}
                               className={`w-full flex items-center justify-between px-3 py-2 text-[12px] rounded-sm group transition-all font-mono text-left outline-none border ${
                                 isSelected 
-                                  ? 'bg-accent/15 text-accent border-accent/30 shadow-[0_0_8px_rgba(0,225,207,0.1)]' 
-                                  : 'text-text-2 hover:bg-bg-1 hover:text-accent border-transparent'
+                                  ? 'bg-accent/10 text-accent border-accent/20 shadow-[0_0_12px_rgba(0,225,207,0.05)]' 
+                                  : 'text-text-2 hover:bg-white/[0.02] hover:text-accent border-transparent'
                               }`}
                             >
                               <div className="flex items-center gap-3">
-                                {cmd.icon}
-                                {cmd.label}
+                                <span className={`transition-transform duration-300 ${isSelected ? 'scale-110 text-accent' : 'text-text-3 group-hover:text-accent'}`}>
+                                  {cmd.icon}
+                                </span>
+                                <span className="tracking-wide">{cmd.label}</span>
                               </div>
-                              <span className={`text-[10px] text-text-3 uppercase transition-opacity ${
+                              <span className={`text-[9px] text-text-3 uppercase tracking-wider transition-opacity ${
                                 isSelected ? 'opacity-100 text-accent font-bold' : 'opacity-0 group-hover:opacity-100'
                               }`}>
                                 Execute
@@ -289,10 +300,10 @@ export function CommandPalette() {
                 )}
               </div>
               
-              <div className="px-4 py-3 border-t border-border-subtle bg-bg-1 flex justify-between items-center font-mono text-[9px] text-text-3">
-                <div className="flex gap-3">
-                  <span><span className="text-accent">↑↓</span> to navigate</span>
-                  <span><span className="text-accent">↵</span> to select</span>
+              <div className="px-4 py-2.5 border-t border-border-subtle/30 bg-black/40 flex justify-between items-center font-mono text-[8px] sm:text-[9px] text-text-3 uppercase tracking-wider">
+                <div className="flex gap-4">
+                  <span><span className="text-accent font-bold">↑↓</span> to navigate</span>
+                  <span><span className="text-accent font-bold">↵</span> to select</span>
                 </div>
                 <div>ESC to close</div>
               </div>
