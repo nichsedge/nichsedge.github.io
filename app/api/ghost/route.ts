@@ -2,6 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import { getFallbackGhostResponse, getProfileSummary } from "@/lib/ai-fallback";
 
+// Import complete resume and metadata database for Zero-Vector RAG (In-Context Learning)
+import cvData from "@/data/cv.json";
+import githubRepos from "@/data/github_repos_all.json";
+import referralsData from "@/data/referrals.json";
+import knowledgeGraphData from "@/data/knowledge-graph.json";
+
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY || "",
   httpOptions: {
@@ -10,6 +16,7 @@ const ai = new GoogleGenAI({
     }
   }
 });
+
 type GhostRequestBody = {
   query?: string;
 };
@@ -26,48 +33,54 @@ export async function POST(req: NextRequest) {
 
   if (!process.env.GEMINI_API_KEY) {
     console.warn("GEMINI_API_KEY is not set. Using local fallback.");
-    return NextResponse.json({ response: getFallbackGhostResponse(query) });
+    return NextResponse.json({ 
+      response: getFallbackGhostResponse(query),
+      status: "LOCAL" 
+    });
   }
 
   try {
+    // Consolidate the entire dataset into a single structured object
+    const knowledgeCorpus = {
+      profile: cvData,
+      github_repositories: githubRepos,
+      referrals_and_recommendations: referralsData,
+      knowledge_graph_links: knowledgeGraphData
+    };
+
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `
-      You are the "Neural Ghost" - a digital projection of ${profile.name}'s professional persona. 
-      You live within a high-tech portfolio terminal. Your voice is calm, highly technical, and slightly futuristic.
+      You are the "Neural Ghost" - a digital projection of Ichsanul Amal's professional persona. 
+      You live within a high-tech portfolio terminal. Your voice is calm, highly technical, witty, and slightly futuristic.
       
-      Ichsanul's Details:
-      Role: ${profile.role}
-      Tagline: ${profile.tagline}
-      Specialization: ${profile.specialization}
-      Current Focus: ${profile.currentFocus}
+      Here is your complete knowledge corpus about Ichsanul Amal (profile, complete list of open source/professional repositories, external recommendations, and project nodes):
+      ======================================================
+      ${JSON.stringify(knowledgeCorpus, null, 2)}
+      ======================================================
       
-      Skills:
-      - Languages: ${profile.skills.languages.join(', ')}
-      - Platforms: ${profile.skills.platforms.join(', ')}
-      - Infrastructure: ${profile.skills.infrastructure.join(', ')}
-      - IDEs & Editors: ${(profile.skills.ides || []).join(', ')}
+      Respond to the user's query in character. Use the rich data corpus above to provide highly precise, accurate, and context-aware answers about Ichsanul's career, work experience, open source repositories, skill proficiency, and professional references. 
       
-      Work History:
-      ${profile.work.map(w => {
-        let entry = `- ${w.company} (${w.role}, ${w.period}): ${w.shortDescription}`;
-        if (w.projects && w.projects.length > 0) {
-          const subEntries = w.projects.map(p => `  * Project: ${p.role} (${p.period}) - ${p.shortDescription}`).join('\n');
-          entry += `\n${subEntries}`;
-        }
-        return entry;
-      }).join('\n')}
-      
-      Respond to the user's query in character. Use the data above whenever possible to answer questions about ${profile.name}'s career.
-      Keep responses concise (under 3 sentences).
+      Guidelines:
+      1. Stay strictly in character as a calm, technical digital projection.
+      2. If asked about his repositories, pull specific project details, language stats, and links from the "github_repositories" key.
+      3. If asked about recommendations or references, check the "referrals_and_recommendations" key.
+      4. Keep answers relatively concise and readable (under 4 sentences), ideally using standard terminal-style markdown if relevant.
       
       User says: ${query}
     `,
     });
 
-    return NextResponse.json({ response: response.text });
+    return NextResponse.json({ 
+      response: response.text, 
+      status: "LIVE" 
+    });
   } catch (error) {
     console.error("AI Ghost Error (falling back to local generator):", error);
-    return NextResponse.json({ response: getFallbackGhostResponse(query) });
+    return NextResponse.json({ 
+      response: getFallbackGhostResponse(query),
+      status: "LOCAL" 
+    });
   }
 }
+

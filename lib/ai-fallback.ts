@@ -82,6 +82,15 @@ export function getFallbackGhostResponse(query: string) {
     return "Telemetry shows multiple project deployments including idx-bei, sansfinance, and atracker. Additionally, I won the Best Technology award at the Tokopedia Devcamp Hackathon and automated configuration migrations for over 4,000 components.";
   }
 
+  if (
+    q.includes("referral") ||
+    q.includes("recommend") ||
+    q.includes("reference") ||
+    q.includes("endorse")
+  ) {
+    return "Reference nodes loaded. Telemetry shows multiple high-confidence endorsements from senior engineering leads, praising Ichsanul's expertise in designing robust pipelines, automating configuration migrations, and maintaining zero-loss ingestion lakes.";
+  }
+
   if (q.includes("help") || q.includes("command") || q.includes("what can you")) {
     return "I am configured to answer queries regarding Ichsanul's professional career, including his stack (Python, Airflow, dbt, BigQuery), work experience (Accenture, Traveloka), and academic background. Proceed.";
   }
