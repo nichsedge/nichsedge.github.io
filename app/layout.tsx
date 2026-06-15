@@ -87,7 +87,12 @@ import { SystemStatsWidget } from '@/components/system-stats-widget';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${jetbrainsMono.variable} scroll-smooth`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-6">
         <script
           dangerouslySetInnerHTML={{

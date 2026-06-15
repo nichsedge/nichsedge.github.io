@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Command, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2 } from 'lucide-react';
+import { Search, Command, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
 import { getFallbackAuditReport } from '@/lib/ai-fallback';
@@ -93,6 +93,7 @@ export function CommandPalette() {
     { id: 'data-lake', label: 'Data Lake (SQL View)', icon: <Database size={14} />, category: 'Navigation', action: () => router.push('/data-lake') },
     { id: 'terminal', label: 'Open Terminal Console', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal') },
     { id: 'referrals', label: 'View Referrals (Gateways)', icon: <Network size={14} />, category: 'Navigation', action: () => router.push('/referrals') },
+    { id: 'pay', label: 'Show Pay / Transfer Node', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pay') },
     { id: 'dev-mode', label: 'Toggle Diagnostics (X-Ray)', icon: <Code size={14} />, category: 'System', action: () => document.body.classList.toggle('dev-mode') },
     { id: 'reboot', label: 'Reboot Master Node', icon: <Power size={14} />, category: 'System', action: () => { sessionStorage.removeItem('booted'); window.location.reload(); } },
     { id: 'garden', label: 'Open Digital Garden', icon: <ExternalLink size={14} />, category: 'External', action: () => window.open('https://nichsedge.github.io/digital-garden/', '_blank') },

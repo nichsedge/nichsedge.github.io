@@ -6,6 +6,7 @@ import { Terminal as TerminalIcon, Home, Zap, Loader2, Cpu, Globe, Database } fr
 import { useRouter } from 'next/navigation';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
 import referralsData from '@/data/referrals.json';
+import payData from '@/data/pay.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { generateSystemStats } from '@/lib/data-hub';
 
@@ -325,6 +326,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  BIOME <name>  - UBAH BIOMA ENVIRONMENT SITE (CYBER, OCEAN, FOREST)",
             "  STATUS        - LAPORAN DIAGNOSTIK LIVE MONITOR SISTEM",
             "  REFERRALS     - DAFTAR GERBANG INGESTI EKSTERNAL",
+            "  PAY           - DAFTAR AKUN PEMBAYARAN DAN TRANSFER SECURE",
             "  PIPELINE      - LIVE SIMULATOR PIPELINE DATA"
           ] : [
             "AVAILABLE_COMMANDS:",
@@ -343,6 +345,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  BIOME <name>  - CHANGE GLOBAL ENVIRONMENT BIOME (CYBER, OCEAN, FOREST)",
             "  STATUS        - PRINT LIVE SYSTEM MONITOR DIAGNOSTIC REPORT",
             "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS",
+            "  PAY           - LIST SECURE PAYMENT AND TRANSFER NODES",
             "  PIPELINE      - LIVE DATA PIPELINE SIMULATOR"
           ];
           break;
@@ -450,6 +453,22 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "+----------------------------------------------------------------------------------+"
           ];
           break;
+        case 'pay':
+        case 'transfer':
+          response = [
+            "+----------------------+--------------------+-----------------+-------------------------+",
+            `| ${("FINANCIAL TRANSFER ACCOUNTS").padEnd(83)} |`,
+            "+----------------------+--------------------+-----------------+-------------------------+",
+            "| NAME                 | CATEGORY           | ACCOUNT/ROUT NO | RECIPIENT               |",
+            "+----------------------+--------------------+-----------------+-------------------------+",
+            ...payData.map(node => 
+              `| ${node.name.padEnd(20)} | ${node.category.padEnd(18)} | ${node.number.padEnd(15)} | ${node.recipient.padEnd(22)} |`
+            ),
+            "+----------------------+--------------------+-----------------+-------------------------+",
+            `| ${(locale === 'id' ? "TIP: Navigasi ke /pay di browser untuk melihat detail pembayaran." : "TIP: Navigate to /pay in browser to view the payment details page.").padEnd(83)} |`,
+            "+----------------------+--------------------+-----------------+-------------------------+"
+          ];
+          break;
         default:
           response = [`COMMAND_NOT_FOUND: ${cmd}. TYPE 'HELP' FOR ASSISTANCE.`];
       }
@@ -478,7 +497,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor'];
+      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor', 'pay', 'transfer'];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
         setInput(match);
