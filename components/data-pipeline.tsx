@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Database, Filter, ArrowRight } from 'lucide-react';
+import { EtlNodeSimulator } from '@/components/etl-node-simulator';
 
-export function DataPipeline() {
+export function DataPipeline({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -17,7 +18,6 @@ export function DataPipeline() {
     canvas.width = width;
     canvas.height = height;
 
-    // We get accent color from computed style for the effect
     const getAccentColor = () => {
        const style = getComputedStyle(document.body);
        return style.getPropertyValue('--theme-accent').trim() || '#00e1cf';
@@ -27,7 +27,6 @@ export function DataPipeline() {
     const particleCount = 150;
 
     for (let i = 0; i < particleCount; i++) {
-       // Target grid positions for structured data
        const cols = 15;
        const col = i % cols;
        const row = Math.floor(i / cols);
@@ -54,12 +53,10 @@ export function DataPipeline() {
 
       particles.forEach((p, idx) => {
         if (isProcessing) {
-          // Snap to grid
           p.x += (p.targetX - p.x) * 0.1;
           p.y += (p.targetY - p.y) * 0.1;
           p.type = 'processed';
         } else {
-          // Chaos
           p.x += p.vx;
           p.y += p.vy;
           if (p.x < 0 || p.x > width) p.vx *= -1;
@@ -77,7 +74,6 @@ export function DataPipeline() {
         }
         ctx.fill();
         
-        // Draw lines between structured data
         if (isProcessing && idx % 15 !== 14 && idx < particles.length - 1) {
            const next = particles[idx + 1];
            ctx.beginPath();
@@ -110,37 +106,42 @@ export function DataPipeline() {
   }, [isProcessing]);
 
   return (
-    <div className="w-full relative bg-bg-1/50 border border-border-subtle rounded-sm overflow-hidden h-[300px]">
-       <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-10 border-b border-border-subtle bg-bg-1/80 backdrop-blur-sm">
-         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text-3">
-           <Database size={14} /> Chaos to Clarity Engine
-         </div>
-         <button 
-           onMouseEnter={() => setIsProcessing(true)}
-           onMouseLeave={() => setIsProcessing(false)}
-           onTouchStart={(e) => { e.preventDefault(); setIsProcessing(true); }}
-           onTouchEnd={() => setIsProcessing(false)}
-           className={`px-4 py-1.5 font-mono text-[10px] uppercase tracking-widest border transition-all flex items-center gap-2 ${
-             isProcessing 
-               ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_15px_rgba(0,225,207,0.3)]' 
-               : 'bg-bg border-border-subtle text-text-2 hover:border-accent hover:text-accent'
-           }`}
-         >
-           <Filter size={12} /> {isProcessing ? 'Extracting...' : 'Hold to ETL'}
-         </button>
-       </div>
+    <div className="space-y-6">
+      <EtlNodeSimulator locale={locale} />
 
-       <canvas ref={canvasRef} className="w-full h-full block" />
-       
-       <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-10 pointer-events-none">
-         <div className={`font-mono text-[10px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-text-3' : 'text-accent animate-pulse font-bold'}`}>
-           RAW / UNSTRUCTURED
+      <div className="w-full relative bg-bg-1/50 border border-border-subtle rounded-sm overflow-hidden h-[260px]">
+         <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-center z-10 border-b border-border-subtle bg-bg-1/80 backdrop-blur-sm">
+           <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text-3">
+             <Database size={14} /> {locale === 'id' ? 'Mesin Entropi Ke Kejelasan' : 'Chaos to Clarity Particle Engine'}
+           </div>
+           <button 
+             onMouseEnter={() => setIsProcessing(true)}
+             onMouseLeave={() => setIsProcessing(false)}
+             onTouchStart={(e) => { e.preventDefault(); setIsProcessing(true); }}
+             onTouchEnd={() => setIsProcessing(false)}
+             className={`px-3 py-1 font-mono text-[10px] uppercase tracking-widest border transition-all flex items-center gap-2 ${
+               isProcessing 
+                 ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_15px_rgba(0,225,207,0.3)]' 
+                 : 'bg-bg border-border-subtle text-text-2 hover:border-accent hover:text-accent'
+             }`}
+           >
+             <Filter size={12} /> {isProcessing ? (locale === 'id' ? 'Mengekstrak...' : 'Extracting...') : (locale === 'id' ? 'Tahan untuk ETL' : 'Hold to ETL')}
+           </button>
          </div>
-         <div className="text-text-3/50"><ArrowRight size={16} /></div>
-         <div className={`font-mono text-[10px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-accent animate-[pulse_0.5s_infinite] font-bold shadow-accent' : 'text-text-3'}`}>
-           PROCESSED / ANALYTICAL
+
+         <canvas ref={canvasRef} className="w-full h-full block" />
+         
+         <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center z-10 pointer-events-none">
+           <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-text-3' : 'text-accent animate-pulse font-bold'}`}>
+             RAW / UNSTRUCTURED ENTROPY
+           </div>
+           <div className="text-text-3/50"><ArrowRight size={14} /></div>
+           <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-accent animate-[pulse_0.5s_infinite] font-bold shadow-accent' : 'text-text-3'}`}>
+             STRUCTURED ANALYTICAL DATA
+           </div>
          </div>
-       </div>
+      </div>
     </div>
   );
 }
+

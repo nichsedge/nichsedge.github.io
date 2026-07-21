@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { Maximize2, Minimize2 } from 'lucide-react';
 import graphData from '@/data/knowledge-graph.json';
+import { soundEngine } from '@/lib/audio';
 
 interface Node extends d3.SimulationNodeDatum {
   id: string;
@@ -28,11 +29,13 @@ export function KnowledgeGraph() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([1, 2, 3, 4, 5, 6, 7]);
+  const [activeNode, setActiveNode] = useState<string | null>(null);
 
   const toggleGroup = (groupId: number) => {
+    soundEngine.playClick(750);
     setSelectedGroups(prev => {
       if (prev.includes(groupId)) {
-        if (prev.length === 1) return prev; // Keep at least one group selected
+        if (prev.length === 1) return prev;
         return prev.filter(g => g !== groupId);
       }
       return [...prev, groupId];
@@ -63,7 +66,6 @@ export function KnowledgeGraph() {
 
     let simulation: d3.Simulation<Node, undefined> | null = null;
 
-    // Small delay to ensure container has resized smoothly before re-measuring bounds
     const timeout = setTimeout(() => {
       if (!containerRef.current) return;
       const width = containerRef.current.clientWidth;
@@ -112,13 +114,13 @@ export function KnowledgeGraph() {
 
       const getGroupColor = (group: number) => {
         switch(group) {
-          case 1: return '#00e1cf'; // Core: Cyber Cyan
-          case 2: return '#3b82f6'; // Languages: Neon Blue
-          case 3: return '#a855f7'; // Streaming/Pipelines: Electric Purple
-          case 4: return '#f59e0b'; // Databases: Cyber Gold
-          case 5: return '#10b981'; // Infra: Emerald Green
-          case 6: return '#ec4899'; // Domains: Hot Pink
-          case 7: return '#f97316'; // IDEs: Neon Orange
+          case 1: return '#00e1cf';
+          case 2: return '#3b82f6';
+          case 3: return '#a855f7';
+          case 4: return '#f59e0b';
+          case 5: return '#10b981';
+          case 6: return '#ec4899';
+          case 7: return '#f97316';
           default: return '#a1a1aa';
         }
       };
@@ -127,7 +129,7 @@ export function KnowledgeGraph() {
         switch(group) {
           case 1: return 8;
           case 2: return 6;
-          case 7: return 5.5; // IDEs: Slightly larger node
+          case 7: return 5.5;
           default: return 4.5;
         }
       };
@@ -145,7 +147,7 @@ export function KnowledgeGraph() {
       node.append('circle')
         .attr('r', (d: any) => getNodeRadius(d.group))
         .attr('fill', (d: any) => getGroupColor(d.group))
-        .attr('fill-opacity', 0.15)
+        .attr('fill-opacity', 0.2)
         .attr('stroke', (d: any) => getGroupColor(d.group))
         .attr('stroke-width', 2)
         .style('transition', 'all 0.2s ease');
@@ -162,6 +164,8 @@ export function KnowledgeGraph() {
 
       node
         .on('mouseenter', (event, d: any) => {
+          soundEngine.playClick(1000);
+          setActiveNode(d.id);
           const connectedNodeIds = new Set<string>();
           connectedNodeIds.add(d.id);
           
@@ -170,30 +174,30 @@ export function KnowledgeGraph() {
             if (l.target.id === d.id) connectedNodeIds.add(l.source.id);
           });
 
-          // Focus nodes
           node.style('opacity', (n: any) => connectedNodeIds.has(n.id) ? 1 : 0.15);
           
-          // Hovered node highlight
           node.selectAll('circle')
-            .style('fill-opacity', (n: any) => n.id === d.id ? 0.6 : 0.15)
-            .style('stroke-width', (n: any) => n.id === d.id ? 3 : 2)
-            .style('filter', (n: any) => n.id === d.id ? `drop-shadow(0 0 6px ${getGroupColor(n.group)})` : 'none');
+            .style('fill-opacity', (n: any) => n.id === d.id ? 0.7 : 0.2)
+            .style('stroke-width', (n: any) => n.id === d.id ? 3.5 : 2)
+            .style('filter', (n: any) => n.id === d.id ? `drop-shadow(0 0 10px ${getGroupColor(n.group)})` : 'none');
 
           node.selectAll('text')
             .style('fill', (n: any) => n.id === d.id ? '#ffffff' : (connectedNodeIds.has(n.id) ? '#e4e4e7' : '#52525b'))
             .style('font-weight', (n: any) => n.id === d.id ? 'bold' : 'normal');
 
-          // Highlight connected links
           link
             .style('stroke', (l: any) => (l.source.id === d.id || l.target.id === d.id) ? getGroupColor(d.group) : '#a1a1aa')
-            .style('stroke-opacity', (l: any) => (l.source.id === d.id || l.target.id === d.id) ? 0.75 : 0.05)
-            .style('stroke-width', (l: any) => (l.source.id === d.id || l.target.id === d.id) ? 2 : 1);
+            .style('stroke-opacity', (l: any) => (l.source.id === d.id || l.target.id === d.id) ? 0.85 : 0.05)
+            .style('stroke-width', (l: any) => (l.source.id === d.id || l.target.id === d.id) ? 2.5 : 1);
+        })
+        .on('click', (event, d: any) => {
+          soundEngine.playChime(600 + d.group * 100, 0.4);
         })
         .on('mouseleave', () => {
-          // Reset styles
+          setActiveNode(null);
           node.style('opacity', 1);
           node.selectAll('circle')
-            .style('fill-opacity', 0.15)
+            .style('fill-opacity', 0.2)
             .style('stroke-width', 2)
             .style('filter', 'none');
           node.selectAll('text')
@@ -204,6 +208,7 @@ export function KnowledgeGraph() {
             .style('stroke-opacity', 0.2)
             .style('stroke-width', 1);
         });
+
 
       simulation.on('tick', () => {
         link
@@ -255,7 +260,13 @@ export function KnowledgeGraph() {
           <div className="absolute top-3 left-4 flex items-center gap-2 z-10">
             <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             <span className="font-mono text-[9px] text-text-3 uppercase tracking-widest font-bold">NEURAL_SKILL_GRAPH_v1.0</span>
+            {activeNode && (
+              <span className="font-mono text-[9px] text-accent border border-accent/30 bg-accent/10 px-1.5 py-0.5 rounded-sm uppercase animate-pulse">
+                [{activeNode}]
+              </span>
+            )}
           </div>
+
 
           {/* Category Filter Controls - Only show when expanded */}
           {isExpanded && (

@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Command, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard } from 'lucide-react';
+import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard } from 'lucide-react';
+
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
 import { getFallbackAuditReport } from '@/lib/ai-fallback';

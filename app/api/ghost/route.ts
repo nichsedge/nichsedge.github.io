@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { getFallbackGhostResponse, getProfileSummary } from "@/lib/ai-fallback";
+import { getFallbackGhostResponse } from "@/lib/ai-fallback";
+
 
 // Import complete resume and metadata database for Zero-Vector RAG (In-Context Learning)
 import cvData from "@/data/cv.json";
@@ -22,8 +23,8 @@ type GhostRequestBody = {
 };
 
 export async function POST(req: NextRequest) {
-  const profile = getProfileSummary();
   let query = "";
+
   try {
     const body = (await req.json()) as GhostRequestBody;
     query = body.query || "";

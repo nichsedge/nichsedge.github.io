@@ -5,29 +5,33 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Terminal as TerminalIcon, Home, Zap, Loader2, Cpu, Globe, Database } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
+
 import referralsData from '@/data/referrals.json';
 import payData from '@/data/pay.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { generateSystemStats } from '@/lib/data-hub';
+import { soundEngine } from '@/lib/audio';
 
 export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   useWideLayout('lg');
   const [input, setInput] = useState('');
+  const [questStage, setQuestStage] = useState<number>(0);
   const [history, setHistory] = useState<string[]>(
     locale === 'id' ? [
       "PORTFOLIO_OS V2.0.5 (Mei 2026)",
       "AUTENTIKASI: BERHASIL (SEBAGAI GUEST)",
       "MENGINISIASI PROTOKOL NEURAL_GHOST...",
-      "KETIK 'HELP' UNTUK DAFTAR PERINTAH",
+      "KETIK 'HELP' UNTUK DAFTAR PERINTAH ATAU 'QUEST' UNTUK MAINFRAME DIAGNOSTIC",
       " "
     ] : [
       "PORTFOLIO_OS V2.0.5 (May 2026)",
       "AUTHENTICATION: SUCCESS (AS GUEST)",
       "INITIALIZING NEURAL_GHOST PROTOCOL...",
-      "TYPE 'HELP' FOR LIST OF COMMANDS",
+      "TYPE 'HELP' FOR LIST OF COMMANDS OR 'QUEST' FOR MAINFRAME DIAGNOSTIC",
       " "
     ]
   );
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -111,11 +115,13 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
     const cmd = input.trim().toLowerCase();
     if (!cmd) return;
 
+    soundEngine.playClick(900);
     const currentInput = input;
     setInput('');
     setHistory(prev => [...prev, `${ghostMode ? 'ghost@neural' : 'ichsanul@portfolio'} ~ $ ${currentInput}`]);
     setCmdHistory(prev => [...prev, currentInput]);
     setHistoryIndex(-1);
+
 
     // If ghostMode is active, send all input to the AI endpoint (except exit/quit commands)
     if (ghostMode) {
@@ -306,11 +312,60 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
           "AVAILABLE_THEMES: CYAN, MATRIX, AMBER, COBALT"
         ];
       }
+    } else if (cmd.startsWith('solve')) {
+      const answer = cmd.replace('solve', '').trim().toLowerCase();
+      if (questStage === 1 && (answer.includes('partition') || answer.includes('date') || answer === '1')) {
+        soundEngine.playChime(880);
+        setQuestStage(2);
+        response = [
+          "✅ LEVEL 1 PASSED! SQL Partition Pruning Enabled (Latency reduced 4200ms -> 8ms).",
+          " ",
+          "============================================================",
+          "[LEVEL 2 OF 3: CORRUPTED LOG PARSER]",
+          "============================================================",
+          "LOG CHUNK: [2026-07-21 14:02:11] status=CRITICAL_OOM_ALERT payload=0x99 checksum=FAIL",
+          "TASK: Extract the exact failure status string. Type 'solve CRITICAL_OOM_ALERT'."
+        ];
+      } else if (questStage === 2 && (answer.includes('critical') || answer.includes('oom') || answer === '2')) {
+        soundEngine.playChime(1046);
+        setQuestStage(3);
+        response = [
+          "✅ LEVEL 2 PASSED! Corrupted log stream isolated & pushed to DLQ.",
+          " ",
+          "============================================================",
+          "[LEVEL 3 OF 3: KAFKA PARTITION SKEW REBALANCE]",
+          "============================================================",
+          "SCENARIO: Hot partition bottlenecking cluster (Partition 0 has 90% load).",
+          "TASK: Apply uniform key hashing strategy. Type 'solve murmur3' (or 'solve hash')."
+        ];
+      } else if (questStage === 3 && (answer.includes('murmur') || answer.includes('hash') || answer === '3')) {
+        soundEngine.playModemHandshake();
+        setQuestStage(4);
+        setTheme('matrix');
+        response = [
+          "🏆 CONGRATULATIONS! ALL MAINFRAME DIAGNOSTICS CLEARED!",
+          "============================================================",
+          "CLEARANCE GRANTED: CLASS_5_SYSTEM_ADMIN",
+          "REWARD: Matrix Override Theme Unlocked!",
+          "TYPE 'VAULT' TO ACCESS SECRET ARCHITECTURE FILES.",
+          "============================================================"
+        ];
+      } else {
+        soundEngine.playClick(300);
+        response = [
+          "❌ DIAGNOSTIC TEST FAILED: Incorrect answer or no active quest level.",
+          "TYPE 'QUEST' TO REVIEW CURRENT LEVEL INSTRUCTIONS."
+        ];
+      }
     } else {
+
       switch(cmd) {
         case 'help':
           response = locale === 'id' ? [
             "PERINTAH_YANG_TERSEDIA:",
+            "  QUEST         - MULAI QUIZ DIAGNOSTIK MAINFRAME (3 LEVEL)",
+            "  SOLVE <ans>   - SELESAIKAN SOAL QUEST AKTIF",
+            "  VAULT         - RAHASIA ARSITEKTUR (PERLU CLEARANCE CLASS 5)",
             "  PROJECTS      - LIHAT ARSIP ENGINEERING",
             "  HOME          - KEMBALI KE BERANDA (HQ)",
             "  GARDEN        - BUKA KEBUN DIGITAL",
@@ -330,6 +385,9 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  PIPELINE      - LIVE SIMULATOR PIPELINE DATA"
           ] : [
             "AVAILABLE_COMMANDS:",
+            "  QUEST         - START MAINFRAME DIAGNOSTIC QUEST (3 STAGES)",
+            "  SOLVE <ans>   - SUBMIT ANSWER FOR ACTIVE QUEST LEVEL",
+            "  VAULT         - SECRET ARCHITECTURE FILE (REQUIRES CLASS 5 CLEARANCE)",
             "  PROJECTS      - VIEW ENGINEERING ARCHIVE",
             "  HOME          - RETURN TO HQ",
             "  GARDEN        - OPEN DIGITAL GARDEN",
@@ -349,6 +407,70 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  PIPELINE      - LIVE DATA PIPELINE SIMULATOR"
           ];
           break;
+        case 'quest':
+          if (questStage === 0) {
+            setQuestStage(1);
+            soundEngine.playChime(700);
+            response = [
+              "============================================================",
+              "[MAINFRAME DIAGNOSTIC QUEST INITIATED - LEVEL 1 OF 3]",
+              "============================================================",
+              "ALERT: High latency detected on SQL query execution engine!",
+              "QUERY: SELECT * FROM telemetry_events WHERE event_timestamp >= '2026-07-01';",
+              "ISSUE: Full table scan scanning 1.4 Billion rows. Partition pruning inactive.",
+              " ",
+              "TASK: Type 'solve partition_date' (or 'solve <key>') to apply partition key pruning!"
+            ];
+          } else if (questStage === 1) {
+            response = [
+              "[CURRENT QUEST: LEVEL 1 OF 3]",
+              "TASK: Apply partition key to fix SQL full table scan.",
+              "USAGE: solve partition_date"
+            ];
+          } else if (questStage === 2) {
+            response = [
+              "[CURRENT QUEST: LEVEL 2 OF 3]",
+              "TASK: Parse payload status from corrupted log stream.",
+              "LOG: [2026-07-21] status=CRITICAL_OOM_ALERT payload=0x99",
+              "USAGE: solve CRITICAL_OOM_ALERT"
+            ];
+          } else if (questStage === 3) {
+            response = [
+              "[CURRENT QUEST: LEVEL 3 OF 3]",
+              "TASK: Partition skew detected! 90% traffic routed to Partition 0.",
+              "USAGE: solve murmur3"
+            ];
+          } else {
+            response = [
+              "[MAINFRAME QUEST COMPLETED]",
+              "CLEARANCE STATUS: CLASS_5_ADMIN",
+              "TYPE 'VAULT' TO INSPECT SECRET ARCHITECTURE METRICS."
+            ];
+          }
+          break;
+        case 'vault':
+          if (questStage === 4) {
+            soundEngine.playChime(1200);
+            response = [
+              "============================================================",
+              "🔒 CLASS 5 SECURE ARCHITECTURE VAULT",
+              "============================================================",
+              "ENGINEER: Ichsanul Amal (Nich)",
+              "CORE PIPELINES: 40+ Production dbt Models / Spark Streaming",
+              "INFRASTRUCTURE: Cloudflare OpenNext Edge Workers + GCP BigQuery",
+              "SLO: 99.99% Pipeline Uptime, <50ms Global Edge Response",
+              "SECRET CODE: [NICHSEDGE_MASTER_KEY_2026]",
+              "============================================================"
+            ];
+          } else {
+            soundEngine.playClick(300);
+            response = [
+              "⛔ ACCESS DENIED: CLASS_5_ADMIN CLEARANCE REQUIRED.",
+              "RUN 'QUEST' AND COMPLETE ALL 3 DIAGNOSTIC STAGES TO UNLOCK."
+            ];
+          }
+          break;
+
         case 'whoami':
           response = [
             "USER_PROFILE_LOADED:",

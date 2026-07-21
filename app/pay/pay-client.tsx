@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Copy, Check, Server, Terminal, Cpu, CreditCard, Wallet, AlertCircle, Search, X } from 'lucide-react';
+import { Copy, Check, Server, Terminal, Cpu, AlertCircle, Search, X } from 'lucide-react';
+
 import { Navbar } from '@/components/navbar';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { MatrixRain } from '@/components/matrix-rain';
@@ -254,7 +255,8 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
           <AnimatePresence mode="popLayout">
             {filteredNodes.length > 0 ? (
               <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredNodes.map((node: PayNode, index: number) => {
+                {filteredNodes.map((node: PayNode) => {
+
                   const isCopied = copiedId === node.id;
                   return (
                     <TiltCard key={node.id}>
