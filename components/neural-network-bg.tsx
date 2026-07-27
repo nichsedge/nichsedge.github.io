@@ -1,6 +1,27 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 
+// Parsed accent colors for all biomes \u2014 avoids DOM class polling each frame
+const BIOME_COLORS: Record<string, [number, number, number]> = {
+  'biome-cyber':    [0,   225, 207],
+  'biome-oled':     [245, 158, 11],
+  'biome-terminal': [34,  197, 94],
+  'biome-ocean':    [59,  130, 246],
+  'biome-forest':   [34,  197, 94],
+  'biome-quantum':  [245, 158, 11],
+  'biome-nebula':   [217, 70,  239],
+};
+
+const ALL_BIOME_CLASSES = Object.keys(BIOME_COLORS);
+
+function getCurrentColor(): [number, number, number] {
+  const cls = document.documentElement.classList;
+  for (const b of ALL_BIOME_CLASSES) {
+    if (cls.contains(b)) return BIOME_COLORS[b];
+  }
+  return BIOME_COLORS['biome-cyber'];
+}
+
 export function NeuralNetworkBg() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -15,37 +36,40 @@ export function NeuralNetworkBg() {
     canvas.width = width;
     canvas.height = height;
 
-    const nodes: { x: number, y: number, vx: number, vy: number }[] = [];
-    const maxNodes = 60; // Keep it sparse so it's not too distracting
-    const maxDist = 150;
+    // Fewer nodes on small screens
+    const maxNodes = window.innerWidth < 768 ? 30 : 50;
+    const maxDist = 140;
+    const maxDistSq = maxDist * maxDist;
 
+    const nodes: { x: number; y: number; vx: number; vy: number }[] = [];
     for (let i = 0; i < maxNodes; i++) {
       nodes.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
       });
     }
 
     let animationFrameId: number;
+    let lastTime = 0;
 
-    const draw = () => {
+    const draw = (time: number) => {
+      // Cap at ~24 FPS
+      if (time - lastTime < 42) {
+        animationFrameId = requestAnimationFrame(draw);
+        return;
+      }
+      lastTime = time;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Resolve color based on the current biome on document.documentElement
-      let r = 0, g = 225, b = 207; // Default cyber
-      if (document.documentElement.classList.contains('biome-ocean')) {
-        r = 59; g = 130; b = 246;
-      } else if (document.documentElement.classList.contains('biome-forest')) {
-        r = 34; g = 197; b = 94;
-      }
-
-      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.5)`;
+      const [r, g, b] = getCurrentColor();
+      ctx.fillStyle = `rgba(${r},${g},${b},0.5)`;
 
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
-        
+
         node.x += node.vx;
         node.y += node.vy;
 
@@ -60,22 +84,23 @@ export function NeuralNetworkBg() {
           const node2 = nodes[j];
           const dx = node.x - node2.x;
           const dy = node.y - node2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < maxDist) {
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(node2.x, node2.y);
-            // fade line based on distance
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${0.15 * (1 - dist / maxDist)})`;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${0.15 * (1 - dist / maxDist)})`;
             ctx.stroke();
           }
         }
       }
+
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    draw();
+    animationFrameId = requestAnimationFrame(draw);
 
     const handleResize = () => {
       width = window.innerWidth;
@@ -84,7 +109,7 @@ export function NeuralNetworkBg() {
       canvas.height = height;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
@@ -92,8 +117,8 @@ export function NeuralNetworkBg() {
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
+    <canvas
+      ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0 opacity-20"
     />
   );

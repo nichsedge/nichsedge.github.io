@@ -1,48 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-export function GlitchText({ text, className = '' }: { text: string, className?: string }) {
-  const [isHovered, setIsHovered] = useState(false);
+const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:\'",.<>/?';
+
+export function GlitchText({ text, className = '' }: { text: string; className?: string }) {
   const [glitchedText, setGlitchedText] = useState(text);
-
-  const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:\'",.<>/?';
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (isHovered) {
-      let iteration = 0;
-      interval = setInterval(() => {
-        setGlitchedText(
-          text
-            .split('')
-            .map((letter, index) => {
-              if (index < iteration) {
-                return text[index];
-              }
-              return glyphs[Math.floor(Math.random() * glyphs.length)];
-            })
-            .join('')
-        );
-        
-        if (iteration >= text.length) {
-          clearInterval(interval);
-        }
-        
-        iteration += 1 / 3;
-      }, 30);
-    } else {
+    if (!isHovered) {
       setGlitchedText(text);
+      return;
     }
+
+    let iteration = 0;
+    const interval = setInterval(() => {
+      setGlitchedText(
+        text
+          .split('')
+          .map((letter, index) => {
+            if (index < iteration) return text[index];
+            return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          })
+          .join('')
+      );
+
+      if (iteration >= text.length) clearInterval(interval);
+      iteration += 1 / 3;
+    }, 30);
 
     return () => clearInterval(interval);
   }, [isHovered, text]);
 
+  const handleEnter = useCallback(() => setIsHovered(true), []);
+  const handleLeave = useCallback(() => setIsHovered(false), []);
+
   return (
-    <span 
-      onMouseEnter={() => setIsHovered(true)} 
-      onMouseLeave={() => setIsHovered(false)}
+    <span
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       className={`inline-block ${className}`}
     >
       {glitchedText}

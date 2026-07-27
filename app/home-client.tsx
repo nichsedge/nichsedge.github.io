@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Database, Github, Linkedin, Mail } from 'lucide-react';
 
@@ -8,19 +9,28 @@ import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
 import { SkillMatrix } from '@/components/skill-matrix';
 import { CareerPipeline } from '@/components/career-pipeline';
-import { KnowledgeGraph } from '@/components/knowledge-graph';
 import { PipelineHeatmap } from '@/components/pipeline-heatmap';
 import { DataOracle } from '@/components/data-oracle';
 import { GlitchText } from '@/components/glitch-text';
-import { MatrixRain } from '@/components/matrix-rain';
 import { LiveArchitecture } from '@/components/live-architecture';
 import { HumanRuntime } from '@/components/human-runtime';
 import { DecryptedText } from '@/components/decrypted-text';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { DataPipeline } from '@/components/data-pipeline';
-import { DataStreamSandbox } from '@/components/data-stream-sandbox';
-import { StreamSimulator } from '@/components/stream-simulator';
-import { DataLineageGraph } from '@/components/data-lineage-graph';
+
+// Dynamic imports for heavy visualizer/canvas components to optimize initial JS bundle size
+const MatrixRain = dynamic(() => import('@/components/matrix-rain').then(m => m.MatrixRain), { ssr: false });
+const KnowledgeGraph = dynamic(() => import('@/components/knowledge-graph').then(m => m.KnowledgeGraph), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[400px] w-full border border-border-subtle bg-bg-1 flex items-center justify-center font-mono text-xs text-text-3">
+      [INITIALIZING_NEURAL_GRAPH...]
+    </div>
+  )
+});
+const DataLineageGraph = dynamic(() => import('@/components/data-lineage-graph').then(m => m.DataLineageGraph), { ssr: false });
+const DataStreamSandbox = dynamic(() => import('@/components/data-stream-sandbox').then(m => m.DataStreamSandbox), { ssr: false });
+const StreamSimulator = dynamic(() => import('@/components/stream-simulator').then(m => m.StreamSimulator), { ssr: false });
 
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';

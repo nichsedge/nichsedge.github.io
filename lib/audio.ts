@@ -315,6 +315,56 @@ class SoundEngine {
       // AudioContext fallback ignored
     }
   }
+
+  public playKeypress() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      const randomFreq = 1200 + Math.random() * 400;
+      osc.frequency.setValueAtTime(randomFreq, this.ctx.currentTime);
+      gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.02);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.02);
+    } catch {
+      // AudioContext fallback ignored
+    }
+  }
+
+  public playHoverChime() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1400, this.ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.02, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.05);
+    } catch {
+      // AudioContext fallback ignored
+    }
+  }
+
+  public playSqlSuccess() {
+    this.playSuccessChord();
+  }
+
+  public playSqlError() {
+    this.playAlertSound();
+  }
 }
 
 export const soundEngine = new SoundEngine();

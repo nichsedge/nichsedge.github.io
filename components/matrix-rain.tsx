@@ -16,41 +16,40 @@ export function MatrixRain({ active }: { active: boolean }) {
     canvas.width = width;
     canvas.height = height;
 
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+    const fontSize = 12;
+    let columns = Math.floor(width / fontSize);
+    let drops: number[] = Array.from({ length: columns }).fill(1) as number[];
+
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = Array.from({ length: columns }).fill(1) as number[];
     };
     window.addEventListener('resize', handleResize);
 
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
-    const fontSize = 12;
-    const columns = Math.floor(width / fontSize);
-    const drops: number[] = Array.from({ length: columns }).fill(1) as number[];
-
     let animationFrameId: number;
+    let lastTime = 0;
 
-    const draw = () => {
-      // Fade effect to create trailing tails
+    const draw = (time: number) => {
+      if (time - lastTime < 33) {
+        animationFrameId = requestAnimationFrame(draw);
+        return;
+      }
+      lastTime = time;
+
       ctx.fillStyle = 'rgba(9, 9, 11, 0.1)'; 
       ctx.fillRect(0, 0, width, height);
 
-      // Green/Accent text
-      ctx.fillStyle = '#00e1cf';
       ctx.font = `${fontSize}px var(--font-mono, monospace)`;
       ctx.textAlign = 'center';
 
       for (let i = 0; i < drops.length; i++) {
         const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        
-        // Randomly make some characters brighter
-        if (Math.random() > 0.95) {
-          ctx.fillStyle = '#ffffff';
-        } else {
-          ctx.fillStyle = '#00e1cf';
-        }
-
+        ctx.fillStyle = Math.random() > 0.95 ? '#ffffff' : '#00e1cf';
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
         if (drops[i] * fontSize > height && Math.random() > 0.975) {
@@ -61,7 +60,7 @@ export function MatrixRain({ active }: { active: boolean }) {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    draw();
+    animationFrameId = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener('resize', handleResize);

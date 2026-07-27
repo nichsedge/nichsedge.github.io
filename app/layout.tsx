@@ -100,21 +100,11 @@ export const viewport = {
   initialScale: 1,
 };
 
-import { CommandPalette } from '@/components/command-palette';
-import { SystemMonitor } from '@/components/system-monitor';
-import { CursorTracker } from '@/components/cursor-tracker';
-import { SystemTicker } from '@/components/system-ticker';
-import { BootSequence } from '@/components/boot-sequence';
-import { MainframeBypass } from '@/components/mainframe-bypass';
+// Static imports — small, critical-path components safe in a Server Component
 import { ScrollProgress } from '@/components/scroll-progress';
-import { FocusShield } from '@/components/focus-shield';
-import { NeuralNetworkBg } from '@/components/neural-network-bg';
 import { BiomeSelector } from '@/components/biome-selector';
-import { EventStream } from '@/components/event-stream';
-import { GeoRouting } from '@/components/geo-routing';
-import { IngestionMetrics } from '@/components/ingestion-metrics';
-import { ThreadAllocator } from '@/components/thread-allocator';
-import { SystemStatsWidget } from '@/components/system-stats-widget';
+// GlobalOverlays is a Client Component — all ssr:false dynamic imports live there
+import { GlobalOverlays } from '@/components/global-overlays';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -131,35 +121,20 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
               (function() {
                 try {
                   var saved = localStorage.getItem('selected-biome');
-                  if (saved && ['cyber', 'ocean', 'forest'].includes(saved)) {
-                    document.documentElement.classList.add('biome-' + saved);
-                  } else {
-                    document.documentElement.classList.add('biome-cyber');
-                  }
+                  var valid = ['cyber','oled','terminal','ocean','forest','quantum','nebula'];
+                  document.documentElement.classList.add('biome-' + (valid.includes(saved) ? saved : 'cyber'));
                 } catch (e) {}
               })();
             `
           }}
         />
         <JsonLd />
-        <NeuralNetworkBg />
-        <BootSequence />
-        <MainframeBypass />
         <ScrollProgress />
-        <FocusShield />
         <BiomeSelector />
-        <EventStream />
-        <GeoRouting />
-        <IngestionMetrics />
-        <ThreadAllocator />
-        <SystemStatsWidget />
+        <GlobalOverlays />
         <div className="noise-overlay" />
         <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[720px] mx-auto bg-bg shadow-2xl">
           {children}
-          <CursorTracker />
-          <CommandPalette />
-          <SystemMonitor />
-          <SystemTicker />
         </div>
       </body>
     </html>
