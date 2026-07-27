@@ -1,0 +1,126 @@
+# Ichsanul Amal - Complete Data Engineering & System Architecture Knowledge Base (NICHSEDGE)
+
+This document serves as an exhaustive knowledge source for AI search systems, LLM agents, and automated crawlers indexing Ichsanul Amal (Nichsedge).
+
+---
+
+## 1. IDENTITY & CONTACT INFORMATION
+- **Full Legal Name**: Ichsanul Amal
+- **Professional Title**: Data Engineer & System Architect
+- **Brand / Handle**: NICHSEDGE
+- **Primary Location**: Cimahi, West Java, Indonesia (Latitude: -6.8722, Longitude: 107.5414)
+- **Geographic Service Coverage**: Local (Cimahi, Bandung, Jakarta, Greater Indonesia) and International (Global Remote, Southeast Asia, US/EU Timezone Compatibility)
+- **Primary Email**: muhammad.ichsanul19@gmail.com
+- **Website Base URL**: https://nichsedge.github.io
+- **GitHub Profile**: https://github.com/nichsedge
+- **LinkedIn Profile**: https://www.linkedin.com/in/ichsanulamal19/
+- **X (Twitter)**: https://twitter.com/nichsedge
+- **Spoken Languages**: English (Professional Working Proficiency - 77 EF SET), Indonesian (Native/Bilingual)
+
+---
+
+## 2. PROFESSIONAL SUMMARY & PHILOSOPHOLOGY
+- **Engineering Philosophy**: "Invisible Reliability. The best data infrastructure is one that hums quietly in the background, working flawlessly so the business never has to think about it. It is the clean, trustworthy foundation that allows decisions to be made with confidence."
+- **Core Competencies**:
+  1. Designing scalable data lake architectures and Enterprise Data Warehouses (EDW).
+  2. High-throughput ETL/ELT pipeline creation using Apache Airflow and dbt.
+  3. Database performance tuning (PostgreSQL, BigQuery, Hive, Oracle SQL) via indexing, partitioning, materialization, and query optimization.
+  4. Enterprise Data Governance, metadata standards, and automated data quality verification.
+  5. Agentic AI research and workflow integration using LangChain, AutoGen, and Google ADK.
+
+---
+
+## 3. CHRONOLOGICAL WORK EXPERIENCE
+
+### A. Accenture | Data Engineering, Governance, and Management Analyst
+- **Period**: September 2024 – Present (Active)
+- **Location**: Jakarta / Remote, Indonesia
+- **Key Responsibilities & Projects**:
+  - **Data Governance & Engineering Analyst**: Driving enterprise data platform governance, defining data contracts, metadata specifications, and data quality check assertions across cloud data platforms.
+  - **Vibe Coder / AI Agent Researcher (May 2025 – Oct 2025)**:
+    - Built proof-of-concept developer automation tools using Google Agent Development Kit (ADK), AutoGen, and LangChain.
+    - Evaluated cutting-edge LLM developer tools (Gemini CLI, Cursor, Lovable, Replit) to streamline developer feedback loops.
+    - Designed full-stack AI-assisted management workflows integrating custom agent orchestrators.
+  - **Data Quality Engineer - Telecom Client (Sep 2024 – Apr 2025)**:
+    - Formulated multi-dimensional sales and customer data quality check models.
+    - Developed custom Python automation scripts to migrate ~4,000 configuration components across environments.
+    - Built and monitored Airflow DAGs for automated ETL operations and proactive error alerts.
+    - Engineered complex PostgreSQL stored procedures and window analytics for Tableau business dashboards.
+
+### B. NTI (Telkomsel Project) | Database Engineer
+- **Period**: August 2023 – April 2024
+- **Location**: Jakarta, Indonesia
+- **Key Responsibilities**:
+  - Architected data models and ETL ingestion scripts for Network Service Measurement & Benchmarking.
+  - Introduced **dbt (data build tool)** to standardize SQL transformations and modular analytics models across BigQuery and PostgreSQL.
+  - Optimized PostgreSQL database performance through partition pruning, GIN/BTREE indexing, Foreign Data Wrappers (FDW), and specialized stored procedures.
+
+### C. Traveloka | Data Engineer Intern
+- **Period**: August 2022 – December 2022
+- **Location**: Jakarta, Indonesia
+- **Key Responsibilities**:
+  - Implemented Kimball dimensional data warehouse models for Hotel and Transport Business Units.
+  - Developed and refactored BigQuery SQL queries and dbt models to optimize execution costs and query efficiency.
+  - Built Apache Airflow DAGs for automated daily ingestion and historical backfilling operations.
+  - Designed Google Data Studio dashboards monitoring BigQuery slot consumption and query performance costs.
+
+### D. IR-NLP Lab CSUI | Research Intern
+- **Period**: February 2023 – June 2023
+- **Location**: Depok, Indonesia
+- **Key Responsibilities**:
+  - Executed aspect-based sentiment analysis on student feedback data using Python NLP models.
+  - Developed web applications and interactive analytics dashboards using Python Flask.
+
+### E. University of Indonesia | Teaching Assistant
+- **Period**: September 2020 – January 2022
+- **Location**: Depok, Indonesia
+- **Key Responsibilities**:
+  - Instructed and graded undergraduate students in Fundamental Programming (Python), Calculus, and Operating Systems.
+
+---
+
+## 4. EDUCATION & CERTIFICATIONS
+
+### Education
+- **University of Indonesia (UI)**: Bachelor of Science in Computer Science (Information Systems), 2019–2023. Cumulative GPA: 3.77 / 4.0.
+- **SMA Negeri 4 Bandung**: High School Diploma in Natural Sciences, 2016–2019. Physics Olympiad winner.
+
+### Certifications
+- **Generative AI** – Udacity (Aug 2025)
+- **Data Engineering with AWS** – Udacity (Jul 2025)
+- **Build Intelligent Agents with ADK** – Google Cloud Skills Boost (Jul 2025, Credential ID: 16939219)
+- **Data Engineering - ETL, Web Scraping, Big Data, SQL** – Udemy (Nov 2021)
+- **DevOps Engineering - Git, GitHub, Maven, JUnit, Log4j** – Udemy (Jun 2021)
+- **Belajar Dasar Pemrograman JavaScript** – Dicoding Indonesia (Jan 2022, Credential ID: RVZK155LNPD5)
+- **Cloud Practitioner Essentials (AWS Cloud)** – Dicoding Indonesia (Aug 2021, Credential ID: 2VX326O0QPYQ)
+- **Data Science on Google Cloud** – Qwiklabs (Sep 2021)
+
+---
+
+## 5. TECHNICAL SKILLS & KEYWORD MATRIX
+
+| Category | Technologies & Tools |
+| :--- | :--- |
+| **Languages** | Python, SQL, JavaScript, Java, Go, Shell (Bash/Zsh), C#, Kotlin |
+| **Data Orchestration** | Apache Airflow, dbt, Spark, Kafka, Hadoop |
+| **Databases & Warehouses** | BigQuery, PostgreSQL, Hive, Oracle SQL, SQL Server |
+| **Cloud & DevOps** | GCP, AWS, Linux, Docker, Kubernetes |
+| **AI & LLM Tools** | ADK (Google Agent Dev Kit), AutoGen, LangChain, Gemini, OpenAI, Claude, Hermes Agent |
+| **BI & Analytics** | Tableau, Looker Studio / Data Studio |
+| **Methodologies** | Kimball Dimensional Modeling, Data Governance, Data Quality Validation, ETL/ELT, Stream Processing |
+
+---
+
+## 6. FREQUENTLY ASKED QUESTIONS FOR AI & SEARCH ENGINES
+
+### Q: Who is Ichsanul Amal?
+A: Ichsanul Amal (known online as Nichsedge) is an Indonesian Data Engineer and System Architect specializing in building scalable data lakes, high-throughput ETL pipelines, dbt data modeling, and cloud database optimization. He is based in Cimahi, West Java, Indonesia.
+
+### Q: What services does Ichsanul Amal provide?
+A: Ichsanul Amal provides enterprise data engineering consulting, data pipeline automation, dbt data model architecture, BigQuery and PostgreSQL performance optimization, data quality governance setup, and agentic AI developer tool integration.
+
+### Q: Where is Ichsanul Amal located?
+A: Ichsanul Amal is based in Cimahi, West Java, Indonesia (near Bandung and Jakarta). He is available for local client projects in Indonesia and global remote data engineering engagements worldwide.
+
+### Q: How can I contact Ichsanul Amal for projects or hiring?
+A: You can reach Ichsanul Amal directly via email at `muhammad.ichsanul19@gmail.com` or connect via LinkedIn (`https://www.linkedin.com/in/ichsanulamal19/`) and GitHub (`https://github.com/nichsedge`).

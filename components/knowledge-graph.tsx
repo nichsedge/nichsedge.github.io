@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { Maximize2, Minimize2 } from 'lucide-react';
+import { Maximize2, Minimize2, X, ExternalLink, Database } from 'lucide-react';
 import graphData from '@/data/knowledge-graph.json';
 import { soundEngine } from '@/lib/audio';
 
@@ -30,6 +30,7 @@ export function KnowledgeGraph() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([1, 2, 3, 4, 5, 6, 7]);
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [clickedNode, setClickedNode] = useState<{ id: string; group: number; connected: string[] } | null>(null);
 
   const toggleGroup = (groupId: number) => {
     soundEngine.playClick(750);
@@ -192,6 +193,12 @@ export function KnowledgeGraph() {
         })
         .on('click', (event, d: any) => {
           soundEngine.playChime(600 + d.group * 100, 0.4);
+          const connectedIds: string[] = [];
+          links.forEach((l: any) => {
+            if (l.source.id === d.id) connectedIds.push(l.target.id);
+            if (l.target.id === d.id) connectedIds.push(l.source.id);
+          });
+          setClickedNode({ id: d.id, group: d.group, connected: connectedIds });
         })
         .on('mouseleave', () => {
           setActiveNode(null);
@@ -310,9 +317,63 @@ export function KnowledgeGraph() {
             ref={containerRef} 
             className={`w-full h-full cursor-crosshair ${isExpanded ? 'pointer-events-auto' : 'pointer-events-none md:pointer-events-auto'}`} 
           />
+          {/* Holographic Node Inspector Drawer */}
+          {clickedNode && (
+            <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-md bg-[#09090b]/95 border border-accent/40 p-4 rounded shadow-2xl backdrop-blur-md z-30 font-mono animate-in fade-in slide-in-from-bottom-3 duration-200">
+              <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+                  <span className="font-bold text-text-0 text-[12px] uppercase tracking-wider">{clickedNode.id}</span>
+                </div>
+                <button
+                  onClick={() => setClickedNode(null)}
+                  className="text-text-3 hover:text-accent p-1 transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+
+              <div className="text-[10px] text-text-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span>Domain Category:</span>
+                  <span className="font-bold text-accent">
+                    {CATEGORIES.find(c => c.id === clickedNode.group)?.name || 'General'}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span>Interconnected Nodes ({clickedNode.connected.length}):</span>
+                </div>
+
+                <div className="flex flex-wrap gap-1 max-h-[80px] overflow-y-auto pt-1">
+                  {clickedNode.connected.map((cn, idx) => (
+                    <span key={idx} className="px-1.5 py-0.5 bg-accent/10 border border-accent/20 rounded text-[9px] text-accent">
+                      {cn}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-2 flex gap-2">
+                  <a
+                    href="/data-lake"
+                    className="flex-1 px-3 py-1.5 bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
+                  >
+                    <Database size={10} /> Query In Data Lake
+                  </a>
+                  <a
+                    href="/projects"
+                    className="flex-1 px-3 py-1.5 bg-bg border border-border-subtle hover:border-accent text-text-1 text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
+                  >
+                    <ExternalLink size={10} /> View Repos
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="absolute bottom-3 right-4 font-mono text-[8px] text-text-3 opacity-50 italic pointer-events-none">
             {isExpanded 
-              ? '(scroll to zoom, drag to pan, drag nodes to rearrange)' 
+              ? '(scroll to zoom, drag to pan, click nodes for inspector)' 
               : '(tap expand icon to interact)'
             }
           </div>

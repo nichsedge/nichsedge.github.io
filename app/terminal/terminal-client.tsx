@@ -529,14 +529,18 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
           response = ["RETURNING TO HQ..."];
           setTimeout(() => router.push('/'), 1000);
           break;
+        case 'ichsan':
         case 'neofetch':
           response = [
-            "      .---.      USER: ichsanul.amal",
-            "     /     \\     OS: PORTFOLIO_OS v2",
-            "    | () () |    SHELL: ts-node-custom",
-            "     \\  ^  /     CORE: data-engineer.v1",
-            "      |||||      STACK: python, dbt, gcp",
-            "      |||||      LOC: Jakarta, ID"
+            "  ███╗   ██╗██╗ ██████╗██╗  ██╗  USER: ichsanul@nichsedge",
+            "  ████╗  ██║██║██╔════╝██║  ██║  HOST: NICHSEDGE-MAINFRAME-V2",
+            "  ██╔██╗ ██║██║██║     ███████║  OS: Portfolio-OS 2026.07 (Edge Native)",
+            "  ██║╚██╗██║██║██║     ██╔══██║  KERNEL: Next.js 16.2 + Cloudflare Workers",
+            "  ██║ ╚████║██║╚██████╗██║  ██║  UPTIME: 99.999% (Continuous Deployment)",
+            "  ╚═╝  ╚═══╝╚═╝ ╚═════╝╚═╝  ╚═╝  ROLE: Data Engineer & System Architect",
+            "                                 STACK: Python 3.12, SQL, dbt, Spark, Kafka",
+            "                                 DATA LAKE: Iceberg, DuckDB, BigQuery",
+            "                                 LOCATION: Jakarta, ID (UTC+7)"
           ];
           break;
         case 'status':
@@ -591,6 +595,50 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "+----------------------+--------------------+-----------------+-------------------------+"
           ];
           break;
+        case 'benchmark':
+          response = [
+            "============================================================",
+            "[PORTFOLIO NODE BENCHMARK ENGINE v2.5]",
+            "============================================================",
+            "CALCULATING PIPELINE THROUGHPUT...",
+            "↳ Ingestion Latency:    1.2ms (P99: 4.8ms)",
+            "↳ Spark Microbatch:     128,400 msg/sec",
+            "↳ dbt Model Build:      4.2 sec (Incremental Merge)",
+            "↳ DuckDB Memory Scans:  45.8 GB/sec",
+            "↳ SLA Compliance Rate:  99.999%",
+            "============================================================",
+            "VERDICT: EXTREMELY OPTIMAL PERFORMANCE (CLASS-A PIPELINE)"
+          ];
+          soundEngine.playChime(1200, 0.3);
+          break;
+        case 'voice':
+          if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const lastLines = history.slice(-6).join(' ').replace(/[*_#`\[\]+|-]/g, '');
+            const utterance = new SpeechSynthesisUtterance(lastLines);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+            response = ["[SPEECH_SYNTHESIZER_ACTIVATED: READING RECENT TERMINAL BUFFER]"];
+          } else {
+            response = ["ERR: Speech synthesis not supported by this user agent."];
+          }
+          break;
+        case 'export':
+          if (typeof window !== 'undefined') {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(referralsData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "nichsedge_portfolio_data.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            response = ["EXPORT COMPLETE: Downloaded 'nichsedge_portfolio_data.json'."];
+          }
+          break;
+        case 'audio':
+          const isEnabled = soundEngine.toggleAudio();
+          response = [`AUDIO SYNTHESIZER TOGGLED: ${isEnabled ? 'ONLINE (HUM ACTIVE)' : 'MUTED'}`];
+          break;
         default:
           response = [`COMMAND_NOT_FOUND: ${cmd}. TYPE 'HELP' FOR ASSISTANCE.`];
       }
@@ -619,7 +667,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor', 'pay', 'transfer'];
+      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor', 'pay', 'transfer', 'benchmark', 'voice', 'export', 'audio'];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
         setInput(match);

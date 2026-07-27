@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard } from 'lucide-react';
+import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard, Volume2, Sparkles } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
@@ -26,6 +26,32 @@ export function CommandPalette() {
   const [isAsking, setIsAsking] = useState(false);
   const [isChatMode, setIsChatMode] = useState(false);
   const [aiStatus, setAiStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
+  const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
+
+  const PRESET_PROMPTS = [
+    "⚡ Summarize Tech Stack",
+    "📊 Data Lake Schema",
+    "🚀 Top Repositories",
+    "💼 Career Highlights"
+  ];
+
+  const speakText = (text: string, index: number) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (speakingIndex === index) {
+      window.speechSynthesis.cancel();
+      setSpeakingIndex(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const cleanText = text.replace(/[*_#`\[\]]/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 0.95;
+    utterance.onend = () => setSpeakingIndex(null);
+    utterance.onerror = () => setSpeakingIndex(null);
+    setSpeakingIndex(index);
+    window.speechSynthesis.speak(utterance);
+  };
 
   const router = useRouter();
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -386,6 +412,24 @@ export function CommandPalette() {
                 )}
               </div>
 
+              {/* Quick Preset Prompts Bar when input is active */}
+              {!isChatMode && query === '' && (
+                <div className="px-4 py-2 bg-black/40 border-b border-border-subtle/20 flex flex-wrap gap-1.5 items-center">
+                  <span className="text-[9px] text-text-3 font-mono uppercase tracking-wider mr-1 flex items-center gap-1">
+                    <Sparkles size={10} className="text-accent" /> Quick Prompts:
+                  </span>
+                  {PRESET_PROMPTS.map((prompt, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleAiAsk(prompt.replace(/^[^\w]+/, ''))}
+                      className="px-2 py-0.5 bg-accent/5 hover:bg-accent/15 border border-accent/20 rounded text-[9px] text-accent font-mono transition-all hover:scale-105"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Body Content: Command List vs Chat Area */}
               <div className="max-h-[300px] overflow-y-auto p-4 scrollbar-thin">
                 {isChatMode ? (
@@ -399,8 +443,20 @@ export function CommandPalette() {
                           <span className="opacity-60 select-none">
                             {msg.role === 'user' ? '↳ [USER]:' : '↳ [ORACLE]:'}
                           </span>
-                          <div className="whitespace-pre-wrap flex-1 bg-black/35 p-2.5 border border-border-subtle/10 rounded-sm">
+                          <div className="whitespace-pre-wrap flex-1 bg-black/35 p-2.5 border border-border-subtle/10 rounded-sm relative group">
                             {msg.content}
+
+                            {msg.role === 'assistant' && (
+                              <button
+                                onClick={() => speakText(msg.content, i)}
+                                title="Speech Synthesizer Readout"
+                                className={`absolute top-2 right-2 p-1 rounded transition-all ${
+                                  speakingIndex === i ? 'text-accent bg-accent/20 animate-pulse' : 'text-text-3 hover:text-accent opacity-0 group-hover:opacity-100'
+                                }`}
+                              >
+                                <Volume2 size={12} />
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>

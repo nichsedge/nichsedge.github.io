@@ -51,6 +51,16 @@
   --color-accent: #00e1cf;
 }
 
+.biome-quantum {
+  --theme-accent: #f59e0b;
+  --color-accent: #f59e0b;
+}
+
+.biome-nebula {
+  --theme-accent: #d946ef;
+  --color-accent: #d946ef;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 115px; /* Offset to prevent content from being covered by sticky Navbar (56px) + SubNav (40px) */

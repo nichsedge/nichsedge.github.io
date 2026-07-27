@@ -1,19 +1,21 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Droplet, TreePine, Terminal, Settings2, Globe } from 'lucide-react';
+import { Droplet, TreePine, Terminal, Settings2, Globe, Sparkles, Flame } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+export type BiomeType = 'cyber' | 'ocean' | 'forest' | 'quantum' | 'nebula';
+
 export function BiomeSelector() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentBiome, setCurrentBiome] = useState<'cyber'|'ocean'|'forest'>('cyber');
+  const [currentBiome, setCurrentBiome] = useState<BiomeType>('cyber');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Initialize biome from localStorage (safely on mount to avoid hydration mismatch)
   useEffect(() => {
-    const savedBiome = localStorage.getItem('selected-biome') as 'cyber' | 'ocean' | 'forest' | null;
-    if (savedBiome && ['cyber', 'ocean', 'forest'].includes(savedBiome)) {
+    const savedBiome = localStorage.getItem('selected-biome') as BiomeType | null;
+    if (savedBiome && ['cyber', 'ocean', 'forest', 'quantum', 'nebula'].includes(savedBiome)) {
       setCurrentBiome(savedBiome);
     }
   }, []);
@@ -21,8 +23,8 @@ export function BiomeSelector() {
   // Listen to external biome change events (e.g. from the Terminal console)
   useEffect(() => {
     const handleExternalBiomeChange = (e: Event) => {
-      const customEvent = e as CustomEvent<'cyber' | 'ocean' | 'forest'>;
-      if (customEvent.detail && ['cyber', 'ocean', 'forest'].includes(customEvent.detail)) {
+      const customEvent = e as CustomEvent<BiomeType>;
+      if (customEvent.detail && ['cyber', 'ocean', 'forest', 'quantum', 'nebula'].includes(customEvent.detail)) {
         setCurrentBiome(customEvent.detail);
       }
     };
@@ -32,7 +34,7 @@ export function BiomeSelector() {
 
   // Update body classes and save to localStorage
   useEffect(() => {
-    document.documentElement.classList.remove('biome-cyber', 'biome-ocean', 'biome-forest');
+    document.documentElement.classList.remove('biome-cyber', 'biome-ocean', 'biome-forest', 'biome-quantum', 'biome-nebula');
     document.documentElement.classList.add(`biome-${currentBiome}`);
     localStorage.setItem('selected-biome', currentBiome);
   }, [currentBiome]);
@@ -72,7 +74,10 @@ export function BiomeSelector() {
     { id: 'cyber', icon: Terminal, label: 'CYBER' },
     { id: 'ocean', icon: Droplet, label: 'OCEAN' },
     { id: 'forest', icon: TreePine, label: 'FOREST' },
+    { id: 'quantum', icon: Sparkles, label: 'QUANTUM' },
+    { id: 'nebula', icon: Flame, label: 'NEBULA' },
   ] as const;
+
 
   return (
     <div 

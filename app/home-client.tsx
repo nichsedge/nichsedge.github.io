@@ -18,6 +18,9 @@ import { HumanRuntime } from '@/components/human-runtime';
 import { DecryptedText } from '@/components/decrypted-text';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { DataPipeline } from '@/components/data-pipeline';
+import { DataStreamSandbox } from '@/components/data-stream-sandbox';
+import { StreamSimulator } from '@/components/stream-simulator';
+import { DataLineageGraph } from '@/components/data-lineage-graph';
 
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
@@ -172,9 +175,12 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </motion.div>
       </section>
 
-      {/* The ETL Engine Visual */}
-      <section id="architecture" className="px-6 pb-16">
+      {/* The ETL Engine Visual & Sandbox */}
+      <section id="architecture" className="px-6 pb-16 space-y-8">
          <DataPipeline />
+         <StreamSimulator locale={locale} />
+         <DataLineageGraph locale={locale} />
+         <DataStreamSandbox locale={locale} />
       </section>
 
       {/* Career Pipeline */}

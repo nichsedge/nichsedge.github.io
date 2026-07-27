@@ -76,7 +76,7 @@ export function MediaViewer({ type, url, thumbnail, alt }: MediaProps) {
               src={url}
               alt={alt || "Media"}
               fill
-              className={`object-contain bg-black/40 transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+              className={`object-cover object-top transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
               referrerPolicy="no-referrer"
               onLoad={() => setIsLoaded(true)}
             />

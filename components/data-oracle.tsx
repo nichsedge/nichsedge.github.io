@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Brain, ArrowRight, Loader2, Cpu, Database, Network } from 'lucide-react';
 import { AreaChart, Area, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
+import { soundEngine } from '@/lib/audio';
+
 
 type MetricPoint = {
   time: number;
@@ -34,7 +36,20 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  const requestPrediction = async () => {
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const PRESETS = locale === 'id' ? [
+    { label: '🔮 Prediksi Stack 5 Tahun', query: "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat." },
+    { label: '⚡ Arsitektur Stream Data', query: "Jelaskan bagaimana arsitektur Kafka + Spark + ClickHouse menangani 10 juta event per detik dengan latensi sub-detik." },
+    { label: '📊 Ringkasan Keahlian Utama', query: "Rangkum keahlian utama dan pengalaman kerja Ichsanul Amal dalam 3 poin terbaik." }
+  ] : [
+    { label: '🔮 5-Year Stack Prediction', query: "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences." },
+    { label: '⚡ Streaming Architecture', query: "Explain how Kafka + Spark + ClickHouse handles 10 million events per second with sub-second SLA latency." },
+    { label: '📊 Core Resume Highlights', query: "Summarize Ichsanul Amal's top data engineering skills and career highlights in 3 concise bullet points." }
+  ];
+
+  const requestPrediction = async (customQuery?: string) => {
+    soundEngine.playChime();
     setIsLoading(true);
     setInsight(null);
     setStage(0);
@@ -42,13 +57,14 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
     // Simulate thinking stages
     for(let i=0; i<3; i++) {
       setStage(i);
-      await new Promise(r => setTimeout(r, 800));
+      await new Promise(r => setTimeout(r, 600));
     }
 
+    const query = customQuery || (locale === 'id' 
+      ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
+      : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.");
+
     try {
-      const query = locale === 'id' 
-        ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
-        : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
       const res = await fetch('/api/ghost', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,15 +74,29 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       const data = await res.json();
       setStatus('LIVE');
       setInsight(data.response);
+      soundEngine.playSuccessChord();
     } catch {
       setStatus('LOCAL');
-      const queryFallback = locale === 'id'
-        ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
-        : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.";
-      setInsight(getFallbackGhostResponse(queryFallback));
+      setInsight(getFallbackGhostResponse(query));
+      soundEngine.playSuccessChord();
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSpeakText = () => {
+    if (!insight || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const utterance = new SpeechSynthesisUtterance(insight);
+    utterance.rate = 1.0;
+    utterance.pitch = 0.9;
+    utterance.onend = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
   };
 
   return (
@@ -91,16 +121,30 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               </span>
             )}
           </div>
-          <p className="text-[13px] text-text-3 font-light mb-8 max-w-lg leading-relaxed">
+          <p className="text-[13px] text-text-3 font-light mb-6 max-w-lg leading-relaxed">
              {locale === 'id' 
                ? 'Hubungkan keahlian Anda saat ini ke masa depan. Mesin proyeksi neural kami menganalisis stack Anda untuk memprediksi gelombang evolusi data berikutnya.' 
                : 'Connect your current expertise to the future. Our neural projection engine analyzes your stack to predict the next wave of data evolution.'}
           </p>
 
+          {/* Prompt Presets */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {PRESETS.map((preset, idx) => (
+              <button
+                key={idx}
+                onClick={() => requestPrediction(preset.query)}
+                disabled={isLoading}
+                className="px-2.5 py-1 text-[9px] font-mono uppercase tracking-wider rounded border border-border-subtle bg-bg text-text-3 hover:border-accent/50 hover:text-accent transition-all cursor-pointer"
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+
           {!insight && !isLoading ? (
             <button 
-              onClick={requestPrediction}
-              className="flex items-center gap-4 bg-accent/10 border border-accent/40 px-6 py-3 rounded-sm group/btn hover:bg-accent/20 transition-all text-accent font-mono text-[11px] uppercase tracking-[0.2em] font-bold"
+              onClick={() => requestPrediction()}
+              className="flex items-center gap-4 bg-accent/10 border border-accent/40 px-6 py-3 rounded-sm group/btn hover:bg-accent/20 transition-all text-accent font-mono text-[11px] uppercase tracking-[0.2em] font-bold cursor-pointer"
             >
               {locale === 'id' ? 'Mulai Proyeksi' : 'Initiate Projection'} <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
             </button>
@@ -119,11 +163,24 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               animate={{ opacity: 1, y: 0 }}
               className="p-6 bg-black/40 border-l-2 border-accent font-mono text-[13px] leading-relaxed relative overflow-hidden"
             >
-               <div className="absolute top-2 right-4 text-[8px] opacity-20 uppercase tracking-[0.4em] font-bold">PROJECTION_v4.2</div>
+               <div className="flex items-center justify-between mb-2">
+                 <div className="text-[8px] text-accent uppercase tracking-[0.4em] font-bold flex items-center gap-1.5">
+                   <span>PROJECTION_v4.2</span>
+                   <span className="text-text-3 font-normal opacity-70">| 99.4% Vector Match</span>
+                 </div>
+                 <button
+                   onClick={handleSpeakText}
+                   className="text-[9px] uppercase tracking-widest text-accent hover:underline cursor-pointer flex items-center gap-1"
+                 >
+                   {isSpeaking ? '🔊 Stop Audio' : '🔊 Listen TTS'}
+                 </button>
+               </div>
+
                <p className="text-text-1">{insight}</p>
+
                <button 
                 onClick={() => setInsight(null)}
-                className="mt-6 text-[9px] uppercase tracking-widest text-text-3 hover:text-accent transition-colors block"
+                className="mt-6 text-[9px] uppercase tracking-widest text-text-3 hover:text-accent transition-colors block cursor-pointer"
                >
                  {locale === 'id' ? 'Hapus Buffer' : 'Wipe Buffer'}
                </button>
@@ -132,6 +189,7 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
         </div>
 
       </div>
+
 
       {/* Real-time Graph below main area */}
       <AnimatePresence>

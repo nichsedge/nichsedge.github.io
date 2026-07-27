@@ -2,14 +2,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Database, Filter, ArrowRight } from 'lucide-react';
 import { EtlNodeSimulator } from '@/components/etl-node-simulator';
+import { EtlDagArchitect } from '@/components/etl-dag-architect';
 
 export function DataPipeline({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'architect' | 'entropy'>('architect');
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || activeTab !== 'entropy') return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -103,45 +105,83 @@ export function DataPipeline({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [isProcessing]);
+  }, [isProcessing, activeTab]);
 
   return (
     <div className="space-y-6">
-      <EtlNodeSimulator locale={locale} />
+      {/* Tab Controls */}
+      <div className="flex items-center justify-between border-b border-border-subtle pb-2">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setActiveTab('architect')}
+            className={`px-3 py-1 font-mono text-[10px] uppercase tracking-widest rounded transition-all cursor-pointer ${
+              activeTab === 'architect'
+                ? 'bg-accent text-bg font-bold shadow-[0_0_12px_rgba(0,225,207,0.3)]'
+                : 'text-text-3 hover:text-accent bg-bg-1'
+            }`}
+          >
+            {locale === 'id' ? 'Architect DAG Canvas' : 'Architect DAG Canvas'}
+          </button>
 
-      <div className="w-full relative bg-bg-1/50 border border-border-subtle rounded-sm overflow-hidden h-[260px]">
-         <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-center z-10 border-b border-border-subtle bg-bg-1/80 backdrop-blur-sm">
-           <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text-3">
-             <Database size={14} /> {locale === 'id' ? 'Mesin Entropi Ke Kejelasan' : 'Chaos to Clarity Particle Engine'}
-           </div>
-           <button 
-             onMouseEnter={() => setIsProcessing(true)}
-             onMouseLeave={() => setIsProcessing(false)}
-             onTouchStart={(e) => { e.preventDefault(); setIsProcessing(true); }}
-             onTouchEnd={() => setIsProcessing(false)}
-             className={`px-3 py-1 font-mono text-[10px] uppercase tracking-widest border transition-all flex items-center gap-2 ${
-               isProcessing 
-                 ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_15px_rgba(0,225,207,0.3)]' 
-                 : 'bg-bg border-border-subtle text-text-2 hover:border-accent hover:text-accent'
-             }`}
-           >
-             <Filter size={12} /> {isProcessing ? (locale === 'id' ? 'Mengekstrak...' : 'Extracting...') : (locale === 'id' ? 'Tahan untuk ETL' : 'Hold to ETL')}
-           </button>
-         </div>
+          <button
+            onClick={() => setActiveTab('entropy')}
+            className={`px-3 py-1 font-mono text-[10px] uppercase tracking-widest rounded transition-all cursor-pointer ${
+              activeTab === 'entropy'
+                ? 'bg-accent text-bg font-bold shadow-[0_0_12px_rgba(0,225,207,0.3)]'
+                : 'text-text-3 hover:text-accent bg-bg-1'
+            }`}
+          >
+            {locale === 'id' ? 'Engine Partikel Entropi' : 'Chaos Particle Engine'}
+          </button>
+        </div>
 
-         <canvas ref={canvasRef} className="w-full h-full block" />
-         
-         <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center z-10 pointer-events-none">
-           <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-text-3' : 'text-accent animate-pulse font-bold'}`}>
-             RAW / UNSTRUCTURED ENTROPY
-           </div>
-           <div className="text-text-3/50"><ArrowRight size={14} /></div>
-           <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-accent animate-[pulse_0.5s_infinite] font-bold shadow-accent' : 'text-text-3'}`}>
-             STRUCTURED ANALYTICAL DATA
-           </div>
-         </div>
+        <span className="hidden sm:inline font-mono text-[9px] text-accent/60 tracking-widest">
+          SYS_PIPELINE_V3.8
+        </span>
       </div>
+
+      {activeTab === 'architect' ? (
+        <EtlDagArchitect locale={locale} />
+      ) : (
+        <div className="space-y-6">
+          <EtlNodeSimulator locale={locale} />
+
+          <div className="w-full relative bg-bg-1/50 border border-border-subtle rounded-sm overflow-hidden h-[260px]">
+             <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-center z-10 border-b border-border-subtle bg-bg-1/80 backdrop-blur-sm">
+               <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-text-3">
+                 <Database size={14} /> {locale === 'id' ? 'Mesin Entropi Ke Kejelasan' : 'Chaos to Clarity Particle Engine'}
+               </div>
+               <button 
+                 onMouseEnter={() => setIsProcessing(true)}
+                 onMouseLeave={() => setIsProcessing(false)}
+                 onTouchStart={(e) => { e.preventDefault(); setIsProcessing(true); }}
+                 onTouchEnd={() => setIsProcessing(false)}
+                 className={`px-3 py-1 font-mono text-[10px] uppercase tracking-widest border transition-all flex items-center gap-2 ${
+                   isProcessing 
+                     ? 'bg-accent/20 border-accent/50 text-accent shadow-[0_0_15px_rgba(0,225,207,0.3)]' 
+                     : 'bg-bg border-border-subtle text-text-2 hover:border-accent hover:text-accent'
+                 }`}
+               >
+                 <Filter size={12} /> {isProcessing ? (locale === 'id' ? 'Mengekstrak...' : 'Extracting...') : (locale === 'id' ? 'Tahan untuk ETL' : 'Hold to ETL')}
+               </button>
+             </div>
+
+             <canvas ref={canvasRef} className="w-full h-full block" />
+             
+             <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center z-10 pointer-events-none">
+               <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-text-3' : 'text-accent animate-pulse font-bold'}`}>
+                 RAW / UNSTRUCTURED ENTROPY
+               </div>
+               <div className="text-text-3/50"><ArrowRight size={14} /></div>
+               <div className={`font-mono text-[9px] uppercase tracking-widest transition-colors ${isProcessing ? 'text-accent animate-[pulse_0.5s_infinite] font-bold shadow-accent' : 'text-text-3'}`}>
+                 STRUCTURED ANALYTICAL DATA
+               </div>
+             </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 

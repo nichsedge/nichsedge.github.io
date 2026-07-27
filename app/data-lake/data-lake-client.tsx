@@ -13,6 +13,7 @@ import referralsData from '@/data/referrals.json';
 import { Navbar } from '@/components/navbar';
 import { DataVisualizer } from '@/components/data-visualizer';
 import { useWideLayout } from '@/hooks/use-wide-layout';
+import { InteractiveSqlWorkbench } from '@/components/interactive-sql-workbench';
 
 export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
@@ -625,7 +626,12 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         </motion.div>
       </header>
 
+      <div className="px-6 relative z-10">
+        <InteractiveSqlWorkbench locale={locale} />
+      </div>
+
       <div className="flex flex-col lg:flex-row border-b border-border-subtle h-auto lg:h-[750px] relative z-10">
+
         
         {/* Expanded Navigation Sidebar */}
         <div className="w-full lg:w-72 border-r border-border-subtle bg-bg-1/90 flex flex-col h-[300px] lg:h-full overflow-hidden shrink-0">

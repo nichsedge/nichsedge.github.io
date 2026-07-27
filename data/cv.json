@@ -197,6 +197,20 @@
         "type": "image",
         "url": "/media/projects/atracker.png"
       }
+    },
+    {
+      "name": "nutrijoy",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/nutrijoy.png"
+      }
+    },
+    {
+      "name": "fitly",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/fitly.png"
+      }
     }
   ],
   "skills": {

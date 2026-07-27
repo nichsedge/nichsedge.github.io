@@ -4,86 +4,69 @@ export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://nichsedge.github.io';
-  
-  // English Routes
-  const enRoutes: MetadataRoute.Sitemap = [
+  const now = new Date();
+
+  const routes = [
+    { path: '', priority: 1.0, changeFrequency: 'monthly' as const },
+    { path: '/work', priority: 0.9, changeFrequency: 'monthly' as const },
+    { path: '/projects', priority: 0.9, changeFrequency: 'weekly' as const },
+    { path: '/data-lake', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/terminal', priority: 0.7, changeFrequency: 'monthly' as const },
+    { path: '/referrals', priority: 0.6, changeFrequency: 'monthly' as const },
+    { path: '/pay', priority: 0.5, changeFrequency: 'monthly' as const },
+  ];
+
+  const sitemapItems: MetadataRoute.Sitemap = [];
+
+  // English & Indonesian paired routes with hreflang alternates
+  routes.forEach((route) => {
+    const enUrl = `${baseUrl}${route.path}`;
+    const idUrl = `${baseUrl}/id${route.path}`;
+
+    sitemapItems.push({
+      url: enUrl,
+      lastModified: now,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      alternates: {
+        languages: {
+          en: enUrl,
+          id: idUrl,
+          'x-default': enUrl,
+        },
+      },
+    });
+
+    sitemapItems.push({
+      url: idUrl,
+      lastModified: now,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      alternates: {
+        languages: {
+          en: enUrl,
+          id: idUrl,
+          'x-default': enUrl,
+        },
+      },
+    });
+  });
+
+  // Additional static AI resources
+  sitemapItems.push(
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/work`,
-      lastModified: new Date(),
+      url: `${baseUrl}/llms.txt`,
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/projects`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/data-lake`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/terminal`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/referrals`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-  ];
-
-  // Indonesian Routes
-  const idRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/id`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/id/work`,
-      lastModified: new Date(),
+      url: `${baseUrl}/llms-full.txt`,
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/id/projects`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/id/data-lake`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/id/terminal`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/id/referrals`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-  ];
+    }
+  );
 
-  return [...enRoutes, ...idRoutes];
+  return sitemapItems;
 }
