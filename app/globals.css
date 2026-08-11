@@ -80,6 +80,17 @@ html {
   scroll-padding-top: 115px; /* Offset to prevent content from being covered by sticky Navbar (56px) + SubNav (40px) */
 }
 
+/* INITIAL BOOT SEQUENCE STATE */
+html.is-booting {
+  background-color: #09090b !important;
+  overflow: hidden !important;
+}
+
+html.is-booting #main-layout-container {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text-2);

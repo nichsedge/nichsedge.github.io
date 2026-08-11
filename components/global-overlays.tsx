@@ -10,7 +10,7 @@ const CommandPalette = dynamic(() => import('@/components/command-palette').then
 const SystemMonitor = dynamic(() => import('@/components/system-monitor').then(m => m.SystemMonitor), { ssr: false });
 const CursorTracker = dynamic(() => import('@/components/cursor-tracker').then(m => m.CursorTracker), { ssr: false });
 const SystemTicker = dynamic(() => import('@/components/system-ticker').then(m => m.SystemTicker), { ssr: false });
-const BootSequence = dynamic(() => import('@/components/boot-sequence').then(m => m.BootSequence), { ssr: false });
+import { BootSequence } from '@/components/boot-sequence';
 const MainframeBypass = dynamic(() => import('@/components/mainframe-bypass').then(m => m.MainframeBypass), { ssr: false });
 const FocusShield = dynamic(() => import('@/components/focus-shield').then(m => m.FocusShield), { ssr: false });
 const NeuralNetworkBg = dynamic(() => import('@/components/neural-network-bg').then(m => m.NeuralNetworkBg), { ssr: false });

@@ -123,6 +123,13 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
                   var saved = localStorage.getItem('selected-biome');
                   var valid = ['cyber','oled','terminal','ocean','forest','quantum','nebula'];
                   document.documentElement.classList.add('biome-' + (valid.includes(saved) ? saved : 'cyber'));
+                  
+                  if (!sessionStorage.getItem('booted')) {
+                    document.documentElement.classList.add('is-booting');
+                    setTimeout(function() {
+                      document.documentElement.classList.remove('is-booting');
+                    }, 5000);
+                  }
                 } catch (e) {}
               })();
             `
