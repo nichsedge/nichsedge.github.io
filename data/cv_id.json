@@ -281,6 +281,41 @@
         "type": "image",
         "url": "/media/projects/digital-garden.png"
       }
+    },
+    {
+      "name": "vscode-obsidian-notes",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/vscode-obsidian-notes.png"
+      }
+    },
+    {
+      "name": "pcomp",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/pcomp.png"
+      }
+    },
+    {
+      "name": "spring-boot-react",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/spring-boot-react.png"
+      }
+    },
+    {
+      "name": "k8s-ansible-gcp",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/k8s-ansible-gcp.png"
+      }
+    },
+    {
+      "name": "airflow-udacity",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/airflow-udacity.png"
+      }
     }
   ],
   "skills": {

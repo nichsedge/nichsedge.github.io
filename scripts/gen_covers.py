@@ -69,11 +69,10 @@ PROJECTS = [
     ("deepfocus", "Neon-glow Pomodoro & focus timer for Android", "KT", (240, 171, 252)),
     ("hydrotrack", "Lightweight water intake tracker for Android", "KT", (240, 171, 252)),
     ("yt-summarizer", "YouTube video summarizer to markdown", "PY", ACCENT),
-    ("ngantriwoy", "Smart real-time queue system for Indonesian UMKM", "TS", (96, 165, 250)),
     ("jira-clone", "ProFlow Tickets: AI-powered Jira clone", "TS", (96, 165, 250)),
     ("bijak-beli", "Shop with purpose — conscious consumer app", "TS", (96, 165, 250)),
     ("digital-garden", "Personal digital garden & knowledge base", "TS", (96, 165, 250)),
-    ("nutrijoy", None, None, None),  # skip, already has
+    ("airflow-udacity", "Data pipelines with Airflow — Udacity DE nano-degree", "PY", ACCENT),
 ]
 
 for name, subtitle, tag, color in PROJECTS:
