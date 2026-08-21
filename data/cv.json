@@ -211,6 +211,76 @@
         "type": "image",
         "url": "/media/projects/fitly.png"
       }
+    },
+    {
+      "name": "ksei",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/ksei.png"
+      }
+    },
+    {
+      "name": "debank-scraper",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/debank-scraper.png"
+      }
+    },
+    {
+      "name": "indoscraping",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/indoscraping.png"
+      }
+    },
+    {
+      "name": "deepfocus",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/deepfocus.png"
+      }
+    },
+    {
+      "name": "hydrotrack",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/hydrotrack.png"
+      }
+    },
+    {
+      "name": "yt-summarizer",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/yt-summarizer.png"
+      }
+    },
+    {
+      "name": "ngantriwoy",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/ngantriwoy.png"
+      }
+    },
+    {
+      "name": "jira-clone",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/jira-clone.png"
+      }
+    },
+    {
+      "name": "bijak-beli",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/bijak-beli.png"
+      }
+    },
+    {
+      "name": "digital-garden",
+      "media": {
+        "type": "image",
+        "url": "/media/projects/digital-garden.png"
+      }
     }
   ],
   "skills": {
