@@ -4,9 +4,10 @@ import { JsonLd } from '@/components/json-ld';
 
 export const metadata: Metadata = {
   title: 'Career Pipeline & Experience | Ichsanul Amal',
-  description: 'Explore the professional trajectory of Ichsanul Amal at Accenture, Telkomsel (NTI), Traveloka, and UI — building enterprise ETL pipelines, dbt data models, BigQuery warehouses, and AI agent frameworks.',
+  description: 'Explore the professional trajectory of Ichsanul Amal at Krom Bank, Accenture, Telkomsel (NTI), Traveloka, and UI — building enterprise ETL pipelines, dbt data models, BigQuery warehouses, and AI agent frameworks.',
   keywords: [
     'Ichsanul Amal Work Experience',
+    'Krom Bank Data Quality Engineer',
     'Accenture Data Engineer',
     'Telkomsel Database Engineer',
     'Traveloka Data Engineer',

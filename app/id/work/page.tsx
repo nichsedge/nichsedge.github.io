@@ -4,9 +4,10 @@ import { JsonLd } from '@/components/json-ld';
 
 export const metadata: Metadata = {
   title: 'Pipeline Karir & Pengalaman | Ichsanul Amal',
-  description: 'Telusuri perjalanan karir profesional Ichsanul Amal di Accenture, Telkomsel (NTI), Traveloka, dan UI — membangun pipeline data ETL berskala enterprise, model dbt, dan infrastruktur analitis.',
+  description: 'Telusuri perjalanan karir profesional Ichsanul Amal di Krom Bank, Accenture, Telkomsel (NTI), Traveloka, dan UI — membangun pipeline data ETL berskala enterprise, model dbt, dan infrastruktur analitis.',
   keywords: [
     'Pengalaman Kerja Ichsanul Amal',
+    'Data Quality Engineer Krom Bank',
     'Data Engineer Accenture',
     'Database Engineer Telkomsel',
     'Data Engineer Traveloka',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Pipeline Karir & Pengalaman | Ichsanul Amal',
-    description: 'Telusuri perjalanan karir profesional Ichsanul Amal di Accenture, Telkomsel, Traveloka, dan UI.',
+    description: 'Telusuri perjalanan karir profesional Ichsanul Amal di Krom Bank, Accenture, Telkomsel, Traveloka, dan UI.',
     type: 'website',
     url: 'https://nichsedge.github.io/id/work',
     siteName: 'NICHSEDGE',
