@@ -13,11 +13,39 @@
   },
   "work": [
     {
+      "company": "Krom Bank Indonesia",
+      "role": "Data Quality Engineer",
+      "period": {
+        "start": "2026-06-01",
+        "end": null
+      },
+      "shortDescription": "Menjaga kualitas data untuk pelaporan perbankan lintas platform replikasi di GCP.",
+      "fullDescription": "Memastikan kualitas data untuk pelaporan: dbt test dan monitoring Elementary di BigQuery, pemeriksaan DQ lintas pipeline replikasi (S3, SFTP), manajemen alert di Mode BI, dan penelusuran isu ke upstream \u2014 berbasis dimensi DAMA data quality.",
+      "tech": [
+        "GCP",
+        "BigQuery",
+        "Python",
+        "Dataproc",
+        "Airflow (Composer)",
+        "dbt",
+        "Elementary",
+        "Mode BI",
+        "DAMA DQ Dimensions",
+        "Jira",
+        "Bitbucket",
+        "Confluence"
+      ],
+      "impact": [
+        "Membangun pemeriksaan kualitas data lintas platform: BigQuery (dbt test), S3, dan SFTP.",
+        "Mengoperasikan alert DQ di Mode BI dengan pelacakan isu ke upstream untuk resolusi root-cause lebih cepat."
+      ]
+    },
+    {
       "company": "Accenture",
       "role": "Data Engineering, Governance, and Management Analyst",
       "period": {
         "start": "2024-09-01",
-        "end": null
+        "end": "2026-06-01"
       },
       "shortDescription": "Merancang platform data kelas enterprise dan struktur tata kelola untuk lingkungan analitik berskala tinggi.",
       "fullDescription": "Mendorong standar data engineering enterprise, tata kelola data, dan pipeline manajemen data. Bermitra dengan pemangku kepentingan lintas fungsi untuk menentukan spesifikasi metadata dan menegakkan aturan tata kelola di seluruh data lake.",
@@ -369,7 +397,7 @@
   },
   "narrative": {
     "philosophy": "Keandalan Tanpa Suara. Infrastruktur data terbaik adalah yang beroperasi hening di latar belakang, bekerja sempurna tanpa cela sehingga bisnis tidak pernah perlu mempertanyakannya. Ini adalah fondasi bersih dan tepercaya yang melahirkan keputusan penuh keyakinan.",
-    "intro": "Dalam engineering modern, tantangan sesungguhnya bukanlah sekadar menskalakan node atau menulis kueri lebih cepat—tetapi menanamkan kepercayaan mutlak pada data itu sendiri. Sebagai Data Engineer, saya membangun pipeline data yang berfungsi sebagai sistem saraf pusat organisasi yang andal.",
+    "intro": "Dalam engineering modern, tantangan sesungguhnya bukanlah sekadar menskalakan node atau menulis kueri lebih cepat\u2014tetapi menanamkan kepercayaan mutlak pada data itu sendiri. Sebagai Data Engineer, saya membangun pipeline data yang berfungsi sebagai sistem saraf pusat organisasi yang andal.",
     "conclusion": "Baik itu mengoptimalkan kueri untuk memangkas waktu eksekusi hingga 50% atau mengotomatiskan migrasi ribuan konfigurasi komponen sistem, fokus saya adalah merancang platform tangguh yang mampu memulihkan dirinya sendiri dan mengubah kompleksitas operasional menjadi wawasan bersih yang siap pakai."
   },
   "education": [

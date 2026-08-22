@@ -13,11 +13,39 @@
   },
   "work": [
     {
+      "company": "Krom Bank Indonesia",
+      "role": "Data Quality Engineer",
+      "period": {
+        "start": "2026-06-01",
+        "end": null
+      },
+      "shortDescription": "Maintaining data quality for banking reporting across replicated platforms on GCP.",
+      "fullDescription": "Owning data quality for enterprise reporting: dbt tests and Elementary monitoring in BigQuery, cross-platform DQ checks across data replication pipelines (S3, SFTP), alert management in Mode BI, and upstream root-cause tracing \u2014 all measured against DAMA data quality dimensions.",
+      "tech": [
+        "GCP",
+        "BigQuery",
+        "Python",
+        "Dataproc",
+        "Airflow (Composer)",
+        "dbt",
+        "Elementary",
+        "Mode BI",
+        "DAMA DQ Dimensions",
+        "Jira",
+        "Bitbucket",
+        "Confluence"
+      ],
+      "impact": [
+        "Established cross-platform data quality checks spanning BigQuery (dbt tests), S3, and SFTP replication pipelines.",
+        "Operationalized DQ alerting in Mode BI with upstream issue tracing for faster root-cause resolution."
+      ]
+    },
+    {
       "company": "Accenture",
       "role": "Data Engineering, Governance, and Management Analyst",
       "period": {
         "start": "2024-09-01",
-        "end": null
+        "end": "2026-06-01"
       },
       "shortDescription": "Designing enterprise-grade data platforms and governance structures for high-scale analytics environments.",
       "fullDescription": "Driving enterprise data engineering, governance standards, and data management pipelines. Partnering with cross-functional stakeholders to define metadata specifications and enforce governance rules across data lakes.",
@@ -368,8 +396,8 @@
     ]
   },
   "narrative": {
-    "philosophy": "Invisible Reliability. The best data infrastructure is one that hums quietly in the background, working flawlessly so the business never has to think about it. It’s the clean, trustworthy foundation that allows decisions to be made with confidence.",
-    "intro": "In modern engineering, the true challenge isn't just scaling the nodes or writing faster queries—it's establishing trust in the data itself. As a Data Engineer, I build pipelines that act as the reliable nervous system of the organization.",
+    "philosophy": "Invisible Reliability. The best data infrastructure is one that hums quietly in the background, working flawlessly so the business never has to think about it. It\u2019s the clean, trustworthy foundation that allows decisions to be made with confidence.",
+    "intro": "In modern engineering, the true challenge isn't just scaling the nodes or writing faster queries\u2014it's establishing trust in the data itself. As a Data Engineer, I build pipelines that act as the reliable nervous system of the organization.",
     "conclusion": "Whether it is optimizing query execution times by 50% or automating the migration of thousands of system configurations, my goal is to design robust, self-healing platforms that turn operational complexity into clean, actionable insights."
   },
   "education": [
