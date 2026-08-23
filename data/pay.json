@@ -1,65 +1,65 @@
 [
-  {
-    "id": "ewallets",
-    "name": "E-Wallet (ShopeePay, GoPay, OVO)",
-    "category": "E-Wallet Node",
-    "number": "089527206841",
-    "recipient": "Ichsanul Amal",
-    "details": "ShopeePay, GoPay, and OVO transfers",
-    "details_id": "Transfer ShopeePay, GoPay, dan OVO"
-  },
-  {
-    "id": "mandiri",
-    "name": "Bank Mandiri",
-    "category": "Bank Node",
-    "number": "1320025922254",
-    "recipient": "MUHAMMAD ICHSANUL AM",
-    "details": "Bank Mandiri transfer protocol",
-    "details_id": "Protokol transfer Bank Mandiri"
-  },
-  {
-    "id": "bni",
-    "name": "Bank Negara Indonesia (BNI)",
-    "category": "Bank Node",
-    "number": "1786498809",
-    "recipient": "MUHAMMAD ICHSANUL AMAL",
-    "details": "BNI bank transfer route",
-    "details_id": "Rute transfer bank BNI"
-  },
-  {
-    "id": "aladin",
-    "name": "Bank Aladin Syariah",
-    "category": "Digital Bank Node",
-    "number": "50808150784",
-    "recipient": "MUHAMMAD ICHSANUL AMAL",
-    "details": "Aladin Syariah digital bank transfer",
-    "details_id": "Transfer bank digital Aladin Syariah"
-  },
-  {
-    "id": "krom",
-    "name": "Krom Bank",
-    "category": "Digital Bank Node",
-    "number": "770040806361",
-    "recipient": "MUHAMMAD ICHSANUL AMAL",
-    "details": "Krom Bank digital bank transfer",
-    "details_id": "Transfer bank digital Krom Bank"
-  },
-  {
-    "id": "jago",
-    "name": "Bank Jago Syariah",
-    "category": "Digital Bank Node",
-    "number": "500654508364",
-    "recipient": "MUHAMMAD ICHSANUL AMAL",
-    "details": "Jago Syariah digital bank transfer",
-    "details_id": "Transfer bank digital Jago Syariah"
-  },
-  {
-    "id": "superbank",
-    "name": "Superbank",
-    "category": "Digital Bank Node",
-    "number": "000032429250",
-    "recipient": "MUHAMMAD ICHSANUL AMAL",
-    "details": "Superbank digital bank transfer",
-    "details_id": "Transfer bank digital Superbank"
-  }
+ {
+  "id": "ewallets",
+  "name": "E-Wallet (ShopeePay, GoPay, OVO)",
+  "category": "E-Wallet Node",
+  "number": "089527206841",
+  "recipient": "Ichsanul Amal",
+  "details": "ShopeePay, GoPay, and OVO transfers",
+  "details_id": "Transfer ShopeePay, GoPay, dan OVO"
+ },
+ {
+  "id": "mandiri",
+  "name": "Bank Mandiri",
+  "category": "Bank Node",
+  "number": "1320025922254",
+  "recipient": "MUHAMMAD ICHSANUL AM",
+  "details": "Bank Mandiri transfer protocol",
+  "details_id": "Protokol transfer Bank Mandiri"
+ },
+ {
+  "id": "bni",
+  "name": "Bank Negara Indonesia (BNI)",
+  "category": "Bank Node",
+  "number": "1786498809",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "BNI bank transfer route",
+  "details_id": "Rute transfer bank BNI"
+ },
+ {
+  "id": "aladin",
+  "name": "Bank Aladin Syariah",
+  "category": "Digital Bank Node",
+  "number": "50808150784",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "Aladin Syariah digital bank transfer",
+  "details_id": "Transfer bank digital Aladin Syariah"
+ },
+ {
+  "id": "krom",
+  "name": "Krom Bank",
+  "category": "Digital Bank Node",
+  "number": "770040806361",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "Krom Bank digital bank transfer",
+  "details_id": "Transfer bank digital Krom Bank"
+ },
+ {
+  "id": "jago",
+  "name": "Bank Jago Syariah",
+  "category": "Digital Bank Node",
+  "number": "500654508364",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "Jago Syariah digital bank transfer",
+  "details_id": "Transfer bank digital Jago Syariah"
+ },
+ {
+  "id": "superbank",
+  "name": "Superbank",
+  "category": "Digital Bank Node",
+  "number": "000032429250",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "Superbank digital bank transfer",
+  "details_id": "Transfer bank digital Superbank"
+ }
 ]
