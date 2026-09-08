@@ -19,20 +19,21 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
     setAudioActive(newState);
   };
 
-  // Localize internal link resolution
+  // Localize internal link resolution with consistent trailing slash matching next.config.ts
   const localizedHref = (href: string) => {
     if (href.startsWith('http') || href.startsWith('mailto')) return href;
+    const normalized = href === '/' ? '/' : (href.endsWith('/') ? href : `${href}/`);
     if (isIndonesian) {
-      return href === '/' ? '/id/' : `/id${href}`;
+      return normalized === '/' ? '/id/' : `/id${normalized}`;
     }
-    return href;
+    return normalized;
   };
 
   const links = [
     { name: isIndonesian ? 'beranda' : 'home', href: '/' },
-    { name: isIndonesian ? 'karir' : 'work', href: '/work' },
-    { name: isIndonesian ? 'proyek' : 'projects', href: '/projects' },
-    { name: isIndonesian ? 'data lake' : 'data lake', href: '/data-lake' },
+    { name: isIndonesian ? 'karir' : 'work', href: '/work/' },
+    { name: isIndonesian ? 'proyek' : 'projects', href: '/projects/' },
+    { name: isIndonesian ? 'data lake' : 'data lake', href: '/data-lake/' },
     { name: isIndonesian ? 'kebun digital' : 'garden', href: 'https://nichsedge.github.io/digital-garden/', external: true },
   ];
 

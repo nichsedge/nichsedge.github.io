@@ -62,7 +62,7 @@ export function ReferralGateways() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="h-full border border-border-subtle bg-bg-1/40 p-6 relative overflow-hidden group hover:border-accent/40 transition-colors flex flex-col justify-between"
+                className="h-full border border-border-subtle bg-bg-1/90 backdrop-blur-sm p-6 relative overflow-hidden group hover:border-accent/40 transition-colors flex flex-col justify-between"
               >
                 {/* Background Cyber Glow Grid Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -74,7 +74,7 @@ export function ReferralGateways() {
                   {/* Card Header */}
                   <div className="flex justify-between items-start gap-4 mb-4">
                     <div>
-                      <span className="font-mono text-[9px] text-accent uppercase tracking-widest block mb-1">
+                      <span className="font-mono text-[11px] text-accent font-semibold uppercase tracking-wider block mb-1">
                         [{node.category}]
                       </span>
                       <h3 className="text-lg font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
@@ -85,23 +85,23 @@ export function ReferralGateways() {
                         </span>
                       </h3>
                     </div>
-                    <span className="font-mono text-[9px] px-2 py-0.5 bg-bg-1 border border-border-subtle rounded-sm text-text-3 select-none">
+                    <span className="font-mono text-[10px] px-2 py-0.5 bg-bg border border-border-subtle rounded-sm text-text-3 select-none">
                       NODE_0{index + 1}
                     </span>
                   </div>
 
                   {/* Benefit Payload */}
-                  <div className="font-mono text-[11px] leading-relaxed text-text-2 bg-bg/50 border-l-2 border-accent p-3 mb-6 relative overflow-hidden">
-                    <span className="text-accent/60 block text-[9px] mb-1 font-bold uppercase tracking-wider">// PAYLOAD BENEFITS:</span>
+                  <div className="font-mono text-xs leading-relaxed text-text-1 bg-bg/80 border-l-2 border-accent p-3.5 mb-6 relative overflow-hidden">
+                    <span className="text-accent/90 block text-[10px] mb-1 font-bold uppercase tracking-wider">// PAYLOAD BENEFITS:</span>
                     {node.benefit}
                   </div>
                 </div>
 
                 {/* Connection Controls / Actions */}
                 <div className="space-y-3 pt-2 relative z-10">
-                  <div className="flex items-center justify-between text-[10px] font-mono border-t border-border-subtle/50 pt-3">
+                  <div className="flex items-center justify-between text-[11px] font-mono border-t border-border-subtle/50 pt-3">
                     <span className="text-text-3">ROUTING CODE:</span>
-                    <span className="text-text-1 font-bold truncate max-w-[200px]" title={node.code}>
+                    <span className="text-text-0 font-bold truncate max-w-[200px]" title={node.code}>
                       {node.code}
                     </span>
                   </div>
@@ -110,7 +110,7 @@ export function ReferralGateways() {
                     {/* Copy Link/Code */}
                     <button
                       onClick={() => handleCopy(node.code, node.id)}
-                      className={`py-2 px-3 border font-mono text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer select-none rounded-sm ${
+                      className={`py-2 px-3 border font-mono text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer select-none rounded-sm ${
                         isCopied
                           ? 'bg-green-500/10 border-green-500 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]'
                           : 'bg-bg border-border hover:border-accent hover:text-accent'
@@ -134,10 +134,10 @@ export function ReferralGateways() {
                       href={node.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="py-2 px-3 bg-accent text-bg hover:bg-white border border-transparent font-mono text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(0,225,207,0.3)] transition-all select-none rounded-sm"
+                      className="py-2 px-3 bg-accent text-bg hover:bg-white border border-transparent font-mono text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(0,225,207,0.3)] transition-all select-none rounded-sm"
                     >
                       <span>ESTABLISH_LINK</span>
-                      <ExternalLink size={11} className="shrink-0" />
+                      <ExternalLink size={12} className="shrink-0" />
                     </a>
                   </div>
                 </div>

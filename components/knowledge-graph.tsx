@@ -355,13 +355,13 @@ export function KnowledgeGraph() {
 
                 <div className="pt-2 flex gap-2">
                   <a
-                    href="/data-lake"
+                    href="/data-lake/"
                     className="flex-1 px-3 py-1.5 bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
                   >
                     <Database size={10} /> Query In Data Lake
                   </a>
                   <a
-                    href="/projects"
+                    href="/projects/"
                     className="flex-1 px-3 py-1.5 bg-bg border border-border-subtle hover:border-accent text-text-1 text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
                   >
                     <ExternalLink size={10} /> View Repos

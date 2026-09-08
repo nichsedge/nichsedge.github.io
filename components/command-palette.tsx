@@ -7,6 +7,7 @@ import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Za
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
 import { getFallbackAuditReport } from '@/lib/ai-fallback';
+import { gameEngine } from '@/lib/game-engine';
 
 interface CommandItem {
   id: string;
@@ -224,10 +225,11 @@ export function CommandPalette() {
     }
   }, [selectedIndex, isOpen, isChatMode]);
 
-  // Reset selectedIndex to 0 when opened
+  // Reset selectedIndex to 0 when opened and trigger quest
   useEffect(() => {
     if (isOpen) {
       setSelectedIndex(0);
+      gameEngine.completeQuest('terminal_access');
     }
   }, [isOpen]);
 

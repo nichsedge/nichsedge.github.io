@@ -140,7 +140,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <BiomeSelector />
         <GlobalOverlays />
         <div className="noise-overlay" />
-        <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[720px] mx-auto bg-bg shadow-2xl">
+        <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[860px] mx-auto bg-bg shadow-2xl">
           {children}
         </div>
       </body>

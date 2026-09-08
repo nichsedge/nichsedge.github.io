@@ -30,7 +30,7 @@ export function ThreadAllocator() {
   }, []);
 
   return (
-    <div className={`fixed top-[360px] right-6 2xl:right-auto 2xl:left-[calc(50%+384px)] z-40 hidden xl:flex flex-col items-end 2xl:items-start gap-2 pointer-events-none w-64 hud-widget transition-all duration-300 ${
+    <div className={`fixed top-[360px] left-[calc(50%+450px)] z-40 hidden min-[1320px]:flex flex-col items-start gap-2 pointer-events-none w-64 hud-widget transition-all duration-300 ${
       isGraphOpen ? 'opacity-0 pointer-events-none translate-y-2 invisible' : 'opacity-100'
     }`}>
        <div className="bg-bg/40 backdrop-blur-md border border-border-subtle p-3 rounded-sm w-full">

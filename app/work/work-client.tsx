@@ -21,6 +21,7 @@ import { TiltCard } from '@/components/tilt-card';
 
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
+import { useWideLayout } from '@/hooks/use-wide-layout';
 
 interface Period {
   start: string;
@@ -129,6 +130,7 @@ const STAGGER_CONTAINER = {
 
 export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
+  useWideLayout('lg');
   const [isNSM, setIsNSM] = React.useState(false);
   const work = resumeData.work as unknown as WorkItem[];
   const { narrative, profile } = resumeData;
@@ -170,7 +172,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00e1cf_1px,transparent_1px)] [background-size:40px_40px]" />
       </div>
 
-      <main className="relative z-10 pt-24 pb-32 px-6 max-w-5xl mx-auto">
+      <main className="relative z-10 pt-24 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
         {/* Header Section */}
         <section id="overview" className="mb-24">
           <motion.div {...FADE_UP} className="space-y-6">
@@ -285,7 +287,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                     <p className="font-mono text-[11px] text-accent/80 uppercase tracking-widest">{role.role}</p>
                   </div>
 
-                  <p className="text-[14px] text-text-2 leading-relaxed font-light font-sans max-w-2xl">
+                  <p className="text-[15px] text-text-2 leading-relaxed font-light font-sans max-w-3xl">
                     {role.fullDescription}
                   </p>
 
@@ -304,8 +306,8 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   <div className="space-y-3 pt-2">
                     {role.impact.map((point, i) => (
                       <div key={i} className="flex items-start gap-3 group/item">
-                        <Terminal size={12} className="mt-1 text-text-3 group-hover/item:text-accent shrink-0" />
-                        <p className="text-[13px] text-text-3 group-hover/item:text-text-2 transition-colors">{point}</p>
+                        <Terminal size={14} className="mt-1 text-text-3 group-hover/item:text-accent shrink-0" />
+                        <p className="text-[14px] text-text-3 group-hover/item:text-text-2 transition-colors leading-relaxed">{point}</p>
                       </div>
                     ))}
                   </div>
@@ -313,7 +315,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   {/* Tech Stack */}
                   <div className="flex flex-wrap gap-2 pt-4">
                     {role.tech.map(t => (
-                      <span key={t} className="px-2 py-1 bg-bg-1 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 group-hover:border-accent/40 group-hover:text-accent transition-all uppercase">
+                      <span key={t} className="px-2.5 py-1 bg-bg-1 border border-border-subtle rounded-sm font-mono text-[10px] text-text-3 group-hover:border-accent/40 group-hover:text-accent transition-all uppercase">
                         {t}
                       </span>
                     ))}
@@ -329,18 +331,16 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                       
                       <div className="relative pl-6 border-l border-l-border-subtle/60 space-y-10">
                         {role.projects.map((project, pIdx) => (
-                          <div key={`${project.role}-${pIdx}`} className="relative group/project space-y-3">
-                            {/* Connector dot */}
+                          <div key={pIdx} className="relative group/project space-y-4">
                             <div className="absolute -left-[29px] top-1.5 w-2 h-2 rounded-full border border-border-subtle bg-bg group-hover/project:border-accent group-hover/project:shadow-[0_0_8px_rgba(0,225,207,0.4)] transition-all" />
-                            
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
-                              <h4 className="text-[16px] font-bold text-text-0 group-hover/project:text-accent transition-colors">
+                            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                              <h4 className="text-base font-semibold text-text-1 group-hover/project:text-accent transition-colors">
                                 {project.role}
                               </h4>
-                              <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period, false, locale)}</span>
+                              <span className="font-mono text-[10px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period, false, locale)}</span>
                             </div>
                             
-                            <p className="text-[13px] text-text-2 leading-relaxed font-light font-sans max-w-xl">
+                            <p className="text-[14px] text-text-2 leading-relaxed font-light font-sans max-w-2xl">
                               {project.fullDescription}
                             </p>
 
@@ -360,8 +360,8 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                               <div className="space-y-2 pl-1 pt-1">
                                 {project.impact.map((point, i) => (
                                   <div key={i} className="flex items-start gap-2.5 group/pitem">
-                                    <Terminal size={10} className="mt-1 text-text-3 group-hover/pitem:text-accent shrink-0 opacity-80" />
-                                    <p className="text-[12px] text-text-3 group-hover/pitem:text-text-2 transition-colors">{point}</p>
+                                    <Terminal size={12} className="mt-1 text-text-3 group-hover/pitem:text-accent shrink-0 opacity-80" />
+                                    <p className="text-[13px] text-text-3 group-hover/pitem:text-text-2 transition-colors leading-relaxed">{point}</p>
                                   </div>
                                 ))}
                               </div>

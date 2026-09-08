@@ -31,6 +31,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [showAllLangs, setShowAllLangs] = useState(false);
   const [showAllTopics, setShowAllTopics] = useState(false);
+  const [showChart, setShowChart] = useState(false);
   const [windowWidth, setWindowWidth] = useState(1200);
 
   useEffect(() => {
@@ -147,101 +148,120 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 bg-bg-1 border border-border-subtle p-6 rounded-sm">
-          <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Total_Repos</div>
-            <div className="text-[14px] font-medium text-text-0">{stats.totalCount}</div>
-          </div>
-          <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Cumulative_Stars</div>
-            <div className="text-[14px] font-medium text-text-0 flex items-center gap-1">
-              <Star size={12} className="text-accent" /> {stats.totalStars}
+        <div className="mt-8 flex flex-col gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-bg-1 border border-border-subtle p-5 rounded-sm">
+            <div className="space-y-1">
+              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Total_Repos</div>
+              <div className="text-[16px] font-semibold text-text-0">{stats.totalCount}</div>
             </div>
-          </div>
-          <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Stack_Unik' : 'Unique_Stacks'}</div>
-            <div className="text-[14px] font-medium text-text-0">{stats.langCount}</div>
-          </div>
-          <div className="space-y-1">
-            <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Fokus_Utama' : 'Primary_Focus'}</div>
-            <div className="text-[14px] font-medium text-text-0 truncate">#{stats.topTopic}</div>
-          </div>
-        </div>
-
-        {/* Language Distribution */}
-        <motion.div
-          {...FADE_UP}
-          transition={{ delay: 0.2 }}
-          className="mt-6 flex flex-col md:flex-row gap-6 bg-bg-1 border border-border-subtle p-6 rounded-sm"
-        >
-          <div className="flex-1 space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-mono text-[10px] text-text-3 tracking-[0.2em] uppercase flex items-center gap-2">
-                <PieChartIcon size={14} className="text-accent" /> {locale === 'id' ? 'Komposisi Teknologi' : 'Tech Composition'}
-              </h3>
-              {allLangData.length > 5 && (
-                <button
-                  onClick={() => setShowAllLangs(!showAllLangs)}
-                  className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
-                >
-                  {showAllLangs ? (locale === 'id' ? 'Top 5 saja' : 'Show Top 5') : `${locale === 'id' ? 'Semua' : 'Show All'} (${allLangData.length})`}
-                  <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllLangs ? '-rotate-90' : 'rotate-90'}`} />
-                </button>
-              )}
-            </div>
-            <div
-              className="w-full transition-all duration-300 ease-in-out"
-              style={{ height: showAllLangs ? `${Math.max(180, langData.length * 36)}px` : '180px' }}
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={langData} layout="vertical" margin={{ left: 0, right: 20, top: 0, bottom: 0 }}>
-                  <XAxis type="number" hide />
-                  <YAxis
-                    dataKey="name"
-                    type="category"
-                    stroke="#71717a"
-                    fontSize={10}
-                    axisLine={false}
-                    tickLine={false}
-                    width={yAxisWidth}
-                    tickFormatter={formatYAxisTick}
-                  />
-                  <Tooltip
-                    cursor={{ fill: 'rgba(0, 225, 207, 0.05)' }}
-                    contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', fontSize: '10px' }}
-                  />
-                  <Bar dataKey="value" fill="#00e1cf" radius={[0, 2, 2, 0]} barSize={12} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="w-full md:w-1/3 space-y-4">
-            <div className="border-l border-border-subtle pl-4 h-full flex flex-col justify-start gap-4">
-              <p className="text-[11px] text-text-2 font-light italic leading-relaxed">
-                {locale === 'id' ? 
-                  '\"Bahasa pemrograman adalah alat untuk menjalankan misi. Gambaran umum ini mencerminkan perjalanan melintasi berbagai lapisan stack.\"' :
-                  '\"Languages are tools for the mission. This overview reflects a journey across layers of the stack.\"'
-                }
-              </p>
-              <div
-                className="space-y-2 overflow-y-auto pr-2 scrollbar-thin transition-all duration-300"
-                style={{ maxHeight: showAllLangs ? `${Math.max(180, langData.length * 36 - 60)}px` : '180px' }}
-              >
-                {langData.map((d) => (
-                  <div key={d.name} className="flex justify-between items-center text-[10px] font-mono py-0.5">
-                    <span className="text-text-3">{d.name}</span>
-                    <div className="flex items-center gap-2">
-                      <div className="w-20 h-1 bg-border rounded-full overflow-hidden">
-                        <div className="h-full bg-accent" style={{ width: `${(d.value / repos.length) * 100}%` }} />
-                      </div>
-                      <span className="text-accent">{Math.round((d.value / repos.length) * 100)}%</span>
-                    </div>
-                  </div>
-                ))}
+            <div className="space-y-1">
+              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Cumulative_Stars</div>
+              <div className="text-[16px] font-semibold text-text-0 flex items-center gap-1.5">
+                <Star size={13} className="text-accent" /> {stats.totalStars}
               </div>
             </div>
+            <div className="space-y-1">
+              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Stack_Unik' : 'Unique_Stacks'}</div>
+              <div className="text-[16px] font-semibold text-text-0">{stats.langCount}</div>
+            </div>
+            <div className="space-y-1">
+              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Fokus_Utama' : 'Primary_Focus'}</div>
+              <div className="text-[16px] font-semibold text-accent truncate">#{stats.topTopic}</div>
+            </div>
           </div>
-        </motion.div>
+
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowChart(!showChart)}
+              className="font-mono text-[10px] uppercase tracking-wider text-text-3 hover:text-accent flex items-center gap-1.5 transition-colors cursor-pointer py-1"
+            >
+              <PieChartIcon size={12} className="text-accent" />
+              <span>{showChart ? (locale === 'id' ? 'Sembunyikan Distribusi Teknologi' : 'Hide Tech Distribution') : (locale === 'id' ? 'Lihat Distribusi Teknologi' : 'View Tech Distribution')}</span>
+              <ArrowRight size={10} className={`transform transition-transform ${showChart ? '-rotate-90' : 'rotate-90'}`} />
+            </button>
+          </div>
+
+          <AnimatePresence>
+            {showChart && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-col md:flex-row gap-6 bg-bg-1 border border-border-subtle p-6 rounded-sm">
+                  <div className="flex-1 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-mono text-[10px] text-text-3 tracking-[0.2em] uppercase flex items-center gap-2">
+                        <PieChartIcon size={14} className="text-accent" /> {locale === 'id' ? 'Komposisi Teknologi' : 'Tech Composition'}
+                      </h3>
+                      {allLangData.length > 5 && (
+                        <button
+                          onClick={() => setShowAllLangs(!showAllLangs)}
+                          className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
+                        >
+                          {showAllLangs ? (locale === 'id' ? 'Top 5 saja' : 'Show Top 5') : `${locale === 'id' ? 'Semua' : 'Show All'} (${allLangData.length})`}
+                          <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllLangs ? '-rotate-90' : 'rotate-90'}`} />
+                        </button>
+                      )}
+                    </div>
+                    <div
+                      className="w-full transition-all duration-300 ease-in-out"
+                      style={{ height: showAllLangs ? `${Math.max(180, langData.length * 36)}px` : '180px' }}
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={langData} layout="vertical" margin={{ left: 0, right: 20, top: 0, bottom: 0 }}>
+                          <XAxis type="number" hide />
+                          <YAxis
+                            dataKey="name"
+                            type="category"
+                            stroke="#71717a"
+                            fontSize={10}
+                            axisLine={false}
+                            tickLine={false}
+                            width={yAxisWidth}
+                            tickFormatter={formatYAxisTick}
+                          />
+                          <Tooltip
+                            cursor={{ fill: 'rgba(0, 225, 207, 0.05)' }}
+                            contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', fontSize: '10px' }}
+                          />
+                          <Bar dataKey="value" fill="#00e1cf" radius={[0, 2, 2, 0]} barSize={12} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/3 space-y-4">
+                    <div className="border-l border-border-subtle pl-4 h-full flex flex-col justify-start gap-4">
+                      <p className="text-[11px] text-text-2 font-light italic leading-relaxed">
+                        {locale === 'id' ? 
+                          '\"Bahasa pemrograman adalah alat untuk menjalankan misi. Gambaran umum ini mencerminkan perjalanan melintasi berbagai lapisan stack.\"' :
+                          '\"Languages are tools for the mission. This overview reflects a journey across layers of the stack.\"'
+                        }
+                      </p>
+                      <div
+                        className="space-y-2 overflow-y-auto pr-2 scrollbar-thin transition-all duration-300"
+                        style={{ maxHeight: showAllLangs ? `${Math.max(180, langData.length * 36 - 60)}px` : '180px' }}
+                      >
+                        {langData.map((d) => (
+                          <div key={d.name} className="flex justify-between items-center text-[10px] font-mono py-0.5">
+                            <span className="text-text-3">{d.name}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-20 h-1 bg-border rounded-full overflow-hidden">
+                                <div className="h-full bg-accent" style={{ width: `${(d.value / repos.length) * 100}%` }} />
+                              </div>
+                              <span className="text-accent">{Math.round((d.value / repos.length) * 100)}%</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </header>
 
       {/* Filters */}
@@ -340,8 +360,8 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 </div>
               </div>
 
-              <h3 className="text-md font-bold text-text-0 mb-2 font-mono group-hover:text-accent transition-colors">{repo.name}</h3>
-              <p className="text-[12px] text-text-3 font-light mb-6 line-clamp-2 h-9">
+              <h3 className="text-base font-bold text-text-0 mb-2 font-mono group-hover:text-accent transition-colors">{repo.name}</h3>
+              <p className="text-[13px] text-text-2 font-light mb-5 line-clamp-3 min-h-[44px] leading-relaxed">
                 {repo.description || "No description provided."}
               </p>
 
@@ -355,10 +375,13 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 mb-8">
-                {repo.topics.map(topic => (
-                  <span key={topic} className="text-[9px] font-mono text-text-3 opacity-60">#{topic}</span>
+              <div className="flex flex-wrap gap-1.5 mb-6">
+                {repo.topics.slice(0, 4).map(topic => (
+                  <span key={topic} className="text-[9px] font-mono px-2 py-0.5 bg-bg-2 border border-border-subtle/70 rounded-sm text-text-3">#{topic}</span>
                 ))}
+                {repo.topics.length > 4 && (
+                  <span className="text-[9px] font-mono text-text-3/60 self-center">+{repo.topics.length - 4}</span>
+                )}
               </div>
 
               <div className="flex items-center justify-between pt-4 border-t border-border-subtle mt-auto">

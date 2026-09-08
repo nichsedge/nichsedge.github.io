@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Play, Code, Database, Download, Check } from 'lucide-react';
 import { soundEngine } from '@/lib/audio';
+import { gameEngine } from '@/lib/game-engine';
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
 
@@ -89,6 +90,7 @@ export function InteractiveSqlWorkbench({ locale = 'en' }: SqlWorkbenchProps) {
 
   const handleRunQuery = () => {
     soundEngine.playSqlExecute();
+    gameEngine.completeQuest('execute_query');
     setExecuting(true);
     setTimeout(() => {
       setQueryMetrics({

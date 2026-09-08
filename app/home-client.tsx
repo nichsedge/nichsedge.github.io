@@ -3,7 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Database, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, Database, Github, Linkedin, Mail, Cpu, Play, GitBranch, Terminal, Zap, Server, Sparkles } from 'lucide-react';
 
 import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
@@ -31,6 +31,9 @@ const KnowledgeGraph = dynamic(() => import('@/components/knowledge-graph').then
 const DataLineageGraph = dynamic(() => import('@/components/data-lineage-graph').then(m => m.DataLineageGraph), { ssr: false });
 const DataStreamSandbox = dynamic(() => import('@/components/data-stream-sandbox').then(m => m.DataStreamSandbox), { ssr: false });
 const StreamSimulator = dynamic(() => import('@/components/stream-simulator').then(m => m.StreamSimulator), { ssr: false });
+const LaserPipelineRouter = dynamic(() => import('@/components/three/laser-pipeline-router').then(m => m.LaserPipelineRouter), { ssr: false });
+const ServerRackExplorer = dynamic(() => import('@/components/three/server-rack-explorer').then(m => m.ServerRackExplorer), { ssr: false });
+const KnowledgeConstellation = dynamic(() => import('@/components/three/knowledge-constellation').then(m => m.KnowledgeConstellation), { ssr: false });
 
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
@@ -43,7 +46,7 @@ const FADE_UP = {
 
 function Section({ children, label, id, isNSM }: { children: React.ReactNode, label: string, id: string, isNSM?: boolean }) {
   return (
-    <section id={id} className={`py-16 md:py-24 px-6 border-b border-border-subtle group transition-all duration-700 relative z-10 ${isNSM ? 'bg-bg/60 backdrop-blur-sm' : ''}`}>
+    <section id={id} className={`py-20 md:py-28 px-6 md:px-10 border-b border-border-subtle group transition-all duration-700 relative z-10 ${isNSM ? 'bg-bg/60 backdrop-blur-sm' : ''}`}>
       <div className="flex items-center gap-4 mb-12">
         <h2 className="font-mono text-[10px] text-accent uppercase tracking-[0.3em] font-bold">
           <DecryptedText text={label} speed={20} />
@@ -59,6 +62,17 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
   const [isNSM, setIsNSM] = React.useState(false);
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const [activeArchTab, setActiveArchTab] = React.useState<'3d-laser' | '3d-cluster' | 'pipeline' | 'stream' | 'lineage' | 'sql'>('3d-laser');
+  const [skills3DView, setSkills3DView] = React.useState(true);
+
+  const archTabs = [
+    { id: '3d-laser', label: locale === 'id' ? '01 // 3D Laser Router' : '01 // 3D Laser Router', icon: Zap },
+    { id: '3d-cluster', label: locale === 'id' ? '02 // 3D Cluster Rack' : '02 // 3D Cluster Rack', icon: Server },
+    { id: 'pipeline', label: locale === 'id' ? '03 // Pipeline 2D' : '03 // 2D Pipeline', icon: Cpu },
+    { id: 'stream', label: locale === 'id' ? '04 // Simulasi Stream' : '04 // Stream Sim', icon: Play },
+    { id: 'lineage', label: locale === 'id' ? '05 // Silsilah DAG' : '05 // Lineage DAG', icon: GitBranch },
+    { id: 'sql', label: locale === 'id' ? '06 // Sandbox SQL' : '06 // SQL Sandbox', icon: Terminal },
+  ] as const;
 
   React.useEffect(() => {
     if (isNSM) {
@@ -185,39 +199,105 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </motion.div>
       </section>
 
-      {/* The ETL Engine Visual & Sandbox */}
-      <section id="architecture" className="px-6 pb-16 space-y-8">
-         <DataPipeline />
-         <StreamSimulator locale={locale} />
-         <DataLineageGraph locale={locale} />
-         <DataStreamSandbox locale={locale} />
+      {/* The ETL Engine Visual & Sandbox Workbench */}
+      <section id="architecture" className="px-6 py-12 md:py-16 border-b border-border-subtle">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>{locale === 'id' ? 'ARSITEKTUR // MEJA KERJA SISTEM' : 'ARCHITECTURE // SYSTEM WORKBENCH'}</span>
+            </div>
+            <p className="font-mono text-[11px] text-text-3">
+              {locale === 'id' ? 'Instrumen pemrosesan & visualisasi data terdistribusi:' : 'Distributed data processing & telemetry engines:'}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 bg-bg-1/80 p-1.5 rounded border border-border-subtle backdrop-blur-sm">
+            {archTabs.map(tab => {
+              const Icon = tab.icon;
+              const isActive = activeArchTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveArchTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider rounded-sm transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-accent text-bg font-bold shadow-[0_0_12px_rgba(0,225,207,0.3)]'
+                      : 'text-text-3 hover:text-text-1 hover:bg-white/5'
+                  }`}
+                >
+                  <Icon size={12} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="transition-all duration-300 min-h-[450px]">
+          {activeArchTab === '3d-laser' && <LaserPipelineRouter locale={locale} />}
+          {activeArchTab === '3d-cluster' && <ServerRackExplorer locale={locale} />}
+          {activeArchTab === 'pipeline' && <DataPipeline locale={locale} />}
+          {activeArchTab === 'stream' && <StreamSimulator locale={locale} />}
+          {activeArchTab === 'lineage' && <DataLineageGraph locale={locale} />}
+          {activeArchTab === 'sql' && <DataStreamSandbox locale={locale} />}
+        </div>
       </section>
 
       {/* Career Pipeline */}
       <Section id="work" label={locale === 'id' ? '01 — pipeline karir' : '01 — career pipeline'} isNSM={isNSM}>
-        <div className="mb-12">
+        <div className="mb-14">
            <CareerPipeline locale={locale} />
         </div>
         <div className="mb-16">
            <PipelineHeatmap />
         </div>
-        <div className="mb-16">
+        <div>
            <LiveArchitecture />
         </div>
       </Section>
 
-      {/* Expertise Graph */}
+      {/* Expertise Graph & 3D Celestial Constellation */}
       <Section id="skills" label={locale === 'id' ? '02 — jaringan saraf' : '02 — neural network'} isNSM={isNSM}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="text-[11px] font-mono text-text-3">
+            {locale === 'id' ? 'Pilih mode tampilan graf:' : 'Select graph visualization mode:'}
+          </div>
+          <div className="flex items-center gap-1 bg-bg-1 p-1 rounded border border-border-subtle">
+            <button
+              onClick={() => setSkills3DView(true)}
+              className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-sm transition-all cursor-pointer flex items-center gap-1.5 ${
+                skills3DView 
+                  ? 'bg-accent text-bg font-bold shadow-[0_0_10px_rgba(0,225,207,0.3)]' 
+                  : 'text-text-3 hover:text-text-1'
+              }`}
+            >
+              <Sparkles size={11} />
+              <span>3D GALAXY</span>
+            </button>
+            <button
+              onClick={() => setSkills3DView(false)}
+              className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-sm transition-all cursor-pointer flex items-center gap-1.5 ${
+                !skills3DView 
+                  ? 'bg-accent text-bg font-bold shadow-[0_0_10px_rgba(0,225,207,0.3)]' 
+                  : 'text-text-3 hover:text-text-1'
+              }`}
+            >
+              <GitBranch size={11} />
+              <span>2D GRAPH</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           <div>
-            <p className="text-[14px] leading-relaxed text-text-3 font-light mb-6">
+            <p className="text-[15px] leading-relaxed text-text-3 font-light mb-6">
               {locale === 'id' ? (
                 <>Lanskap teknis saya adalah jaringan alat dan protokol yang saling terhubung. Saya berspesialisasi dalam menjembatani <span className="text-text-1 font-medium">Software Engineering</span> dan <span className="text-text-1 font-medium">Strategi Data</span>.</>
               ) : (
                 <>My technical landscape is an interconnected web of tools and protocols. I specialize in the bridge between <span className="text-text-1 font-medium">Software Engineering</span> and <span className="text-text-1 font-medium">Data Strategy</span>.</>
               )}
             </p>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <SkillMatrix />
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                 <div className="bg-bg-1 p-3 md:p-4 border border-border-subtle group hover:border-accent/30 transition-colors">
@@ -241,8 +321,12 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               </div>
             </div>
           </div>
-          <div className="relative h-[400px]">
-             <KnowledgeGraph />
+          <div className="relative min-h-[450px] w-full">
+             {skills3DView ? (
+               <KnowledgeConstellation locale={locale} />
+             ) : (
+               <KnowledgeGraph />
+             )}
           </div>
         </div>
       </Section>

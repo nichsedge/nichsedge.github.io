@@ -94,26 +94,26 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
             { label: locale === 'id' ? 'Portal Terfilter' : 'Filtered Portals', value: filteredNodes.length, icon: Cpu, color: 'text-accent' },
             { label: locale === 'id' ? 'Kategori Aktif' : 'Active Category', value: selectedCategory, icon: Terminal, color: 'text-accent' }
           ].map((stat, i) => (
-            <div key={i} className="border border-border-subtle bg-bg-1/40 p-4 font-mono rounded-sm select-none relative overflow-hidden group">
+            <div key={i} className="border border-border-subtle bg-bg-1/80 backdrop-blur-sm p-4 font-mono rounded-sm select-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                 <stat.icon size={48} />
               </div>
-              <span className="text-[9px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
+              <span className="text-[10px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
               <div className="flex items-center gap-2">
                 <stat.icon size={12} className={stat.color} />
-                <span className="text-[12px] font-bold text-text-0">{stat.value}</span>
+                <span className="text-[13px] font-bold text-text-0">{stat.value}</span>
               </div>
             </div>
           ))}
         </div>
 
         {/* Search and Filters Controller */}
-        <div className="relative z-10 border border-border-subtle bg-bg-1/25 p-4 rounded-sm mb-10 space-y-4">
+        <div className="relative z-10 border border-border-subtle bg-bg-1/80 backdrop-blur-sm p-4 rounded-sm mb-10 space-y-4">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             
             {/* Console Input Search Bar */}
             <div className="relative w-full md:flex-1">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[10px]">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[11px]">
                 <Search size={14} className="text-accent" />
                 <span className="opacity-40">// QUERY &gt;</span>
               </div>
@@ -122,7 +122,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={locale === 'id' ? 'cari portal berdasarkan nama, manfaat, kata kunci...' : 'search portals by name, benefits, keywords...'}
-                className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
+                className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[13px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
               />
               {searchQuery && (
                 <button
@@ -135,7 +135,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
             </div>
 
             {/* Ingestion Speed Indicators (Mock) */}
-            <div className="hidden lg:flex items-center gap-4 font-mono text-[9px] tracking-wider text-text-3 shrink-0 border-l border-border-subtle pl-4">
+            <div className="hidden lg:flex items-center gap-4 font-mono text-[10px] tracking-wider text-text-3 shrink-0 border-l border-border-subtle pl-4">
               <div>
                 BANDWIDTH: <span className="text-text-0">1.2 GB/S</span>
               </div>
@@ -147,7 +147,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
           </div>
 
           {/* Dynamic Cyber Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none font-mono text-[9px]">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none font-mono text-[10px]">
             <span className="text-text-3 uppercase tracking-widest mr-2 select-none shrink-0">// CATEGORIES:</span>
             {categories.map((cat) => (
               <button
@@ -177,11 +177,11 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                   return (
                     <TiltCard key={node.id}>
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
-                        className="h-full border border-border-subtle bg-bg-1/45 p-6 relative overflow-hidden group hover:border-accent/40 transition-colors flex flex-col justify-between"
+                        className="h-full border border-border-subtle bg-bg-1/90 backdrop-blur-sm p-6 relative overflow-hidden group hover:border-accent/40 transition-colors flex flex-col justify-between"
                       >
                         {/* Background Cyber Grid Accent */}
                         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -193,7 +193,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                           {/* Header metadata */}
                           <div className="flex justify-between items-start gap-4 mb-4">
                             <div>
-                              <span className="font-mono text-[9px] text-accent uppercase tracking-widest block mb-1">
+                              <span className="font-mono text-[11px] text-accent font-semibold uppercase tracking-wider block mb-1">
                                 [{node.category}]
                               </span>
                               <h3 className="text-base font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
@@ -204,23 +204,23 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                                 </span>
                               </h3>
                             </div>
-                            <span className="font-mono text-[8px] px-1.5 py-0.5 bg-bg-1 border border-border-subtle rounded-sm text-text-3 select-none">
+                            <span className="font-mono text-[10px] px-2 py-0.5 bg-bg border border-border-subtle rounded-sm text-text-3 select-none">
                               ROUTE_0{index + 1}
                             </span>
                           </div>
 
                           {/* Benefit payload description */}
-                          <p className="font-mono text-[10px] leading-relaxed text-text-2 bg-bg/60 border-l border-accent p-3 mb-6 relative overflow-hidden">
-                            <span className="text-accent/60 block text-[8px] mb-1 font-bold uppercase tracking-wider">// {locale === 'id' ? 'MANFAAT MUATAN:' : 'PAYLOAD BENEFITS:'}</span>
+                          <div className="font-mono text-xs leading-relaxed text-text-1 bg-bg/80 border-l-2 border-accent p-3.5 mb-6 relative overflow-hidden">
+                            <span className="text-accent/90 block text-[10px] mb-1 font-bold uppercase tracking-wider">// {locale === 'id' ? 'MANFAAT MUATAN:' : 'PAYLOAD BENEFITS:'}</span>
                             {node.benefit}
-                          </p>
+                          </div>
                         </div>
 
                         {/* Connection Route Actions */}
                         <div className="space-y-3 pt-2 relative z-10">
-                          <div className="flex items-center justify-between text-[9px] font-mono border-t border-border-subtle/50 pt-3">
+                          <div className="flex items-center justify-between text-[11px] font-mono border-t border-border-subtle/50 pt-3">
                             <span className="text-text-3">ROUTING CODE:</span>
-                            <span className="text-text-1 font-bold truncate max-w-[150px]" title={node.code}>
+                            <span className="text-text-0 font-bold truncate max-w-[160px]" title={node.code}>
                               {node.code}
                             </span>
                           </div>
@@ -229,7 +229,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                             {/* Copy Link Code */}
                             <button
                               onClick={() => handleCopy(node.code, node.id)}
-                              className={`py-2 px-2.5 border font-mono text-[9px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none rounded-sm ${
+                              className={`py-2 px-3 border font-mono text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none rounded-sm ${
                                 isCopied
                                   ? 'bg-green-500/10 border-green-500 text-green-400 shadow-[0_0_12px_rgba(34,197,94,0.15)]'
                                   : 'bg-bg border-border hover:border-accent hover:text-accent'
@@ -237,12 +237,12 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                             >
                               {isCopied ? (
                                 <>
-                                  <Check size={11} className="shrink-0" />
+                                  <Check size={12} className="shrink-0" />
                                   <span>{locale === 'id' ? 'TERSALIN' : 'SAVED'}</span>
                                 </>
                               ) : (
                                 <>
-                                  <Copy size={11} className="shrink-0 group-hover:scale-110 transition-transform" />
+                                  <Copy size={12} className="shrink-0 group-hover:scale-110 transition-transform" />
                                   <span>{locale === 'id' ? 'SALIN' : 'COPY'}</span>
                                 </>
                               )}
@@ -253,10 +253,10 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                               href={node.link}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="py-2 px-2.5 bg-accent text-bg hover:bg-white border border-transparent font-mono text-[9px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5 hover:shadow-[0_0_12px_rgba(0,225,207,0.25)] transition-all select-none rounded-sm"
+                              className="py-2 px-3 bg-accent text-bg hover:bg-white border border-transparent font-mono text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 hover:shadow-[0_0_12px_rgba(0,225,207,0.25)] transition-all select-none rounded-sm"
                             >
                               <span>{locale === 'id' ? 'RUTE' : 'ROUTE'}</span>
-                              <ExternalLink size={10} className="shrink-0" />
+                              <ExternalLink size={12} className="shrink-0" />
                             </a>
                           </div>
                         </div>

@@ -188,6 +188,23 @@ body.wide-layout .sys-stats-widget {
   transform: translateY(10px);
 }
 
+@media (max-height: 720px) {
+  .hud-widget {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 1479px) {
+  .hud-widget,
+  .sys-stats-widget {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 /* WIDE LAYOUT OVERRIDES */
 #main-layout-container {
   transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);

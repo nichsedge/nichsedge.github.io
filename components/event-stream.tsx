@@ -53,7 +53,7 @@ export function EventStream() {
   }, []);
 
   return (
-    <div className={`fixed top-[340px] left-6 2xl:left-[calc(50%-640px)] z-[80] w-64 pointer-events-none hidden xl:block hud-widget transition-all duration-300 ${
+    <div className={`fixed top-[340px] left-[calc(50%-720px)] z-40 w-64 pointer-events-none hidden min-[1320px]:block hud-widget transition-all duration-300 ${
       isGraphOpen ? 'opacity-0 pointer-events-none translate-y-2 invisible' : 'opacity-100'
     }`}>
         <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-widest text-text-3 mb-2 bg-bg/50 px-2 py-1 rounded-sm border border-border-subtle backdrop-blur-sm w-fit">

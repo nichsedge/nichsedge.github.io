@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic';
 const CommandPalette = dynamic(() => import('@/components/command-palette').then(m => m.CommandPalette), { ssr: false });
 const SystemMonitor = dynamic(() => import('@/components/system-monitor').then(m => m.SystemMonitor), { ssr: false });
 const CursorTracker = dynamic(() => import('@/components/cursor-tracker').then(m => m.CursorTracker), { ssr: false });
-const SystemTicker = dynamic(() => import('@/components/system-ticker').then(m => m.SystemTicker), { ssr: false });
 import { BootSequence } from '@/components/boot-sequence';
 const MainframeBypass = dynamic(() => import('@/components/mainframe-bypass').then(m => m.MainframeBypass), { ssr: false });
 const FocusShield = dynamic(() => import('@/components/focus-shield').then(m => m.FocusShield), { ssr: false });
@@ -20,22 +19,39 @@ const IngestionMetrics = dynamic(() => import('@/components/ingestion-metrics').
 const ThreadAllocator = dynamic(() => import('@/components/thread-allocator').then(m => m.ThreadAllocator), { ssr: false });
 const SystemStatsWidget = dynamic(() => import('@/components/system-stats-widget').then(m => m.SystemStatsWidget), { ssr: false });
 
+import { usePathname } from 'next/navigation';
+import { useGameState } from '@/lib/game-engine';
+import { GameHUD } from '@/components/game-hud';
+
 export function GlobalOverlays() {
+  const pathname = usePathname();
+  const gameState = useGameState();
+  const isHomePage = pathname === '/' || pathname === '/id' || pathname === '/id/';
+  const locale = pathname?.startsWith('/id') ? 'id' : 'en';
+
   return (
     <>
       <NeuralNetworkBg />
       <BootSequence />
       <MainframeBypass />
       <FocusShield />
-      <EventStream />
-      <GeoRouting />
-      <IngestionMetrics />
-      <ThreadAllocator />
-      <SystemStatsWidget />
+      {isHomePage && (
+        <>
+          {gameState.telemetry.stream && <EventStream />}
+          {gameState.telemetry.routing && <GeoRouting />}
+          {gameState.telemetry.metrics && (
+            <>
+              <IngestionMetrics />
+              <SystemStatsWidget />
+            </>
+          )}
+          {gameState.telemetry.allocator && <ThreadAllocator />}
+          {gameState.telemetry.monitor && <SystemMonitor />}
+        </>
+      )}
       <CommandPalette />
-      <SystemMonitor />
       <CursorTracker />
-      <SystemTicker />
+      <GameHUD locale={locale} />
     </>
   );
 }

@@ -27,7 +27,7 @@ export function IngestionMetrics() {
   }, []);
 
   return (
-    <div className={`fixed top-24 left-6 2xl:left-[calc(50%-640px)] z-40 hidden xl:block w-64 pointer-events-none hud-widget transition-all duration-300 ${
+    <div className={`fixed top-24 left-[calc(50%-720px)] z-40 hidden min-[1320px]:block w-64 pointer-events-none hud-widget transition-all duration-300 ${
       isGraphOpen ? 'opacity-0 pointer-events-none translate-y-2 invisible' : 'opacity-100'
     }`}>
        <div className="bg-bg/40 backdrop-blur-md border border-border-subtle p-3 rounded-sm">

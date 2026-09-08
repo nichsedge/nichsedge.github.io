@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Database, Shield } from 'lucide-react';
+import { useGraphOpen } from '@/hooks/use-graph-open';
 
 const LOG_MESSAGES = [
   "INITIALIZING_KERNEL",
@@ -18,6 +19,7 @@ const LOG_MESSAGES = [
 ];
 
 export function SystemMonitor() {
+  const isGraphOpen = useGraphOpen();
   const [logs, setLogs] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +37,9 @@ export function SystemMonitor() {
   }, []);
 
   return (
-    <div className="fixed bottom-[80px] left-6 2xl:left-[calc(50%-640px)] z-50 hidden xl:block w-64 pointer-events-none hud-widget">
+    <div className={`fixed bottom-[80px] left-[calc(50%-720px)] z-40 hidden min-[1320px]:[@media(min-height:760px)]:block w-64 pointer-events-none hud-widget transition-all duration-300 ${
+      isGraphOpen ? 'opacity-0 pointer-events-none translate-y-2 invisible' : 'opacity-100'
+    }`}>
       <div className="bg-bg/40 backdrop-blur-md border border-border-subtle p-3 rounded-sm font-mono text-[9px] text-text-3 space-y-1.5 overflow-hidden">
         <div className="flex items-center justify-between mb-2 pb-1 border-b border-border-subtle/50">
           <div className="flex items-center gap-1.5 uppercase font-bold tracking-widest text-[#71717a]">

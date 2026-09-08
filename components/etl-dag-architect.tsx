@@ -7,6 +7,7 @@ import {
   Activity, CheckCircle2, AlertTriangle, Sliders
 } from 'lucide-react';
 import { soundEngine } from '@/lib/audio';
+import { gameEngine } from '@/lib/game-engine';
 
 interface NodeItem {
   id: string;
@@ -60,8 +61,8 @@ export function EtlDagArchitect({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
   const toggleNode = (node: NodeItem) => {
     soundEngine.playNodeConnect();
+    gameEngine.completeQuest('calibrate_pipeline');
     if (node.category === 'source') {
-
       setActiveSources(prev => prev.includes(node.id) ? (prev.length > 1 ? prev.filter(i => i !== node.id) : prev) : [...prev, node.id]);
     } else if (node.category === 'transform') {
       setActiveTransforms(prev => prev.includes(node.id) ? (prev.length > 1 ? prev.filter(i => i !== node.id) : prev) : [...prev, node.id]);
@@ -72,6 +73,7 @@ export function EtlDagArchitect({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
   const handleSimulateBackpressure = () => {
     soundEngine.playGlitch();
+    gameEngine.completeQuest('calibrate_pipeline');
     setHasBackpressure(true);
     setHealthScore(84.2);
     setTimeout(() => {

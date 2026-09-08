@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Terminal as TerminalIcon, Home, Zap, Loader2, Cpu, Globe, Database } from 'lucide-react';
+import { Terminal as TerminalIcon, Home, Zap, Loader2, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Navbar } from '@/components/navbar';
 import { getFallbackGhostResponse } from '@/lib/ai-fallback';
 
 import referralsData from '@/data/referrals.json';
@@ -11,9 +12,15 @@ import payData from '@/data/pay.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { generateSystemStats } from '@/lib/data-hub';
 import { soundEngine } from '@/lib/audio';
+import { gameEngine } from '@/lib/game-engine';
 
 export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   useWideLayout('lg');
+  const homeHref = locale === 'id' ? '/id/' : '/';
+  const workHref = locale === 'id' ? '/id/work/' : '/work/';
+  const projectsHref = locale === 'id' ? '/id/projects/' : '/projects/';
+  const dataLakeHref = locale === 'id' ? '/id/data-lake/' : '/data-lake/';
+
   const [input, setInput] = useState('');
   const [questStage, setQuestStage] = useState<number>(0);
   const [history, setHistory] = useState<string[]>(
@@ -363,12 +370,15 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
         case 'help':
           response = locale === 'id' ? [
             "PERINTAH_YANG_TERSEDIA:",
+            "  EXIT / QUIT   - KELUAR DARI TERMINAL DAN KEMBALI KE BERANDA",
+            "  HOME / BACK   - KEMBALI KE BERANDA (HQ)",
+            "  WORK          - NAVIGASI KE ARSIP KARIR",
+            "  PROJECTS      - LIHAT ARSIP ENGINEERING",
+            "  DATA-LAKE     - BUKA WORKBENCH SQL DATA LAKE",
+            "  GARDEN        - BUKA KEBUN DIGITAL",
             "  QUEST         - MULAI QUIZ DIAGNOSTIK MAINFRAME (3 LEVEL)",
             "  SOLVE <ans>   - SELESAIKAN SOAL QUEST AKTIF",
             "  VAULT         - RAHASIA ARSITEKTUR (PERLU CLEARANCE CLASS 5)",
-            "  PROJECTS      - LIHAT ARSIP ENGINEERING",
-            "  HOME          - KEMBALI KE BERANDA (HQ)",
-            "  GARDEN        - BUKA KEBUN DIGITAL",
             "  GHOST         - KONSULTASI DENGAN AI KECERDASAN PROYEK",
             "  HACK          - INISIASI PROTOKOL PENETRASI CEPAT",
             "  CLEAR         - BERSIHKAN BUFFER KONSOL",
@@ -385,12 +395,15 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  PIPELINE      - LIVE SIMULATOR PIPELINE DATA"
           ] : [
             "AVAILABLE_COMMANDS:",
+            "  EXIT / QUIT   - EXIT TERMINAL & RETURN TO HQ",
+            "  HOME / BACK   - RETURN TO HQ",
+            "  WORK          - NAVIGATE TO CAREER ARCHIVE",
+            "  PROJECTS      - VIEW ENGINEERING ARCHIVE",
+            "  DATA-LAKE     - OPEN DATA LAKE SQL WORKBENCH",
+            "  GARDEN        - OPEN DIGITAL GARDEN",
             "  QUEST         - START MAINFRAME DIAGNOSTIC QUEST (3 STAGES)",
             "  SOLVE <ans>   - SUBMIT ANSWER FOR ACTIVE QUEST LEVEL",
             "  VAULT         - SECRET ARCHITECTURE FILE (REQUIRES CLASS 5 CLEARANCE)",
-            "  PROJECTS      - VIEW ENGINEERING ARCHIVE",
-            "  HOME          - RETURN TO HQ",
-            "  GARDEN        - OPEN DIGITAL GARDEN",
             "  GHOST         - CHAT WITH THE PROJECT INTELLIGENCE",
             "  HACK          - INITIALIZE RAPID PENETRATION PROTOCOL",
             "  CLEAR         - WIPE BUFFER",
@@ -517,17 +530,38 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             }
           }, 400);
           return;
+        case 'exit':
+        case 'quit':
+        case 'back':
+        case 'cd ..':
+        case 'home':
+        case 'hq':
+          response = [locale === 'id' ? "KEMBALI KE BERANDA (HQ)..." : "RETURNING TO HQ..."];
+          soundEngine.playClick(400);
+          setTimeout(() => router.push(homeHref), 400);
+          break;
+        case 'work':
+        case 'career':
+          response = [locale === 'id' ? "NAVIGASI KE ARSIP KARIR..." : "NAVIGATING TO CAREER ARCHIVE..."];
+          soundEngine.playClick(400);
+          setTimeout(() => router.push(workHref), 400);
+          break;
         case 'projects':
-          response = ["REDIRECTING TO /PROJECTS..."];
-          setTimeout(() => router.push('/projects'), 1000);
+        case 'repos':
+          response = [locale === 'id' ? "NAVIGASI KE ARSIP PROYEK..." : "REDIRECTING TO /PROJECTS..."];
+          soundEngine.playClick(400);
+          setTimeout(() => router.push(projectsHref), 400);
+          break;
+        case 'data-lake':
+        case 'datalake':
+        case 'lake':
+          response = [locale === 'id' ? "NAVIGASI KE DATA LAKE..." : "NAVIGATING TO DATA LAKE..."];
+          soundEngine.playClick(400);
+          setTimeout(() => router.push(dataLakeHref), 400);
           break;
         case 'garden':
           response = ["OPENING DIGITAL GARDEN..."];
-          setTimeout(() => window.open('https://nichsedge.github.io/digital-garden/', '_blank'), 1000);
-          break;
-        case 'home':
-          response = ["RETURNING TO HQ..."];
-          setTimeout(() => router.push('/'), 1000);
+          setTimeout(() => window.open('https://nichsedge.github.io/digital-garden/', '_blank'), 400);
           break;
         case 'ichsan':
         case 'neofetch':
@@ -667,7 +701,12 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const commandsList = ['help', 'projects', 'home', 'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome', 'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor', 'pay', 'transfer', 'benchmark', 'voice', 'export', 'audio'];
+      const commandsList = [
+        'help', 'exit', 'quit', 'back', 'home', 'work', 'projects', 'data-lake', 'datalake',
+        'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome',
+        'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor',
+        'pay', 'transfer', 'benchmark', 'voice', 'export', 'audio', 'quest', 'solve', 'vault'
+      ];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
         setInput(match);
@@ -880,6 +919,7 @@ kafka_hub --+          +----------------+          +--------------------+       
   }, [simLogs, activeSimulation]);
 
   useEffect(() => {
+    gameEngine.completeQuest('terminal_access');
     const handleGlobalClick = () => {
       // Focus input if clicked inside terminal container
       if (inputRef.current) {
@@ -891,25 +931,64 @@ kafka_hub --+          +----------------+          +--------------------+       
   }, []);
 
   return (
-    <div className={`min-h-screen ${themeStyles.bg} ${themeStyles.text} font-mono p-4 md:p-8 ${themeStyles.accentSel} transition-all duration-500 selection:bg-accent selection:text-bg`}>
-      <div className={`max-w-4xl mx-auto border ${themeStyles.border} bg-[#000000]/60 backdrop-blur-md ${themeStyles.glow} relative overflow-hidden group transition-all duration-500`}>
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ background: 'repeating-linear-gradient(0deg, #00e1cf, #00e1cf 1px, transparent 1px, transparent 2px)' }} />
-        
-        {/* Terminal Header */}
-        <div className={`bg-[#000000]/20 border-b ${themeStyles.border} px-4 py-2 flex items-center justify-between relative z-10 transition-colors duration-500`}>
-          <div className="flex gap-1.5 group">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 group-hover:bg-red-500 transition-colors" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 group-hover:bg-yellow-500 transition-colors" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 group-hover:bg-green-500 transition-colors" />
+    <div className={`min-h-screen ${themeStyles.bg} ${themeStyles.text} font-mono ${themeStyles.accentSel} transition-all duration-500 selection:bg-accent selection:text-bg`}>
+      <Navbar />
+      <div className="pt-20 pb-16 px-4 md:px-8">
+        <div className={`max-w-4xl mx-auto border ${themeStyles.border} bg-[#000000]/60 backdrop-blur-md ${themeStyles.glow} relative overflow-hidden group transition-all duration-500`}>
+          <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ background: 'repeating-linear-gradient(0deg, #00e1cf, #00e1cf 1px, transparent 1px, transparent 2px)' }} />
+          
+          {/* Terminal Header */}
+          <div className={`bg-[#000000]/30 border-b ${themeStyles.border} px-4 py-2.5 flex items-center justify-between relative z-10 transition-colors duration-500`}>
+            <div className="flex items-center gap-3">
+              <div className="flex gap-1.5 items-center">
+                <button
+                  type="button"
+                  onClick={() => router.push(homeHref)}
+                  title={locale === 'id' ? 'Keluar Terminal (Kembali ke Beranda)' : 'Exit Terminal (Return to HQ)'}
+                  className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-all cursor-pointer flex items-center justify-center group/btn"
+                >
+                  <span className="opacity-0 group-hover/btn:opacity-100 text-[8px] text-black font-bold leading-none">×</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHistory([])}
+                  title={locale === 'id' ? 'Bersihkan Konsol' : 'Clear Buffer'}
+                  className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-all cursor-pointer flex items-center justify-center group/btn"
+                >
+                  <span className="opacity-0 group-hover/btn:opacity-100 text-[8px] text-black font-bold leading-none">-</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setInput('status')}
+                  title={locale === 'id' ? 'Status Sistem' : 'System Diagnostic'}
+                  className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-all cursor-pointer flex items-center justify-center group/btn"
+                >
+                  <span className="opacity-0 group-hover/btn:opacity-100 text-[8px] text-black font-bold leading-none">+</span>
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push(homeHref)}
+                className="font-mono text-[9px] uppercase tracking-wider text-text-3 hover:text-accent flex items-center gap-1.5 transition-colors cursor-pointer border-l border-border-subtle pl-3"
+              >
+                <ArrowLeft size={10} />
+                <span>{locale === 'id' ? 'Kembali ke Beranda' : 'Back to HQ'}</span>
+              </button>
+            </div>
+            <div className="text-[10px] uppercase tracking-widest opacity-60 flex items-center gap-2">
+              <TerminalIcon size={12} className={themeStyles.accentText} /> 
+              <span>tty — 128x64</span>
+            </div>
+            <div className="flex items-center gap-2">
+               <button
+                 type="button"
+                 onClick={() => router.push(homeHref)}
+                 className={`font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 border ${themeStyles.border} rounded-sm text-text-3 hover:${themeStyles.accentText} hover:border-accent/40 transition-colors flex items-center gap-1.5 cursor-pointer bg-bg-1/40`}
+               >
+                 <Home size={10} /> {locale === 'id' ? 'Keluar' : 'Exit'}
+               </button>
+            </div>
           </div>
-          <div className="text-[10px] uppercase tracking-widest opacity-50 flex items-center gap-2 relative">
-            <TerminalIcon size={12} className={themeStyles.accentText} /> 
-            <span className="after:content-[''] hover:after:content-['tty-ERR'] transition-all">tty — 128x64</span>
-          </div>
-          <div className="flex items-center gap-3 opacity-30">
-             <Cpu size={10} /> <Globe size={10} /> <Database size={10} />
-          </div>
-        </div>
 
         {/* Content */}
         <div ref={scrollRef} className={`p-6 h-[75vh] space-y-1 text-[13px] relative z-10 scrollbar-none ${activeSimulation === 'pipeline' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
@@ -1043,18 +1122,32 @@ kafka_hub --+          +----------------+          +--------------------+       
           </div>
         </div>
       </div>
+      </div>
       
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="fixed bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-6"
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-bg/90 border border-border-subtle px-4 py-2 rounded-full shadow-lg backdrop-blur-md"
       >
-        <button onClick={() => router.push('/')} className={`flex items-center gap-2 text-[10px] uppercase tracking-widest hover:${themeStyles.accentText} transition-colors group`}>
-          <Home size={10} className="group-hover:-translate-y-0.5 transition-transform" /> Exit to HQ
+        <button 
+          onClick={() => router.back()} 
+          className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-3 hover:${themeStyles.accentText} transition-colors cursor-pointer`}
+        >
+          <ArrowLeft size={11} /> {locale === 'id' ? 'Kembali' : 'Back'}
         </button>
-        <span className="opacity-20">/</span>
-        <button onClick={() => setInput('ghost')} className={`flex items-center gap-2 text-[10px] uppercase tracking-widest hover:${themeStyles.accentText} transition-colors group`}>
-          <Zap size={10} className="group-hover:scale-125 transition-transform" /> Call Ghost
+        <span className="opacity-20 text-text-3">|</span>
+        <button 
+          onClick={() => router.push(homeHref)} 
+          className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-3 hover:${themeStyles.accentText} transition-colors cursor-pointer`}
+        >
+          <Home size={11} /> {locale === 'id' ? 'Beranda' : 'HQ Home'}
+        </button>
+        <span className="opacity-20 text-text-3">|</span>
+        <button 
+          onClick={() => setInput('ghost')} 
+          className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-text-3 hover:${themeStyles.accentText} transition-colors cursor-pointer`}
+        >
+          <Zap size={11} className="text-accent" /> Ghost
         </button>
       </motion.div>
     </div>
