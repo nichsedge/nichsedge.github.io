@@ -6,7 +6,7 @@ import { Database, Filter, HardDrive, Play, Activity } from 'lucide-react';
 
 type Packet = { id: number; left: number; top: number; type: string };
 
-export function LiveArchitecture() {
+export function LiveArchitecture({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const [packets, setPackets] = useState<Packet[]>([]);
   const [isActive, setIsActive] = useState(false);
   const [metrics, setMetrics] = useState({ events: 0, anomalies: 0 });
@@ -42,9 +42,11 @@ export function LiveArchitecture() {
       <div className="flex justify-between items-center mb-8 relative z-20">
         <div>
           <h3 className="text-[12px] text-text-0 uppercase tracking-widest font-bold flex items-center gap-2">
-            System Architecture Simulation
+            {locale === 'id' ? 'Simulasi Arsitektur Sistem' : 'System Architecture Simulation'}
           </h3>
-          <p className="text-[10px] text-text-3 mt-1">Real-time data flow visualization</p>
+          <p className="text-[10px] text-text-3 mt-1">
+            {locale === 'id' ? 'Visualisasi aliran data real-time' : 'Real-time data flow visualization'}
+          </p>
         </div>
         <button 
           onClick={() => setIsActive(!isActive)}

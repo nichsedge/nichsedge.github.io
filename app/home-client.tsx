@@ -3,19 +3,16 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Database, Github, Linkedin, Mail, Cpu, Play, GitBranch, Terminal, Zap, Server, Sparkles } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Cpu, Play, GitBranch, Terminal, Zap, Server, Sparkles, Activity, Bot } from 'lucide-react';
 
 import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
-import { SkillMatrix } from '@/components/skill-matrix';
-import { CareerPipeline } from '@/components/career-pipeline';
-import { PipelineHeatmap } from '@/components/pipeline-heatmap';
-import { DataOracle } from '@/components/data-oracle';
 import { GlitchText } from '@/components/glitch-text';
 import { LiveArchitecture } from '@/components/live-architecture';
 import { HumanRuntime } from '@/components/human-runtime';
 import { DecryptedText } from '@/components/decrypted-text';
 import { InteractiveGrid } from '@/components/interactive-grid';
+import { DataOracle } from '@/components/data-oracle';
 import { DataPipeline } from '@/components/data-pipeline';
 
 // Dynamic imports for heavy visualizer/canvas components to optimize initial JS bundle size
@@ -62,16 +59,18 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
   const [isNSM, setIsNSM] = React.useState(false);
   const [showOverlay, setShowOverlay] = React.useState(false);
-  const [activeArchTab, setActiveArchTab] = React.useState<'3d-laser' | '3d-cluster' | 'pipeline' | 'stream' | 'lineage' | 'sql'>('3d-laser');
+  const [activeArchTab, setActiveArchTab] = React.useState<'3d-laser' | '3d-cluster' | 'live-arch' | 'pipeline' | 'stream' | 'lineage' | 'sql' | 'oracle'>('3d-laser');
   const [skills3DView, setSkills3DView] = React.useState(true);
 
   const archTabs = [
-    { id: '3d-laser', label: locale === 'id' ? '01 // 3D Laser Router' : '01 // 3D Laser Router', icon: Zap },
-    { id: '3d-cluster', label: locale === 'id' ? '02 // 3D Cluster Rack' : '02 // 3D Cluster Rack', icon: Server },
-    { id: 'pipeline', label: locale === 'id' ? '03 // Pipeline 2D' : '03 // 2D Pipeline', icon: Cpu },
-    { id: 'stream', label: locale === 'id' ? '04 // Simulasi Stream' : '04 // Stream Sim', icon: Play },
-    { id: 'lineage', label: locale === 'id' ? '05 // Silsilah DAG' : '05 // Lineage DAG', icon: GitBranch },
-    { id: 'sql', label: locale === 'id' ? '06 // Sandbox SQL' : '06 // SQL Sandbox', icon: Terminal },
+    { id: '3d-laser', label: locale === 'id' ? 'Laser 3D' : '3D Laser', icon: Zap },
+    { id: '3d-cluster', label: locale === 'id' ? 'Cluster 3D' : '3D Cluster', icon: Server },
+    { id: 'live-arch', label: locale === 'id' ? 'Aliran Live' : 'Live Flow', icon: Activity },
+    { id: 'pipeline', label: locale === 'id' ? 'DAG Canvas' : 'DAG Canvas', icon: Cpu },
+    { id: 'stream', label: locale === 'id' ? 'Simulasi Stream' : 'Stream Sim', icon: Play },
+    { id: 'lineage', label: locale === 'id' ? 'Silsilah Data' : 'Lineage DAG', icon: GitBranch },
+    { id: 'sql', label: locale === 'id' ? 'Sandbox SQL' : 'SQL Sandbox', icon: Terminal },
+    { id: 'oracle', label: locale === 'id' ? 'Oracle AI' : 'AI Oracle', icon: Bot },
   ] as const;
 
   React.useEffect(() => {
@@ -85,16 +84,12 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   }, [isNSM]);
 
   const subNavItems = locale === 'id' ? [
-    { name: 'Arsitektur', href: '#architecture' },
-    { name: 'Karir', href: '#work' },
     { name: 'Jaringan_Saraf', href: '#skills' },
-    { name: 'Oracle', href: '#oracle' },
+    { name: 'Arsitektur', href: '#architecture' },
     { name: 'Runtime', href: '#human-runtime' },
   ] : [
-    { name: 'Architecture', href: '#architecture' },
-    { name: 'Pipeline', href: '#work' },
     { name: 'Neural_Net', href: '#skills' },
-    { name: 'Oracle', href: '#oracle' },
+    { name: 'Architecture', href: '#architecture' },
     { name: 'Runtime', href: '#human-runtime' },
   ];
 
@@ -147,117 +142,120 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       {/* Hero */}
       <section className="pt-24 pb-16 px-6 relative overflow-hidden group">
         <InteractiveGrid />
-        <div className="absolute top-10 right-10 opacity-10 -rotate-12 select-none pointer-events-none group-hover:blur-sm transition-all duration-1000">
-          <Database size={400} strokeWidth={0.5} className={isNSM ? 'text-accent animate-pulse' : ''} />
+        
+        {/* Subtle Cybernetic Background Compass / HUD Watermark */}
+        <div className="absolute top-1/2 -right-16 -translate-y-1/2 opacity-[0.04] select-none pointer-events-none group-hover:opacity-[0.07] transition-all duration-1000">
+          <Cpu size={500} strokeWidth={0.5} className={isNSM ? 'text-accent animate-pulse' : ''} />
         </div>
         
-        <motion.div {...FADE_UP} className="relative z-20">
-          <button 
-            onClick={() => setIsNSM(!isNSM)} 
-            className="flex items-center gap-2 font-mono text-[10px] text-text-3 uppercase tracking-widest mb-6 hover:text-accent hover:cursor-pointer transition-colors outline-none text-left"
-          >
-             <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-             {isNSM ? (locale === 'id' ? 'NEURAL_LINK_TERSINKRONISASI' : 'NEURAL_LINK_SYNCHRONIZED') : (locale === 'id' ? 'MEMBUAT_LINK... OK (Klik untuk Sinkronisasi)' : 'ESTABLISHING_LINK... OK (Click to Sync)')}
-          </button>
-          <h1 className="text-4xl md:text-5xl font-bold text-text-0 leading-tight mb-8 tracking-tight">
-            <GlitchText text={locale === 'id' ? 'Saya membangun sistem' : resumeData.profile.tagline.split(' ').slice(0, 4).join(' ')} />{' '}
-            <span className="text-accent underline decoration-accent/20 underline-offset-4">
-              {locale === 'id' ? 'pemrosesan' : resumeData.profile.tagline.split(' ')[4]}
-            </span>{' '}
-            {locale === 'id' ? 'dan' : 'and'}{' '}
-            <span className="text-accent underline decoration-accent/20 underline-offset-4">
-              {locale === 'id' ? 'transformasi data.' : resumeData.profile.tagline.split(' ')[6]}
-            </span>{' '}
-            {locale === 'id' ? '' : resumeData.profile.tagline.split(' ')[7]}
-          </h1>
-          <p className="text-[14px] leading-relaxed text-text-2 mb-10 max-w-[500px] font-light">
+        <motion.div {...FADE_UP} className="relative z-20 max-w-[780px]">
+          {/* Top Status & Mission Telemetry Bar */}
+          <div className="flex flex-wrap items-center gap-2.5 mb-6 font-mono text-[10px] uppercase tracking-widest text-text-3">
+            <span className="flex items-center gap-2 px-2.5 py-1 bg-bg-1/90 border border-border-subtle rounded-sm text-text-2 shadow-sm">
+              <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
+              <span className="w-1.5 h-1.5 bg-accent rounded-full -ml-3.5" />
+              <span>SYS_ID // ICHSANUL AMAL</span>
+            </span>
+            <span className="hidden sm:inline text-border-subtle">•</span>
+            <span className="text-text-3">
+              NODE: BANDUNG [-6.872°, 107.542°]
+            </span>
+            <span className="hidden sm:inline text-border-subtle">•</span>
+            <button 
+              onClick={() => setIsNSM(!isNSM)} 
+              className="px-2 py-0.5 border border-accent/30 text-accent hover:bg-accent/10 transition-colors rounded-sm cursor-pointer"
+            >
+              {isNSM ? '[MATRIX: ACTIVE]' : '[SYNC NEURAL LINK]'}
+            </button>
+          </div>
+
+          {/* High-Taste Futuristic Headline */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text-0 leading-[1.12] mb-6 tracking-tight font-mono">
             {locale === 'id' ? (
-              <>Saya {resumeData.profile.name}, seorang {resumeData.profile.role} yang berspesialisasi dalam {resumeData.profile.specialization} Saat ini saya sedang {resumeData.profile.currentFocus}</>
+              <>
+                <GlitchText text="Rekayasa Sistem Data Deterministik" />{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-teal-300 to-emerald-400">
+                  & Integritas Zero-Entropy.
+                </span>
+              </>
             ) : (
-              <>I’m {resumeData.profile.name}, a {resumeData.profile.role} specializing in {resumeData.profile.specialization} Currently {resumeData.profile.currentFocus}.</>
+              <>
+                <GlitchText text="Architecting Deterministic Data Engines" />{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-teal-300 to-emerald-400">
+                  & Zero-Entropy Pipelines.
+                </span>
+              </>
+            )}
+          </h1>
+
+          {/* Authentic, Punchy Persona Description */}
+          <p className="text-[13px] sm:text-[14px] leading-relaxed text-text-2 mb-7 max-w-[660px] font-mono">
+            {locale === 'id' ? (
+              <>
+                Fokus pada eliminasi <span className="text-text-0 font-medium">data rot</span> sebelum meracuni analitik kritis, mengorkestrasi pipeline terdistribusi skala besar (GCP, BigQuery, dbt, Spark), dan merajut keandalan data deterministik dengan kecepatan vibe coding bertenaga AI.
+              </>
+            ) : (
+              <>
+                Focused on purging <span className="text-text-0 font-medium">data rot</span> before it poisons downstream analytics, orchestrating large-scale distributed pipelines (GCP, BigQuery, dbt, Spark), and fusing deterministic reliability with AI-native vibe coding.
+              </>
             )}
           </p>
-          
-          <div className="flex flex-wrap gap-6 items-center">
+
+          {/* Live Micro-HUD Telemetry Banner */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-8 font-mono text-[10px] p-3 bg-bg-1/70 border border-border-subtle rounded-sm backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
+              <span className="text-text-3 block text-[9px] uppercase tracking-wider">01 // FOCUS</span>
+              <span className="text-accent font-bold">DATA INTEGRITY</span>
+            </div>
+            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
+              <span className="text-text-3 block text-[9px] uppercase tracking-wider">02 // ARCHITECTURE</span>
+              <span className="text-emerald-400 font-bold">ZERO-ENTROPY</span>
+            </div>
+            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
+              <span className="text-text-3 block text-[9px] uppercase tracking-wider">03 // STACK</span>
+              <span className="text-text-1 font-bold truncate block">GCP · DBT · SPARK</span>
+            </div>
+            <div>
+              <span className="text-text-3 block text-[9px] uppercase tracking-wider">04 // EXECUTION</span>
+              <span className="text-amber-400 font-bold">AI ORCHESTRATION</span>
+            </div>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap gap-4 items-center">
             <motion.a 
-              href="#work" 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-accent text-bg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_20px_rgba(0,225,207,0.4)] transition-all flex items-center gap-2 group relative overflow-hidden"
+              href={locale === 'id' ? '/id/work/' : '/work/'} 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="px-6 py-3 bg-accent text-bg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_25px_rgba(0,225,207,0.5)] transition-all flex items-center gap-2 group relative overflow-hidden rounded-sm"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative z-10 flex items-center gap-2">
-                {locale === 'id' ? 'Buka Arsip' : 'Access Archive'} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                {locale === 'id' ? 'Akses Arsip Karir' : 'Access Career Archive'} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </motion.a>
-            <div className="flex gap-5 items-center">
-              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.github} className="text-text-3 transition-colors"><Github size={20} /></motion.a>
-              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.linkedin} className="text-text-3 transition-colors"><Linkedin size={20} /></motion.a>
-              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={`mailto:${resumeData.profile.email}`} className="text-text-3 transition-colors"><Mail size={20} /></motion.a>
+
+            <motion.a 
+              href="#skills"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="px-5 py-3 border border-border-subtle hover:border-accent bg-bg-1/80 text-text-2 hover:text-accent font-mono text-[11px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 rounded-sm"
+            >
+              <Sparkles size={13} className="text-accent" />
+              <span>{locale === 'id' ? 'Jelajahi 3D Galaxy ↓' : 'Explore 3D Galaxy ↓'}</span>
+            </motion.a>
+
+            <div className="flex gap-4 items-center ml-auto sm:ml-2">
+              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.github} target="_blank" rel="noopener noreferrer" className="text-text-3 hover:text-accent transition-colors p-1" title="GitHub"><Github size={18} /></motion.a>
+              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-3 hover:text-accent transition-colors p-1" title="LinkedIn"><Linkedin size={18} /></motion.a>
+              <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={`mailto:${resumeData.profile.email}`} className="text-text-3 hover:text-accent transition-colors p-1" title="Email"><Mail size={18} /></motion.a>
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* The ETL Engine Visual & Sandbox Workbench */}
-      <section id="architecture" className="px-6 py-12 md:py-16 border-b border-border-subtle">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>{locale === 'id' ? 'ARSITEKTUR // MEJA KERJA SISTEM' : 'ARCHITECTURE // SYSTEM WORKBENCH'}</span>
-            </div>
-            <p className="font-mono text-[11px] text-text-3">
-              {locale === 'id' ? 'Instrumen pemrosesan & visualisasi data terdistribusi:' : 'Distributed data processing & telemetry engines:'}
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5 bg-bg-1/80 p-1.5 rounded border border-border-subtle backdrop-blur-sm">
-            {archTabs.map(tab => {
-              const Icon = tab.icon;
-              const isActive = activeArchTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveArchTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider rounded-sm transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-accent text-bg font-bold shadow-[0_0_12px_rgba(0,225,207,0.3)]'
-                      : 'text-text-3 hover:text-text-1 hover:bg-white/5'
-                  }`}
-                >
-                  <Icon size={12} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="transition-all duration-300 min-h-[450px]">
-          {activeArchTab === '3d-laser' && <LaserPipelineRouter locale={locale} />}
-          {activeArchTab === '3d-cluster' && <ServerRackExplorer locale={locale} />}
-          {activeArchTab === 'pipeline' && <DataPipeline locale={locale} />}
-          {activeArchTab === 'stream' && <StreamSimulator locale={locale} />}
-          {activeArchTab === 'lineage' && <DataLineageGraph locale={locale} />}
-          {activeArchTab === 'sql' && <DataStreamSandbox locale={locale} />}
-        </div>
-      </section>
-
-      {/* Career Pipeline */}
-      <Section id="work" label={locale === 'id' ? '01 — pipeline karir' : '01 — career pipeline'} isNSM={isNSM}>
-        <div className="mb-14">
-           <CareerPipeline locale={locale} />
-        </div>
-        <div className="mb-16">
-           <PipelineHeatmap />
-        </div>
-        <div>
-           <LiveArchitecture />
-        </div>
-      </Section>
-
-      {/* Expertise Graph & 3D Celestial Constellation */}
-      <Section id="skills" label={locale === 'id' ? '02 — jaringan saraf' : '02 — neural network'} isNSM={isNSM}>
+      {/* Expertise Graph & 3D Celestial Constellation (Placed First) */}
+      <Section id="skills" label={locale === 'id' ? '01 — jaringan saraf' : '01 — neural network'} isNSM={isNSM}>
         <div className="flex items-center justify-between gap-4 mb-6">
           <div className="text-[11px] font-mono text-text-3">
             {locale === 'id' ? 'Pilih mode tampilan graf:' : 'Select graph visualization mode:'}
@@ -288,40 +286,8 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          <div>
-            <p className="text-[15px] leading-relaxed text-text-3 font-light mb-6">
-              {locale === 'id' ? (
-                <>Lanskap teknis saya adalah jaringan alat dan protokol yang saling terhubung. Saya berspesialisasi dalam menjembatani <span className="text-text-1 font-medium">Software Engineering</span> dan <span className="text-text-1 font-medium">Strategi Data</span>.</>
-              ) : (
-                <>My technical landscape is an interconnected web of tools and protocols. I specialize in the bridge between <span className="text-text-1 font-medium">Software Engineering</span> and <span className="text-text-1 font-medium">Data Strategy</span>.</>
-              )}
-            </p>
-            <div className="space-y-6">
-              <SkillMatrix />
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-                <div className="bg-bg-1 p-3 md:p-4 border border-border-subtle group hover:border-accent/30 transition-colors">
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-accent mb-2">{locale === 'id' ? 'Bahasa' : 'Languages'}</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {resumeData.skills.languages.slice(0, 4).map(s => <span key={s} className="text-[10px] font-mono text-text-3">{s}</span>)}
-                  </div>
-                </div>
-                <div className="bg-bg-1 p-3 md:p-4 border border-border-subtle group hover:border-accent/30 transition-colors">
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-accent mb-2">Cloud</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {resumeData.skills.infrastructure.slice(0, 4).map(s => <span key={s} className="text-[10px] font-mono text-text-3">{s}</span>)}
-                  </div>
-                </div>
-                <div className="bg-bg-1 p-3 md:p-4 border border-border-subtle group hover:border-accent/30 transition-colors">
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-accent mb-2">IDE</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(resumeData.skills.ides || []).slice(0, 4).map(s => <span key={s} className="text-[10px] font-mono text-text-3">{s}</span>)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="relative min-h-[450px] w-full">
+        <div className="w-full">
+          <div className="relative min-h-[540px] md:min-h-[600px] w-full">
              {skills3DView ? (
                <KnowledgeConstellation locale={locale} />
              ) : (
@@ -331,13 +297,54 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </div>
       </Section>
 
-      {/* Data Oracle */}
-      <Section id="oracle" label={locale === 'id' ? '03 — oracle data (AI)' : '03 — data oracle (AI)'} isNSM={isNSM}>
-         <DataOracle locale={locale} />
-      </Section>
+      {/* The ETL Engine Visual & Sandbox Workbench */}
+      <section id="architecture" className="px-6 py-12 md:py-16 border-b border-border-subtle">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>{locale === 'id' ? '02 // ARSITEKTUR // MEJA KERJA SISTEM' : '02 // ARCHITECTURE // SYSTEM WORKBENCH'}</span>
+            </div>
+            <p className="font-mono text-[11px] text-text-3">
+              {locale === 'id' ? 'Instrumen pemrosesan & visualisasi data terdistribusi:' : 'Distributed data processing & telemetry engines:'}
+            </p>
+          </div>
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar max-w-full bg-bg-1/80 p-1.5 rounded border border-border-subtle backdrop-blur-sm">
+            {archTabs.map(tab => {
+              const Icon = tab.icon;
+              const isActive = activeArchTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveArchTab(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider rounded-sm transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                    isActive
+                      ? 'bg-accent text-bg font-bold shadow-[0_0_12px_rgba(0,225,207,0.3)]'
+                      : 'text-text-3 hover:text-text-1 hover:bg-white/5'
+                  }`}
+                >
+                  <Icon size={12} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="transition-all duration-300 min-h-[450px]">
+          {activeArchTab === '3d-laser' && <LaserPipelineRouter locale={locale} />}
+          {activeArchTab === '3d-cluster' && <ServerRackExplorer locale={locale} />}
+          {activeArchTab === 'live-arch' && <LiveArchitecture locale={locale} />}
+          {activeArchTab === 'pipeline' && <DataPipeline locale={locale} />}
+          {activeArchTab === 'stream' && <StreamSimulator locale={locale} />}
+          {activeArchTab === 'lineage' && <DataLineageGraph locale={locale} />}
+          {activeArchTab === 'sql' && <DataStreamSandbox locale={locale} />}
+          {activeArchTab === 'oracle' && <DataOracle locale={locale} />}
+        </div>
+      </section>
 
       {/* Human Runtime Environment */}
-      <Section id="human-runtime" label={locale === 'id' ? '04 — lingkungan runtime manusia' : '04 — human runtime environment'} isNSM={isNSM}>
+      <Section id="human-runtime" label={locale === 'id' ? '03 — lingkungan runtime manusia' : '03 — human runtime environment'} isNSM={isNSM}>
          <HumanRuntime locale={locale} />
       </Section>
 

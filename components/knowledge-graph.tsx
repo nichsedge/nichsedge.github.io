@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import * as d3 from 'd3';
 import { Maximize2, Minimize2, X, ExternalLink, Database } from 'lucide-react';
 import graphData from '@/data/knowledge-graph.json';
@@ -27,10 +28,15 @@ const CATEGORIES = [
 
 export function KnowledgeGraph() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedGroups, setSelectedGroups] = useState<number[]>([1, 2, 3, 4, 5, 6, 7]);
   const [activeNode, setActiveNode] = useState<string | null>(null);
   const [clickedNode, setClickedNode] = useState<{ id: string; group: number; connected: string[] } | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleGroup = (groupId: number) => {
     soundEngine.playClick(750);
@@ -44,22 +50,29 @@ export function KnowledgeGraph() {
   };
 
   useEffect(() => {
-    const parentSection = containerRef.current?.closest('section');
-    if (parentSection) {
-      if (isExpanded) {
-        parentSection.style.zIndex = '9999';
-        document.body.classList.add('graph-open');
-      } else {
-        parentSection.style.zIndex = '';
-        document.body.classList.remove('graph-open');
-      }
+    if (isExpanded) {
+      document.body.classList.add('graph-open');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.classList.remove('graph-open');
+      document.body.style.overflow = '';
     }
     return () => {
-      if (parentSection) {
-        parentSection.style.zIndex = '';
-      }
       document.body.classList.remove('graph-open');
+      document.body.style.overflow = '';
     };
+  }, [isExpanded]);
+
+  // Handle ESC key to minimize
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isExpanded) {
+        soundEngine.playClick(600);
+        setIsExpanded(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isExpanded]);
 
   useEffect(() => {
@@ -254,131 +267,168 @@ export function KnowledgeGraph() {
     };
   }, [isExpanded, selectedGroups]);
 
-  return (
+  const renderGraphContent = () => (
     <>
-      {isExpanded && (
-        <div 
-          className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[9999] cursor-zoom-out"
-          onClick={() => setIsExpanded(false)}
-        />
-      )}
-      <div className={`transition-all duration-300 ease-in-out ${isExpanded ? 'fixed inset-4 md:inset-12 z-[10000] shadow-2xl' : 'relative w-full h-[400px]'}`}>
-        <div className={`w-full h-full border border-border-subtle bg-bg-1 relative overflow-hidden group rounded-sm ${isExpanded ? 'ring-1 ring-accent/20' : ''}`}>
-          <div className="absolute top-3 left-4 flex items-center gap-2 z-10">
-            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[9px] text-text-3 uppercase tracking-widest font-bold">NEURAL_SKILL_GRAPH_v1.0</span>
-            {activeNode && (
-              <span className="font-mono text-[9px] text-accent border border-accent/30 bg-accent/10 px-1.5 py-0.5 rounded-sm uppercase animate-pulse">
-                [{activeNode}]
-              </span>
-            )}
+      <div className="absolute top-3 left-4 flex items-center gap-2 z-10 pointer-events-none">
+        <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+        <span className="font-mono text-[9px] text-text-3 uppercase tracking-widest font-bold">NEURAL_SKILL_GRAPH_v1.0</span>
+        {activeNode && (
+          <span className="font-mono text-[9px] text-accent border border-accent/30 bg-accent/10 px-1.5 py-0.5 rounded-sm uppercase animate-pulse">
+            [{activeNode}]
+          </span>
+        )}
+      </div>
+
+      {/* Category Filter Controls */}
+      <div className={`absolute z-10 flex flex-wrap gap-1.5 md:gap-2 transition-all duration-200 ${
+        isExpanded ? 'top-12 left-4 right-16 md:top-3 md:left-56 md:right-16' : 'top-10 left-4 right-4 md:top-3 md:left-56'
+      }`}>
+        {CATEGORIES.map(cat => {
+          const isSelected = selectedGroups.includes(cat.id);
+          return (
+            <button
+              key={cat.id}
+              onClick={() => toggleGroup(cat.id)}
+              className={`px-2 py-0.5 md:py-1 text-[8px] md:text-[9px] font-mono rounded-sm border transition-all flex items-center gap-1.5 select-none cursor-pointer ${
+                isSelected
+                  ? 'bg-bg border-accent/60 text-text-0 shadow-[0_0_8px_rgba(0,225,207,0.05)] font-bold'
+                  : 'bg-bg-1/40 border-border-subtle text-text-3 hover:border-text-3 hover:text-text-1'
+              }`}
+            >
+              <span 
+                className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full transition-transform" 
+                style={{ 
+                  backgroundColor: cat.color,
+                  boxShadow: isSelected ? `0 0 6px ${cat.color}` : 'none',
+                  transform: isSelected ? 'scale(1.2)' : 'none'
+                }} 
+              />
+              <span>{cat.name}</span>
+            </button>
+          );
+        })}
+      </div>
+      
+      <button 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="absolute top-3 right-4 z-20 text-text-3 hover:text-accent bg-bg/50 backdrop-blur border border-border-subtle p-1.5 rounded-sm transition-colors flex items-center justify-center cursor-pointer"
+        title={isExpanded ? "Minimize" : "Maximize"}
+      >
+        {isExpanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
+      </button>
+
+      <div 
+        ref={containerRef} 
+        className="w-full h-full cursor-crosshair pointer-events-auto" 
+      />
+
+      {/* Holographic Node Inspector Drawer */}
+      {clickedNode && (
+        <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-md bg-[#09090b]/95 border border-accent/40 p-4 rounded shadow-2xl backdrop-blur-md z-30 font-mono animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+              <span className="font-bold text-text-0 text-[12px] uppercase tracking-wider">{clickedNode.id}</span>
+            </div>
+            <button
+              onClick={() => setClickedNode(null)}
+              className="text-text-3 hover:text-accent p-1 transition-colors cursor-pointer"
+            >
+              <X size={14} />
+            </button>
           </div>
 
-
-          {/* Category Filter Controls - Only show when expanded */}
-          {isExpanded && (
-            <div className="absolute top-12 left-4 right-4 md:top-3 md:left-48 md:right-16 z-10 flex flex-wrap gap-1.5 md:gap-2">
-              {CATEGORIES.map(cat => {
-                const isSelected = selectedGroups.includes(cat.id);
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => toggleGroup(cat.id)}
-                    className={`px-2 py-0.5 md:py-1 text-[8px] md:text-[9px] font-mono rounded-sm border transition-all flex items-center gap-1.5 select-none ${
-                      isSelected
-                        ? 'bg-bg border-accent/60 text-text-0 shadow-[0_0_8px_rgba(0,225,207,0.05)] font-bold'
-                        : 'bg-bg-1/40 border-border-subtle text-text-3 hover:border-text-3 hover:text-text-1'
-                    }`}
-                  >
-                    <span 
-                      className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full transition-transform" 
-                      style={{ 
-                        backgroundColor: cat.color,
-                        boxShadow: isSelected ? `0 0 6px ${cat.color}` : 'none',
-                        transform: isSelected ? 'scale(1.2)' : 'none'
-                      }} 
-                    />
-                    <span>{cat.name}</span>
-                  </button>
-                );
-              })}
+          <div className="text-[10px] text-text-3 space-y-2">
+            <div className="flex items-center justify-between">
+              <span>Domain Category:</span>
+              <span className="font-bold text-accent">
+                {CATEGORIES.find(c => c.id === clickedNode.group)?.name || 'General'}
+              </span>
             </div>
-          )}
-          
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="absolute top-3 right-4 z-10 text-text-3 hover:text-accent bg-bg/50 backdrop-blur border border-border-subtle p-1.5 rounded-sm transition-colors flex items-center justify-center"
-            title={isExpanded ? "Minimize" : "Maximize"}
-          >
-            {isExpanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
-          </button>
 
-          <div 
-            ref={containerRef} 
-            className={`w-full h-full cursor-crosshair ${isExpanded ? 'pointer-events-auto' : 'pointer-events-none md:pointer-events-auto'}`} 
-          />
-          {/* Holographic Node Inspector Drawer */}
-          {clickedNode && (
-            <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-md bg-[#09090b]/95 border border-accent/40 p-4 rounded shadow-2xl backdrop-blur-md z-30 font-mono animate-in fade-in slide-in-from-bottom-3 duration-200">
-              <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
-                  <span className="font-bold text-text-0 text-[12px] uppercase tracking-wider">{clickedNode.id}</span>
-                </div>
-                <button
-                  onClick={() => setClickedNode(null)}
-                  className="text-text-3 hover:text-accent p-1 transition-colors"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-
-              <div className="text-[10px] text-text-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span>Domain Category:</span>
-                  <span className="font-bold text-accent">
-                    {CATEGORIES.find(c => c.id === clickedNode.group)?.name || 'General'}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span>Interconnected Nodes ({clickedNode.connected.length}):</span>
-                </div>
-
-                <div className="flex flex-wrap gap-1 max-h-[80px] overflow-y-auto pt-1">
-                  {clickedNode.connected.map((cn, idx) => (
-                    <span key={idx} className="px-1.5 py-0.5 bg-accent/10 border border-accent/20 rounded text-[9px] text-accent">
-                      {cn}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-2 flex gap-2">
-                  <a
-                    href="/data-lake/"
-                    className="flex-1 px-3 py-1.5 bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
-                  >
-                    <Database size={10} /> Query In Data Lake
-                  </a>
-                  <a
-                    href="/projects/"
-                    className="flex-1 px-3 py-1.5 bg-bg border border-border-subtle hover:border-accent text-text-1 text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors"
-                  >
-                    <ExternalLink size={10} /> View Repos
-                  </a>
-                </div>
-              </div>
+            <div className="flex items-center justify-between">
+              <span>Interconnected Nodes ({clickedNode.connected.length}):</span>
             </div>
-          )}
 
-          <div className="absolute bottom-3 right-4 font-mono text-[8px] text-text-3 opacity-50 italic pointer-events-none">
-            {isExpanded 
-              ? '(scroll to zoom, drag to pan, click nodes for inspector)' 
-              : '(tap expand icon to interact)'
-            }
+            <div className="flex flex-wrap gap-1 max-h-[80px] overflow-y-auto pt-1">
+              {clickedNode.connected.map((cn, idx) => (
+                <span key={idx} className="px-1.5 py-0.5 bg-accent/10 border border-accent/20 rounded text-[9px] text-accent">
+                  {cn}
+                </span>
+              ))}
+            </div>
+
+            <div className="pt-2 flex gap-2">
+              <a
+                href="/data-lake/"
+                className="flex-1 px-3 py-1.5 bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
+              >
+                <Database size={10} /> Query In Data Lake
+              </a>
+              <a
+                href="/projects/"
+                className="flex-1 px-3 py-1.5 bg-bg border border-border-subtle hover:border-accent text-text-1 text-[9px] font-bold uppercase tracking-wider text-center rounded flex items-center justify-center gap-1 transition-colors cursor-pointer"
+              >
+                <ExternalLink size={10} /> View Repos
+              </a>
+            </div>
           </div>
         </div>
+      )}
+
+      <div className="absolute bottom-3 right-4 font-mono text-[8px] text-text-3 opacity-50 italic pointer-events-none hidden sm:block">
+        {isExpanded 
+          ? '(scroll to zoom, drag to pan, click nodes for inspector)' 
+          : '(tap expand icon to interact)'
+        }
       </div>
     </>
+  );
+
+  if (isExpanded) {
+    return (
+      <>
+        {/* Inline Placeholder */}
+        <div className="relative w-full h-[540px] md:h-[600px] border border-dashed border-accent/40 bg-bg-1/40 rounded-sm flex flex-col items-center justify-center gap-3 p-6 text-center font-mono select-none">
+          <div className="w-3 h-3 rounded-full bg-accent animate-ping" />
+          <div className="text-[12px] text-text-0 font-bold uppercase tracking-widest">
+            2D SKILL GRAPH ACTIVE IN FULLSCREEN MODE
+          </div>
+          <p className="text-[10px] text-text-3 max-w-sm">
+            Interactive skill graph expanded to full viewport without layout restrictions.
+          </p>
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="mt-2 px-3 py-1.5 bg-accent/20 hover:bg-accent/30 border border-accent/50 text-accent text-[10px] font-bold uppercase tracking-wider rounded flex items-center gap-2 cursor-pointer transition-colors"
+          >
+            <Minimize2 size={12} />
+            <span>Restore Inline View</span>
+          </button>
+        </div>
+
+        {/* Fullscreen Portal to document.body */}
+        {mounted && createPortal(
+          <div 
+            className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 select-none animate-in fade-in duration-200"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIsExpanded(false);
+            }}
+          >
+            <div className="relative w-full h-full max-w-[100vw] max-h-[100vh] border border-accent/50 bg-[#09090b] shadow-[0_0_60px_rgba(0,225,207,0.15)] overflow-hidden font-mono select-none rounded-sm">
+              {renderGraphContent()}
+            </div>
+          </div>,
+          document.body
+        )}
+      </>
+    );
+  }
+
+  return (
+    <div className="relative w-full h-[540px] md:h-[600px]">
+      <div className="w-full h-full border border-border-subtle bg-bg-1 relative overflow-hidden group rounded-sm">
+        {renderGraphContent()}
+      </div>
+    </div>
   );
 }

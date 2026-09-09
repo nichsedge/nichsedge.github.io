@@ -40,11 +40,11 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
   const PRESETS = locale === 'id' ? [
     { label: '🔮 Prediksi Stack 5 Tahun', query: "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat." },
-    { label: '⚡ Arsitektur Stream Data', query: "Jelaskan bagaimana arsitektur Kafka + Spark + ClickHouse menangani 10 juta event per detik dengan latensi sub-detik." },
+    { label: '⚡ Arsitektur Stream Data', query: "Jelaskan bagaimana arsitektur Kafka + Spark + BigQuery menangani 10 juta event per detik dengan latensi sub-detik." },
     { label: '📊 Ringkasan Keahlian Utama', query: "Rangkum keahlian utama dan pengalaman kerja Ichsanul Amal dalam 3 poin terbaik." }
   ] : [
     { label: '🔮 5-Year Stack Prediction', query: "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences." },
-    { label: '⚡ Streaming Architecture', query: "Explain how Kafka + Spark + ClickHouse handles 10 million events per second with sub-second SLA latency." },
+    { label: '⚡ Streaming Architecture', query: "Explain how Kafka + Spark + BigQuery handles 10 million events per second with sub-second SLA latency." },
     { label: '📊 Core Resume Highlights', query: "Summarize Ichsanul Amal's top data engineering skills and career highlights in 3 concise bullet points." }
   ];
 
@@ -100,7 +100,7 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   };
 
   return (
-    <div className="bg-bg-1 border border-border-subtle p-8 overflow-hidden relative group">
+    <div className="bg-bg-1 border border-border-subtle rounded-sm p-6 md:p-8 overflow-hidden relative group">
       <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
          <Brain size={120} />
       </div>

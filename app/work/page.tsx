@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { JsonLd } from '@/components/json-ld';
 
 export const metadata: Metadata = {
-  title: 'Career Pipeline & Experience | Ichsanul Amal',
+  title: 'Career & Experience | Ichsanul Amal',
   description: 'Explore the professional trajectory of Ichsanul Amal at Krom Bank, Accenture, Telkomsel (NTI), Traveloka, and UI — building enterprise ETL pipelines, dbt data models, BigQuery warehouses, and AI agent frameworks.',
   keywords: [
     'Ichsanul Amal Work Experience',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Career Pipeline & Experience | Ichsanul Amal',
+    title: 'Career & Experience | Ichsanul Amal',
     description: 'Explore the professional trajectory of Ichsanul Amal at Accenture, Telkomsel, Traveloka, and UI — building enterprise ETL pipelines and data lakes.',
     type: 'website',
     url: 'https://nichsedge.github.io/work',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Career Pipeline & Experience | Ichsanul Amal',
+    title: 'Career & Experience | Ichsanul Amal',
     description: 'Explore the professional trajectory of Ichsanul Amal building scalable data pipelines and analytics infrastructure.',
     creator: '@nichsedge',
   },
