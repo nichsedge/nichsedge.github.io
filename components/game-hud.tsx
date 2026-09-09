@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Volume2, VolumeX, Sparkles, CheckCircle2, ChevronUp, Gamepad2 
+  Volume2, VolumeX, Sparkles, CheckCircle2, ChevronUp, ChevronDown, Gamepad2 
 } from 'lucide-react';
 import { 
   useGameState, gameEngine, getXpForNextLevel, 
@@ -26,6 +26,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
   const gameState = useGameState();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [arcadeOpen, setArcadeOpen] = useState(false);
+  const [minimized, setMinimized] = useState(false);
   const isID = locale === 'id';
 
   // Find next uncompleted quest
@@ -57,10 +58,10 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
         {gameState.notification && (
           <motion.div
             key={gameState.notification.id}
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className={`fixed bottom-16 right-4 sm:right-6 z-[95] max-w-sm font-mono text-xs p-3.5 rounded-sm border shadow-2xl backdrop-blur-md flex items-center gap-3 ${
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            className={`fixed top-4 left-1/2 -translate-x-1/2 w-[92%] sm:w-auto sm:top-auto sm:bottom-24 sm:right-6 sm:left-auto sm:translate-x-0 z-[100] max-w-sm font-mono text-xs p-3.5 rounded-sm border shadow-2xl backdrop-blur-md flex items-center gap-3 ${
               gameState.notification.type === 'level' 
                 ? 'bg-accent/15 border-accent text-accent shadow-[0_0_25px_rgba(0,225,207,0.3)]' 
                 : gameState.notification.type === 'badge'
@@ -108,84 +109,115 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
       </AnimatePresence>
 
       {/* Persistent Game HUD Dock */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-[80] w-[95%] max-w-3xl pointer-events-auto">
-        <div className="bg-[#09090b]/90 border border-border-subtle hover:border-accent/40 rounded-full px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.6)] flex items-center justify-between gap-2.5 text-xs font-mono transition-colors">
-          
-          {/* Rank & XP Bar */}
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent font-bold text-[10px] shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>LVL {gameState.level}</span>
-            </div>
-
-            <div className="hidden sm:flex flex-col min-w-[100px]">
-              <div className="flex justify-between text-[9px] text-text-3 font-medium">
-                <span className="text-text-1 font-semibold truncate max-w-[80px]">{gameState.title}</span>
-                <span>{gameState.xp}/{maxLevelXp} XP</span>
-              </div>
-              <div className="w-full h-1 bg-border-subtle rounded-full overflow-hidden mt-1">
-                <motion.div 
-                  className="h-full bg-accent"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${xpPercent}%` }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Active Mission Pill */}
-          <div 
-            onClick={handleOpenDrawer}
-            className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-bg-1/60 hover:bg-accent/10 border border-border-subtle hover:border-accent/30 cursor-pointer transition-all min-w-0 max-w-[220px] sm:max-w-none"
-            title={isID ? "Klik untuk melihat matriks misi" : "Click to view mission matrix"}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-[80] pointer-events-auto">
+        {minimized ? (
+          <motion.button
+            initial={{ opacity: 0, y: 10, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            onClick={() => setMinimized(false)}
+            className="bg-[#09090b]/95 border border-accent/40 hover:border-accent rounded-full px-3.5 py-1.5 backdrop-blur-md shadow-[0_8px_25px_rgba(0,0,0,0.8)] flex items-center gap-2 text-xs font-mono cursor-pointer transition-all"
+            title={isID ? "Buka Game HUD" : "Expand Game HUD"}
+            aria-label="Expand Game HUD"
           >
-            <span className="text-accent text-[11px] shrink-0">🎯</span>
-            <span className="text-[10px] text-text-2 truncate">
-              {activeQuest 
-                ? (isID ? activeQuest.titleId : activeQuest.title)
-                : (isID ? 'Semua Misi Selesai (Root Access)' : 'All Missions Cleared (Root Access)')}
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span className="text-accent font-bold text-[10px]">LVL {gameState.level}</span>
+            <span className="text-text-3 text-[10px]">•</span>
+            <span className="text-text-2 text-[10px] max-w-[130px] truncate">
+              {activeQuest ? (isID ? activeQuest.titleId : activeQuest.title) : 'SYSTEM ROOT'}
             </span>
-            <span className="hidden md:inline-block text-[9px] text-accent font-bold shrink-0">
-              {activeQuest ? `+${activeQuest.xp}XP` : '★'}
-            </span>
+            <ChevronUp size={12} className="text-accent ml-0.5" />
+          </motion.button>
+        ) : (
+          <div className="w-[95vw] max-w-3xl">
+            <div className="bg-[#09090b]/90 border border-border-subtle hover:border-accent/40 rounded-full px-2.5 py-1.5 sm:px-4 sm:py-2.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.6)] flex items-center justify-between gap-1.5 sm:gap-2.5 text-xs font-mono transition-colors">
+              
+              {/* Rank & XP Bar */}
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent font-bold text-[10px] shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <span>LVL {gameState.level}</span>
+                </div>
+
+                <div className="hidden sm:flex flex-col min-w-[100px]">
+                  <div className="flex justify-between text-[9px] text-text-3 font-medium">
+                    <span className="text-text-1 font-semibold truncate max-w-[80px]">{gameState.title}</span>
+                    <span>{gameState.xp}/{maxLevelXp} XP</span>
+                  </div>
+                  <div className="w-full h-1 bg-border-subtle rounded-full overflow-hidden mt-1">
+                    <motion.div 
+                      className="h-full bg-accent"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${xpPercent}%` }}
+                      transition={{ duration: 0.4 }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Active Mission Pill */}
+              <div 
+                onClick={handleOpenDrawer}
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1/60 hover:bg-accent/10 border border-border-subtle hover:border-accent/30 cursor-pointer transition-all min-w-0 max-w-[180px] sm:max-w-none"
+                title={isID ? "Klik untuk melihat matriks misi" : "Click to view mission matrix"}
+              >
+                <span className="text-accent text-[11px] shrink-0">🎯</span>
+                <span className="text-[10px] text-text-2 truncate">
+                  {activeQuest 
+                    ? (isID ? activeQuest.titleId : activeQuest.title)
+                    : (isID ? 'Semua Misi Selesai (Root Access)' : 'All Missions Cleared (Root Access)')}
+                </span>
+                <span className="hidden md:inline-block text-[9px] text-accent font-bold shrink-0">
+                  {activeQuest ? `+${activeQuest.xp}XP` : '★'}
+                </span>
+              </div>
+
+              {/* Controls: 3D Arcade, Audio Toggle, Diagnostic Drawer Trigger & Mobile Collapse */}
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <button
+                  onClick={handleOpenArcade}
+                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-accent/15 hover:bg-accent hover:text-bg text-accent border border-accent/40 font-mono text-[10px] font-bold uppercase transition-all shadow-[0_0_12px_rgba(0,225,207,0.2)] cursor-pointer"
+                  title={isID ? "Mainkan 3D Data Highway Minigame" : "Play 3D Data Highway Minigame"}
+                >
+                  <Gamepad2 size={12} />
+                  <span className="hidden sm:inline">{isID ? '3D GAME' : '3D GAME'}</span>
+                </button>
+
+                <button
+                  onClick={handleToggleAudio}
+                  className={`p-1 sm:p-1.5 rounded-full border transition-all cursor-pointer ${
+                    gameState.audioEnabled 
+                      ? 'border-accent text-accent bg-accent/10 hover:bg-accent/20' 
+                      : 'border-border-subtle text-text-3 hover:text-text-1 hover:border-border'
+                  }`}
+                  title={gameState.audioEnabled ? (isID ? "Audio Aktif (Klik untuk mute)" : "Audio Active (Click to mute)") : (isID ? "Audio Mute (Klik untuk aktifkan)" : "Audio Muted (Click to enable)")}
+                >
+                  {gameState.audioEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
+                </button>
+
+                <button
+                  onClick={handleOpenDrawer}
+                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1 hover:bg-accent hover:text-bg text-text-1 border border-border-subtle hover:border-accent font-mono text-[10px] font-bold uppercase transition-all cursor-pointer"
+                  title={isID ? "Buka Tactical Deck" : "Open Tactical Deck"}
+                >
+                  <ChevronUp size={12} />
+                  <span className="hidden sm:inline">{isID ? 'DECK' : 'DECK'}</span>
+                  <span className="px-1 py-0.2 rounded-full bg-accent/20 text-accent group-hover:bg-bg group-hover:text-accent text-[9px]">
+                    {gameState.completedQuests.length}/{INITIAL_QUESTS.length}
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => setMinimized(true)}
+                  className="p-1 rounded-full text-text-3 hover:text-accent transition-colors cursor-pointer sm:hidden"
+                  title={isID ? "Kecilkan HUD" : "Minimize HUD"}
+                  aria-label="Minimize HUD"
+                >
+                  <ChevronDown size={13} />
+                </button>
+              </div>
+            </div>
           </div>
-
-          {/* Controls: 3D Arcade, Audio Toggle & Diagnostic Drawer Trigger */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <button
-              onClick={handleOpenArcade}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/15 hover:bg-accent hover:text-bg text-accent border border-accent/40 font-mono text-[10px] font-bold uppercase transition-all shadow-[0_0_12px_rgba(0,225,207,0.2)] cursor-pointer"
-              title={isID ? "Mainkan 3D Data Highway Minigame" : "Play 3D Data Highway Minigame"}
-            >
-              <Gamepad2 size={12} />
-              <span className="hidden sm:inline">{isID ? '3D GAME' : '3D GAME'}</span>
-            </button>
-
-            <button
-              onClick={handleToggleAudio}
-              className={`p-1.5 rounded-full border transition-all cursor-pointer ${
-                gameState.audioEnabled 
-                  ? 'border-accent text-accent bg-accent/10 hover:bg-accent/20' 
-                  : 'border-border-subtle text-text-3 hover:text-text-1 hover:border-border'
-              }`}
-              title={gameState.audioEnabled ? (isID ? "Audio Aktif (Klik untuk mute)" : "Audio Active (Click to mute)") : (isID ? "Audio Mute (Klik untuk aktifkan)" : "Audio Muted (Click to enable)")}
-            >
-              {gameState.audioEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
-            </button>
-
-            <button
-              onClick={handleOpenDrawer}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-bg-1 hover:bg-accent hover:text-bg text-text-1 border border-border-subtle hover:border-accent font-mono text-[10px] font-bold uppercase transition-all cursor-pointer"
-            >
-              <ChevronUp size={12} />
-              <span className="hidden sm:inline">{isID ? 'DECK' : 'DECK'}</span>
-              <span className="px-1 py-0.2 rounded-full bg-accent/20 text-accent group-hover:bg-bg group-hover:text-accent text-[9px]">
-                {gameState.completedQuests.length}/{INITIAL_QUESTS.length}
-              </span>
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Slide-Up Tactical Diagnostics & Quest Drawer */}

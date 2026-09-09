@@ -296,7 +296,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
       </main>
 
       {/* Cyber Footer */}
-      <footer className="py-12 border-t border-border-subtle bg-bg-1/40 px-6 relative z-10 mt-20">
+      <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1/40 px-6 relative z-10 mt-20">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
             <span>© 2026 NICHSEDGE</span>

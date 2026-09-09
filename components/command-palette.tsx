@@ -300,7 +300,7 @@ export function CommandPalette() {
       <button 
         onClick={() => setIsOpen(true)}
         title="Consult Neural Oracle & Search Commands (Ctrl+K)"
-        className="fixed bottom-6 right-4 sm:right-6 z-40 bg-[#09090b]/90 border border-accent/30 p-2.5 sm:p-3.5 rounded-full text-accent hover:text-text-0 hover:bg-accent/10 transition-all flex items-center justify-center group shadow-[0_0_20px_rgba(0,225,207,0.15)] hover:shadow-[0_0_25px_rgba(0,225,207,0.35)] hover:scale-105 duration-300 outline-none focus:outline-none focus:ring-0"
+        className="fixed bottom-[72px] lg:bottom-6 right-3.5 sm:right-6 z-[85] bg-[#09090b]/90 border border-accent/30 p-2.5 sm:p-3.5 rounded-full text-accent hover:text-text-0 hover:bg-accent/10 transition-all flex items-center justify-center group shadow-[0_0_20px_rgba(0,225,207,0.15)] hover:shadow-[0_0_25px_rgba(0,225,207,0.35)] hover:scale-105 duration-300 outline-none focus:outline-none focus:ring-0"
       >
         <div className="relative flex items-center justify-center">
           <Brain className="size-4 sm:size-[19px] group-hover:scale-110 transition-transform text-accent" />

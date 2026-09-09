@@ -140,7 +140,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       <SubNav items={subNavItems} />
       
       {/* Hero */}
-      <section className="pt-24 pb-16 px-6 relative overflow-hidden group">
+      <section className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10 relative overflow-hidden group">
         <InteractiveGrid />
         
         {/* Subtle Cybernetic Background Compass / HUD Watermark */}
@@ -150,8 +150,8 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         
         <motion.div {...FADE_UP} className="relative z-20 max-w-[780px]">
           {/* Top Status & Mission Telemetry Bar */}
-          <div className="flex flex-wrap items-center gap-2.5 mb-6 font-mono text-[10px] uppercase tracking-widest text-text-3">
-            <span className="flex items-center gap-2 px-2.5 py-1 bg-bg-1/90 border border-border-subtle rounded-sm text-text-2 shadow-sm">
+          <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-text-3">
+            <span className="flex items-center gap-2 px-2 sm:px-2.5 py-1 bg-bg-1/90 border border-border-subtle rounded-sm text-text-2 shadow-sm">
               <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
               <span className="w-1.5 h-1.5 bg-accent rounded-full -ml-3.5" />
               <span>SYS_ID // ICHSANUL AMAL</span>
@@ -169,8 +169,8 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             </button>
           </div>
 
-          {/* High-Taste Futuristic Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text-0 leading-[1.12] mb-6 tracking-tight font-mono">
+          {/* High-Taste Futuristic Headline (Rock-solid Responsive) */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-text-0 leading-[1.15] mb-5 sm:mb-6 tracking-tight font-mono break-words">
             {locale === 'id' ? (
               <>
                 <GlitchText text="Rekayasa Sistem Data Deterministik" />{' '}
@@ -189,7 +189,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
           </h1>
 
           {/* Authentic, Punchy Persona Description */}
-          <p className="text-[13px] sm:text-[14px] leading-relaxed text-text-2 mb-7 max-w-[660px] font-mono">
+          <p className="text-[13px] sm:text-[14px] leading-relaxed text-text-2 mb-6 sm:mb-7 max-w-[660px] font-mono">
             {locale === 'id' ? (
               <>
                 Fokus pada eliminasi <span className="text-text-0 font-medium">data rot</span> sebelum meracuni analitik kritis, mengorkestrasi pipeline terdistribusi skala besar (GCP, BigQuery, dbt, Spark), dan merajut keandalan data deterministik dengan kecepatan vibe coding bertenaga AI.
@@ -201,33 +201,33 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             )}
           </p>
 
-          {/* Live Micro-HUD Telemetry Banner */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-8 font-mono text-[10px] p-3 bg-bg-1/70 border border-border-subtle rounded-sm backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
-              <span className="text-text-3 block text-[9px] uppercase tracking-wider">01 // FOCUS</span>
-              <span className="text-accent font-bold">DATA INTEGRITY</span>
+          {/* Live Micro-HUD Telemetry Banner (Responsive 2x2 on Mobile, 4x1 on Desktop) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 sm:mb-8 font-mono text-[10px] p-2.5 sm:p-3 bg-bg-1/70 border border-border-subtle rounded-sm backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+            <div className="border-r border-border-subtle/50 pr-2">
+              <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">01 // FOCUS</span>
+              <span className="text-accent font-bold text-[9px] sm:text-[10px]">DATA INTEGRITY</span>
             </div>
-            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
-              <span className="text-text-3 block text-[9px] uppercase tracking-wider">02 // ARCHITECTURE</span>
-              <span className="text-emerald-400 font-bold">ZERO-ENTROPY</span>
+            <div className="sm:border-r border-border-subtle/50 pr-2">
+              <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">02 // ARCHITECTURE</span>
+              <span className="text-emerald-400 font-bold text-[9px] sm:text-[10px]">ZERO-ENTROPY</span>
             </div>
-            <div className="border-r border-border-subtle/50 pr-2 last:border-0">
-              <span className="text-text-3 block text-[9px] uppercase tracking-wider">03 // STACK</span>
-              <span className="text-text-1 font-bold truncate block">GCP · DBT · SPARK</span>
+            <div className="border-r border-border-subtle/50 pr-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-border-subtle/30">
+              <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">03 // STACK</span>
+              <span className="text-text-1 font-bold truncate block text-[9px] sm:text-[10px]">GCP · DBT · SPARK</span>
             </div>
-            <div>
-              <span className="text-text-3 block text-[9px] uppercase tracking-wider">04 // EXECUTION</span>
-              <span className="text-amber-400 font-bold">AI ORCHESTRATION</span>
+            <div className="pt-2 sm:pt-0 border-t sm:border-t-0 border-border-subtle/30">
+              <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">04 // EXECUTION</span>
+              <span className="text-amber-400 font-bold text-[9px] sm:text-[10px]">AI ORCHESTRATION</span>
             </div>
           </div>
 
-          {/* Action CTAs */}
-          <div className="flex flex-wrap gap-4 items-center">
+          {/* Action CTAs (Mobile-Friendly Thumb Tap Targets) */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center">
             <motion.a 
               href={locale === 'id' ? '/id/work/' : '/work/'} 
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-6 py-3 bg-accent text-bg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_25px_rgba(0,225,207,0.5)] transition-all flex items-center gap-2 group relative overflow-hidden rounded-sm"
+              className="px-6 py-3 bg-accent text-bg font-mono text-[11px] font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_25px_rgba(0,225,207,0.5)] transition-all flex items-center justify-center gap-2 group relative overflow-hidden rounded-sm w-full sm:w-auto"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative z-10 flex items-center gap-2">
@@ -239,13 +239,13 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               href="#skills"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-5 py-3 border border-border-subtle hover:border-accent bg-bg-1/80 text-text-2 hover:text-accent font-mono text-[11px] font-bold uppercase tracking-widest transition-all flex items-center gap-2 rounded-sm"
+              className="px-5 py-3 border border-border-subtle hover:border-accent bg-bg-1/80 text-text-2 hover:text-accent font-mono text-[11px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-sm w-full sm:w-auto"
             >
               <Sparkles size={13} className="text-accent" />
               <span>{locale === 'id' ? 'Jelajahi 3D Galaxy ↓' : 'Explore 3D Galaxy ↓'}</span>
             </motion.a>
 
-            <div className="flex gap-4 items-center ml-auto sm:ml-2">
+            <div className="flex gap-5 items-center justify-center sm:justify-start sm:ml-auto pt-2 sm:pt-0">
               <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.github} target="_blank" rel="noopener noreferrer" className="text-text-3 hover:text-accent transition-colors p-1" title="GitHub"><Github size={18} /></motion.a>
               <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={resumeData.profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-3 hover:text-accent transition-colors p-1" title="LinkedIn"><Linkedin size={18} /></motion.a>
               <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={`mailto:${resumeData.profile.email}`} className="text-text-3 hover:text-accent transition-colors p-1" title="Email"><Mail size={18} /></motion.a>
@@ -256,11 +256,11 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
 
       {/* Expertise Graph & 3D Celestial Constellation (Placed First) */}
       <Section id="skills" label={locale === 'id' ? '01 — jaringan saraf' : '01 — neural network'} isNSM={isNSM}>
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <div className="text-[11px] font-mono text-text-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div className="text-[10px] sm:text-[11px] font-mono text-text-3">
             {locale === 'id' ? 'Pilih mode tampilan graf:' : 'Select graph visualization mode:'}
           </div>
-          <div className="flex items-center gap-1 bg-bg-1 p-1 rounded border border-border-subtle">
+          <div className="flex items-center gap-1 bg-bg-1 p-1 rounded border border-border-subtle self-start sm:self-auto">
             <button
               onClick={() => setSkills3DView(true)}
               className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-sm transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -348,7 +348,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
          <HumanRuntime locale={locale} />
       </Section>
 
-      <footer className="py-12 border-t border-border-subtle bg-bg-1 px-6">
+      <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1 px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
             <span><DecryptedText text="© 2026 NICHSEDGE" /></span>

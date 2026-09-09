@@ -189,14 +189,14 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                   <div className="h-2 w-full bg-bg-0/80 rounded-full border border-border-subtle/40 overflow-hidden relative">
                     <div className="h-full bg-gradient-to-r from-amber-500 via-accent to-emerald-400 w-[94%] rounded-full animate-pulse" />
                   </div>
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <div className="flex items-center gap-1.5 text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30">
+                  <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-1">
+                    <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
                       <Coffee size={11} className="text-amber-400 shrink-0" />
-                      <span className="truncate">Caffeine: <span className="text-amber-400">Thread Lock</span></span>
+                      <span className="truncate">Caffeine: <span className="text-amber-400">Lock</span></span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30">
+                    <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
                       <Flame size={11} className="text-red-400 shrink-0" />
-                      <span className="truncate">Capsaicin: <span className="text-red-400">Heat Fault</span></span>
+                      <span className="truncate">Capsaicin: <span className="text-red-400">Fault</span></span>
                     </div>
                   </div>
                 </div>
@@ -278,14 +278,14 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                   <span className="text-text-3">PARALLEL EXEC</span>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                   {[
                     { label: 'C0', load: '88%', color: 'bg-accent', text: 'text-accent' },
                     { label: 'C1', load: '42%', color: 'bg-blue-400', text: 'text-blue-400' },
                     { label: 'C2', load: '65%', color: 'bg-amber-400', text: 'text-amber-400' },
                     { label: 'C3', load: '25%', color: 'bg-emerald-400', text: 'text-emerald-400' },
                   ].map((c) => (
-                    <div key={c.label} className="bg-bg-0/60 p-1.5 rounded border border-border-subtle/30 text-center">
+                    <div key={c.label} className="bg-bg-0/60 p-1 sm:p-1.5 rounded border border-border-subtle/30 text-center">
                       <div className="flex justify-between text-[8px] text-text-3 mb-1">
                         <span>{c.label}</span>
                         <span className={c.text}>{c.load}</span>
@@ -342,20 +342,21 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     </div>
 
                     {/* SVG Pitch & Sprint Trajectory Vector */}
-                    <div className="my-1.5 overflow-hidden rounded border border-emerald-500/20 bg-emerald-950/20 p-1">
-                      <svg viewBox="0 0 280 40" className="w-full h-8" preserveAspectRatio="none">
+                    <div className="my-1.5 overflow-hidden rounded border border-emerald-500/20 bg-emerald-950/20 p-2">
+                      <div className="flex justify-between items-center text-[8px] font-mono text-emerald-400/80 mb-1">
+                        <span className="font-bold">VO2 MAX: 165 BPM</span>
+                        <span className="text-emerald-400 font-bold">SPRINT DISSIPATION</span>
+                      </div>
+                      <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Court Pitch Schematic */}
-                        <rect x="4" y="4" width="272" height="32" rx="2" fill="none" stroke="rgba(52,211,153,0.25)" strokeWidth="1" />
-                        <line x1="140" y1="4" x2="140" y2="36" stroke="rgba(52,211,153,0.2)" strokeWidth="1" strokeDasharray="2 2" />
-                        <circle cx="140" cy="20" r="9" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-                        <rect x="4" y="11" width="14" height="18" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-                        <rect x="262" y="11" width="14" height="18" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
+                        <rect x="2" y="2" width="276" height="22" rx="2" fill="none" stroke="rgba(52,211,153,0.25)" strokeWidth="1" />
+                        <line x1="140" y1="2" x2="140" y2="24" stroke="rgba(52,211,153,0.2)" strokeWidth="1" strokeDasharray="2 2" />
+                        <circle cx="140" cy="13" r="6" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
+                        <rect x="2" y="7" width="12" height="12" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
+                        <rect x="266" y="7" width="12" height="12" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
                         {/* Dynamic Sprint Trajectory Vector */}
-                        <path d="M 28 24 Q 90 8, 140 22 T 246 14" fill="none" stroke="rgba(52,211,153,0.85)" strokeWidth="1.5" strokeDasharray="3 3" />
-                        <circle cx="246" cy="14" r="3" fill="#34d399" />
-                        {/* Telemetry Labels */}
-                        <text x="30" y="14" fill="rgba(52,211,153,0.7)" fontSize="8" fontFamily="monospace" fontWeight="bold">VO2 MAX: 165 BPM</text>
-                        <text x="175" y="32" fill="rgba(52,211,153,0.9)" fontSize="8" fontFamily="monospace" fontWeight="bold">SPRINT DISSIPATION</text>
+                        <path d="M 24 16 Q 90 4, 140 14 T 252 8" fill="none" stroke="rgba(52,211,153,0.85)" strokeWidth="1.5" strokeDasharray="3 3" />
+                        <circle cx="252" cy="8" r="2.5" fill="#34d399" />
                       </svg>
                     </div>
 
@@ -379,31 +380,31 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     </div>
 
                     {/* SVG Radial Waves & Sound Spectrum */}
-                    <div className="my-1.5 overflow-hidden rounded border border-blue-400/20 bg-blue-950/20 p-1">
-                      <svg viewBox="0 0 280 40" className="w-full h-8" preserveAspectRatio="none">
+                    <div className="my-1.5 overflow-hidden rounded border border-blue-400/20 bg-blue-950/20 p-2">
+                      <div className="flex justify-between items-center text-[8px] font-mono text-blue-400/80 mb-1">
+                        <span className="font-bold">94 dB // 80Hz-1.1kHz</span>
+                        <span className="text-blue-400 font-bold">DOPAMINE PEAK</span>
+                      </div>
+                      <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Concentric acoustic ripples */}
-                        <circle cx="32" cy="20" r="5" fill="none" stroke="rgba(96,165,250,0.8)" strokeWidth="1.2" />
-                        <circle cx="32" cy="20" r="12" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1" strokeDasharray="2 2" />
-                        <circle cx="32" cy="20" r="19" fill="none" stroke="rgba(96,165,250,0.2)" strokeWidth="1" strokeDasharray="3 3" />
-                        <circle cx="32" cy="20" r="2.5" fill="#60a5fa" />
+                        <circle cx="28" cy="13" r="4" fill="none" stroke="rgba(96,165,250,0.8)" strokeWidth="1.2" />
+                        <circle cx="28" cy="13" r="9" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1" strokeDasharray="2 2" />
+                        <circle cx="28" cy="13" r="14" fill="none" stroke="rgba(96,165,250,0.2)" strokeWidth="1" strokeDasharray="3 3" />
+                        <circle cx="28" cy="13" r="2" fill="#60a5fa" />
                         
                         {/* Sound Spectrum Frequency Bars */}
-                        {[8, 16, 26, 30, 20, 12, 28, 24, 14, 22, 28, 18, 10, 22, 16].map((h, i) => (
+                        {[6, 12, 18, 22, 16, 10, 20, 18, 12, 16, 22, 14, 8, 18, 12].map((h, i) => (
                           <line 
                             key={i} 
-                            x1={76 + i * 9} 
-                            y1={20 - h / 2} 
-                            x2={76 + i * 9} 
-                            y2={20 + h / 2} 
+                            x1={64 + i * 14} 
+                            y1={13 - h / 2} 
+                            x2={64 + i * 14} 
+                            y2={13 + h / 2} 
                             stroke="rgba(96,165,250,0.75)" 
-                            strokeWidth="3" 
+                            strokeWidth="2.5" 
                             strokeLinecap="round" 
                           />
                         ))}
-                        
-                        {/* Telemetry Labels */}
-                        <text x="78" y="10" fill="rgba(96,165,250,0.7)" fontSize="8" fontFamily="monospace" fontWeight="bold">94 dB // 80Hz-1.1kHz</text>
-                        <text x="210" y="32" fill="rgba(96,165,250,0.9)" fontSize="8" fontFamily="monospace" fontWeight="bold">DOPAMINE PEAK</text>
                       </svg>
                     </div>
 
@@ -427,21 +428,22 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     </div>
 
                     {/* SVG Parabolic Arc & Ball Flight Physics */}
-                    <div className="my-1.5 overflow-hidden rounded border border-amber-400/20 bg-amber-950/20 p-1">
-                      <svg viewBox="0 0 280 40" className="w-full h-8" preserveAspectRatio="none">
+                    <div className="my-1.5 overflow-hidden rounded border border-amber-400/20 bg-amber-950/20 p-2">
+                      <div className="flex justify-between items-center text-[8px] font-mono text-amber-400/80 mb-1">
+                        <span className="font-bold">ACCURACY: 38%</span>
+                        <span className="text-amber-400 font-bold">TOPSPIN CURVE</span>
+                      </div>
+                      <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Baseline court */}
-                        <line x1="8" y1="32" x2="272" y2="32" stroke="rgba(251,191,36,0.3)" strokeWidth="1" />
+                        <line x1="6" y1="22" x2="274" y2="22" stroke="rgba(251,191,36,0.3)" strokeWidth="1" />
                         {/* Net */}
-                        <line x1="140" y1="18" x2="140" y2="32" stroke="rgba(251,191,36,0.8)" strokeWidth="2" />
-                        <rect x="138" y="16" width="4" height="3" fill="rgba(251,191,36,0.9)" />
+                        <line x1="140" y1="11" x2="140" y2="22" stroke="rgba(251,191,36,0.8)" strokeWidth="2" />
+                        <rect x="138" y="10" width="4" height="2" fill="rgba(251,191,36,0.9)" />
                         {/* Parabolic Topspin Arc */}
-                        <path d="M 24 30 Q 85 4, 140 14 T 240 30" fill="none" stroke="rgba(251,191,36,0.85)" strokeWidth="1.5" strokeDasharray="3 2" />
+                        <path d="M 20 20 Q 85 3, 140 9 T 248 20" fill="none" stroke="rgba(251,191,36,0.85)" strokeWidth="1.5" strokeDasharray="3 2" />
                         {/* Bounce point */}
-                        <ellipse cx="240" cy="32" rx="5" ry="1.5" fill="none" stroke="rgba(251,191,36,0.6)" />
-                        <circle cx="240" cy="29" r="2.5" fill="#fbbf24" />
-                        {/* Telemetry Labels */}
-                        <text x="24" y="13" fill="rgba(251,191,36,0.7)" fontSize="8" fontFamily="monospace" fontWeight="bold">ACCURACY: 38%</text>
-                        <text x="175" y="13" fill="rgba(251,191,36,0.9)" fontSize="8" fontFamily="monospace" fontWeight="bold">TOPSPIN CURVE</text>
+                        <ellipse cx="248" cy="22" rx="4" ry="1" fill="none" stroke="rgba(251,191,36,0.6)" />
+                        <circle cx="248" cy="19" r="2" fill="#fbbf24" />
                       </svg>
                     </div>
 
@@ -458,12 +460,12 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               <div className="border border-border-subtle/60 bg-black/40 rounded-sm p-2.5 font-mono">
                 <div className="flex items-center justify-between text-[9px] text-text-3 uppercase tracking-widest mb-1.5">
                   <span className="flex items-center gap-1.5 text-accent font-bold">
-                    <Wifi size={11} className="animate-pulse" />
+                    <Wifi size={11} className="animate-pulse shrink-0" />
                     {isID ? 'STATUS PEER-TO-PEER' : 'PEER-TO-PEER STATUS'}
                   </span>
-                  <span className="text-emerald-400 font-bold">3 PROTOCOLS LINKED</span>
+                  <span className="text-emerald-400 font-bold text-[8px] sm:text-[9px]">3 PROTOCOLS LINKED</span>
                 </div>
-                <div className="flex items-center justify-between text-[8px] text-text-3">
+                <div className="flex flex-wrap items-center justify-between gap-1 text-[8px] text-text-3">
                   <span>PACKET LOSS: TOLERATED</span>
                   <span className="text-text-2">LATENCY: &lt;15ms</span>
                   <span className="text-accent font-bold">SYNC: ACTIVE</span>

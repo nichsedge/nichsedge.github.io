@@ -86,7 +86,7 @@ export function BiomeSelector() {
   return (
     <div 
       ref={containerRef}
-      className="fixed bottom-[136px] right-4 sm:right-6 z-[900] flex flex-col items-end gap-2"
+      className="fixed bottom-[168px] lg:bottom-[136px] right-3.5 sm:right-6 z-[85] flex flex-col items-end gap-2"
     >
       <AnimatePresence>
         {isOpen && (
@@ -94,7 +94,7 @@ export function BiomeSelector() {
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="flex flex-col gap-1.5 sm:gap-2 bg-bg border border-border-subtle p-2.5 rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] min-w-[150px]"
+            className="flex flex-col gap-1.5 sm:gap-2 bg-bg border border-border-subtle p-2.5 rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] min-w-[150px] relative z-[1000]"
             role="menu"
             aria-label="System Settings Menu"
           >
