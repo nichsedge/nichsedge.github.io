@@ -1,0 +1,363 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "NICHSEDGE Data Architecture & Portfolio API",
+    "version": "1.0.0",
+    "description": "Public REST API providing machine-readable access to Ichsanul Amal's technical portfolio, project catalog, skills matrix, and consulting pricing.",
+    "contact": {
+      "name": "Ichsanul Amal",
+      "email": "muhammad.ichsanul19@gmail.com",
+      "url": "https://nichsedge.github.io/contact"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://nichsedge.github.io/api/v1",
+      "description": "Production static API server"
+    }
+  ],
+  "security": [
+    {
+      "OAuth2": [
+        "portfolio:read"
+      ]
+    },
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/profile": {
+      "get": {
+        "operationId": "getProfileDossier",
+        "summary": "Retrieve technical profile dossier",
+        "description": "Returns biography, current enterprise position at Krom Bank / Accenture, academic background at University of Indonesia, and contact channels.",
+        "responses": {
+          "200": {
+            "description": "Complete profile data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "summary": "List data engineering and software projects",
+        "description": "Returns verified project catalog with repository URLs, architecture descriptions, and technical stacks.",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "query",
+            "required": false,
+            "description": "Filter projects by tag (e.g., 'data-engineering', 'etl', 'dbt')",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of engineering projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/skills": {
+      "get": {
+        "operationId": "listSkills",
+        "summary": "List technical skills and competency matrix",
+        "description": "Returns categorized matrix of technical competencies across languages, orchestrators, databases, and cloud platforms.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "description": "Filter by competency category",
+            "schema": {
+              "type": "string",
+              "enum": ["all", "languages", "orchestration", "databases", "cloud", "ai"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Technical skills matrix",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillsListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/ask": {
+      "get": {
+        "operationId": "askTechnicalQuestionGet",
+        "summary": "Natural Language Query (NLWeb GET)",
+        "description": "Accepts natural language queries regarding Ichsanul Amal's experience, skills, and availability.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Natural language query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "NLWeb response format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NLWebResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "askTechnicalQuestionPost",
+        "summary": "Natural Language Query (NLWeb POST)",
+        "description": "Processes natural language query payload and returns structured answer.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "Natural language inquiry"
+                  }
+                },
+                "required": ["query"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "NLWeb response format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NLWebResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "description": "RFC 6749 OAuth 2.0 authorization with scoped permissions",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://nichsedge.github.io/api/v1/auth/token",
+            "scopes": {
+              "portfolio:read": "Read-only access to profile and public dossiers",
+              "projects:read": "Access to project architectures and repositories",
+              "skills:read": "Access to competency and skill evaluations",
+              "contact:read": "Access to verified contact points"
+            }
+          }
+        }
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Bearer token or pre-shared agent API key"
+      }
+    },
+    "schemas": {
+      "ProfileResponse": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "required": ["name", "role", "location", "email"],
+            "properties": {
+              "name": { "type": "string", "example": "Ichsanul Amal" },
+              "role": { "type": "string", "example": "Data Quality Engineer & System Architect" },
+              "location": { "type": "string", "example": "Cimahi, West Java, Indonesia" },
+              "email": { "type": "string", "format": "email", "example": "muhammad.ichsanul19@gmail.com" },
+              "website": { "type": "string", "format": "uri", "example": "https://nichsedge.github.io" },
+              "github": { "type": "string", "format": "uri", "example": "https://github.com/nichsedge" },
+              "linkedin": { "type": "string", "format": "uri", "example": "https://www.linkedin.com/in/ichsanulamal19/" }
+            }
+          }
+        }
+      },
+      "ProjectsListResponse": {
+        "type": "object",
+        "required": ["status", "count", "data"],
+        "properties": {
+          "status": { "type": "string", "example": "success" },
+          "count": { "type": "integer", "example": 12 },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectItem"
+            }
+          }
+        }
+      },
+      "ProjectItem": {
+        "type": "object",
+        "required": ["id", "title", "description", "tags"],
+        "properties": {
+          "id": { "type": "string", "example": "data-defender" },
+          "title": { "type": "string", "example": "DATA_DEFENDER Gamification Engine" },
+          "description": { "type": "string", "example": "XP progression and 3D stream collection engine." },
+          "url": { "type": "string", "format": "uri", "example": "https://github.com/nichsedge" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "SkillsListResponse": {
+        "type": "object",
+        "required": ["status", "data"],
+        "properties": {
+          "status": { "type": "string", "example": "success" },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      },
+      "NLWebResponse": {
+        "type": "object",
+        "required": ["_meta", "answer"],
+        "properties": {
+          "_meta": {
+            "type": "object",
+            "required": ["response_type", "version"],
+            "properties": {
+              "response_type": { "type": "string", "example": "nlweb_answer" },
+              "version": { "type": "string", "example": "1.0" }
+            }
+          },
+          "answer": {
+            "type": "string",
+            "example": "Ichsanul Amal is a Data Engineer & Systems Architect based in Cimahi, Indonesia."
+          },
+          "references": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["type", "title", "status", "detail"],
+        "properties": {
+          "type": { "type": "string", "format": "uri", "example": "https://nichsedge.github.io/docs/errors" },
+          "title": { "type": "string", "example": "Error Title" },
+          "status": { "type": "integer", "example": 400 },
+          "detail": { "type": "string", "example": "Detailed human and machine-readable explanation." },
+          "code": { "type": "string", "example": "INVALID_PARAM" }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad Request — Invalid parameters provided",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized — Authentication credentials missing or invalid",
+        "headers": {
+          "WWW-Authenticate": {
+            "schema": { "type": "string" },
+            "description": "RFC 9728 Bearer resource_metadata pointer"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not Found — Requested resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

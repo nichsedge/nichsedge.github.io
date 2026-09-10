@@ -8,8 +8,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = [
     { path: '', priority: 1.0, changeFrequency: 'monthly' as const },
+    { path: '/about', priority: 0.9, changeFrequency: 'monthly' as const },
     { path: '/work', priority: 0.9, changeFrequency: 'monthly' as const },
     { path: '/projects', priority: 0.9, changeFrequency: 'weekly' as const },
+    { path: '/pricing', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/developers', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/contact', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/privacy', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/data-lake', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/terminal', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/referrals', priority: 0.6, changeFrequency: 'monthly' as const },
@@ -52,21 +57,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  // Additional static AI resources
-  sitemapItems.push(
-    {
-      url: `${baseUrl}/llms.txt`,
+  // Static AI & Machine-readable resources
+  const staticDocs = [
+    '/llms.txt',
+    '/llms-full.txt',
+    '/index.md',
+    '/auth.md',
+    '/pricing.md',
+    '/openapi.json',
+    '/.well-known/ard.json',
+    '/.well-known/agent-card.json',
+    '/.well-known/api-catalog',
+  ];
+
+  staticDocs.forEach((doc) => {
+    sitemapItems.push({
+      url: `${baseUrl}${doc}`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/llms-full.txt`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    }
-  );
+    });
+  });
 
   return sitemapItems;
 }

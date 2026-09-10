@@ -1,0 +1,14 @@
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "kid": "nichsedge-bot-auth-2026",
+      "x": "O2BD44qdAiwh44-5r96g1Jj-mXgKj-m8dGkE-3vV4b8",
+      "use": "sig",
+      "alg": "EdDSA",
+      "nbf": 1704067200,
+      "exp": 2082758400
+    }
+  ]
+}

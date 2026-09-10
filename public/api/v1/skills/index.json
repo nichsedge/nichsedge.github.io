@@ -1,0 +1,39 @@
+{
+  "status": "success",
+  "data": {
+    "languages": [
+      "Python",
+      "SQL (BigQuery, PostgreSQL, Hive, Oracle)",
+      "TypeScript / JavaScript",
+      "Go",
+      "Java",
+      "Shell (Bash / Zsh)"
+    ],
+    "dataEngineering": [
+      "Apache Airflow (Google Cloud Composer)",
+      "dbt (data build tool)",
+      "Google BigQuery",
+      "PostgreSQL (Indexing, Partitioning, Tuning)",
+      "Elementary DQ Monitoring",
+      "Apache Spark",
+      "Apache Kafka",
+      "Kimball Dimensional Modeling",
+      "DAMA Data Quality Dimensions"
+    ],
+    "cloudAndInfrastructure": [
+      "Google Cloud Platform (GCP)",
+      "Amazon Web Services (AWS)",
+      "Docker & Containers",
+      "Linux Systems Architecture",
+      "CI/CD (GitHub Actions, Bitbucket Pipelines)"
+    ],
+    "agenticAIAndProtocols": [
+      "Model Context Protocol (MCP)",
+      "WebMCP (Browser Agent Standard)",
+      "Agentic Resource Discovery (ARD)",
+      "WorkOS auth.md Specification",
+      "AutoGen & LangChain",
+      "Gemini & OpenAI Function Calling"
+    ]
+  }
+}

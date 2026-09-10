@@ -1,0 +1,8 @@
+{
+  "type": "https://nichsedge.github.io/developers#unauthorized",
+  "title": "Unauthorized",
+  "status": 401,
+  "code": "UNAUTHORIZED",
+  "detail": "Bearer token or identity assertion missing or invalid. Check the WWW-Authenticate header.",
+  "resolution": "Obtain an agent authorization token per the instructions in https://nichsedge.github.io/auth.md or read endpoints anonymously."
+}

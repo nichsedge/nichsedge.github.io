@@ -1,0 +1,41 @@
+{
+  "issuer": "https://nichsedge.github.io",
+  "authorization_endpoint": "https://nichsedge.github.io/developers",
+  "token_endpoint": "https://nichsedge.github.io/api/v1/auth/token",
+  "jwks_uri": "https://nichsedge.github.io/.well-known/http-message-signatures-directory",
+  "response_types_supported": [
+    "token"
+  ],
+  "grant_types_supported": [
+    "client_credentials",
+    "urn:ietf:params:oauth:grant-type:token-exchange",
+    "anonymous"
+  ],
+  "token_endpoint_auth_methods_supported": [
+    "none",
+    "client_secret_basic",
+    "private_key_jwt"
+  ],
+  "scopes_supported": [
+    "portfolio:read",
+    "projects:read",
+    "skills:read",
+    "contact:read"
+  ],
+  "agent_auth": {
+    "skill": "https://nichsedge.github.io/auth.md",
+    "identity_endpoint": "https://nichsedge.github.io/api/v1/auth/identity",
+    "claim_endpoint": "https://nichsedge.github.io/api/v1/auth/claim",
+    "events_endpoint": "https://nichsedge.github.io/api/v1/auth/events",
+    "identity_types_supported": [
+      "anonymous",
+      "identity_assertion",
+      "service_auth"
+    ],
+    "identity_assertion": {
+      "assertion_types_supported": [
+        "urn:ietf:params:oauth:token-type:id-jag"
+      ]
+    }
+  }
+}

@@ -1,3 +1,5 @@
+'use client';
+
 // Re-creating the essential navbar component
 import React from 'react';
 import Link from 'next/link';

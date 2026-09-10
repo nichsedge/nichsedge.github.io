@@ -1,0 +1,19 @@
+# API Documentation & Machine Interfaces (LLMS.txt)
+
+> Developer endpoints, protocols, schemas, and programmatic access for NICHSEDGE.
+
+## Protocols & Catalogs
+- **ARD Discovery**: `https://nichsedge.github.io/.well-known/ard.json`
+- **A2A Agent Card**: `https://nichsedge.github.io/.well-known/agent-card.json`
+- **Agent Skills**: `https://nichsedge.github.io/.well-known/agent-skills/index.json`
+- **RFC 9727 API Catalog**: `https://nichsedge.github.io/.well-known/api-catalog`
+- **MCP Server Card**: `https://nichsedge.github.io/.well-known/mcp/server-card.json`
+- **OpenAPI 3.1 Spec**: `https://nichsedge.github.io/openapi.json`
+- **Auth Specification**: `https://nichsedge.github.io/auth.md`
+
+## REST Endpoints (v1)
+- `GET /api/v1/profile`: Returns full profile, current roles, and contact info.
+- `GET /api/v1/projects`: Returns list of engineering and data projects.
+- `GET /api/v1/skills`: Returns categorized technical skills and proficiencies.
+- `GET /api/v1/ask`: NLWeb question-answering endpoint.
+- `POST /api/v1/ask`: NLWeb JSON payload question-answering endpoint.

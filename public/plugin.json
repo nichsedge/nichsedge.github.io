@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/specification/v1/schema.json",
+  "schema_version": "v1",
+  "name": "nichsedge_archive",
+  "name_for_human": "NICHSEDGE Data Archive",
+  "name_for_model": "nichsedge_archive",
+  "description_for_human": "Explore data engineering architecture, project repositories, and technical skills of Ichsanul Amal.",
+  "description_for_model": "Plugin to query the technical portfolio, CV, data pipeline architecture, and skills of Ichsanul Amal (Data Engineer & System Architect).",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://nichsedge.github.io/openapi.json"
+  },
+  "logo_url": "https://nichsedge.github.io/icon.png",
+  "contact_email": "muhammad.ichsanul19@gmail.com",
+  "legal_info_url": "https://nichsedge.github.io/privacy"
+}

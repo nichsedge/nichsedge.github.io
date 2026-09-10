@@ -1,0 +1,8 @@
+{
+  "type": "https://nichsedge.github.io/developers#errors",
+  "title": "Bad Request",
+  "status": 400,
+  "code": "BAD_REQUEST",
+  "detail": "The request parameters failed schema validation. Please check operation parameter types in /openapi.json.",
+  "resolution": "Consult the OpenAPI 3.1 specification at https://nichsedge.github.io/openapi.json for valid parameters."
+}

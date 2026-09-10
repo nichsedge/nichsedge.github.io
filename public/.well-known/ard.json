@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agenticresourcediscovery.org/schema/v1.json",
+  "name": "NICHSEDGE // DATA ARCHIVE",
+  "description": "Technical portfolio, data architecture specifications, and agentic tools for Ichsanul Amal (Data Engineer & System Architect).",
+  "version": "1.0.0",
+  "homepage": "https://nichsedge.github.io",
+  "resources": {
+    "mcp": {
+      "endpoint": "https://nichsedge.github.io/.well-known/mcp",
+      "serverCard": "https://nichsedge.github.io/.well-known/mcp/server-card.json"
+    },
+    "agentCard": "https://nichsedge.github.io/.well-known/agent-card.json",
+    "agentSkills": "https://nichsedge.github.io/.well-known/agent-skills/index.json",
+    "apiCatalog": "https://nichsedge.github.io/.well-known/api-catalog",
+    "openapi": "https://nichsedge.github.io/openapi.json",
+    "auth": "https://nichsedge.github.io/auth.md",
+    "pricing": "https://nichsedge.github.io/pricing.md",
+    "llms": "https://nichsedge.github.io/llms.txt"
+  },
+  "contact": {
+    "name": "Ichsanul Amal",
+    "email": "muhammad.ichsanul19@gmail.com",
+    "url": "https://nichsedge.github.io/contact"
+  }
+}

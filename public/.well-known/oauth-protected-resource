@@ -1,0 +1,17 @@
+{
+  "resource": "https://nichsedge.github.io",
+  "authorization_servers": [
+    "https://nichsedge.github.io"
+  ],
+  "scopes_supported": [
+    "portfolio:read",
+    "projects:read",
+    "skills:read",
+    "contact:read"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "resource_documentation": "https://nichsedge.github.io/developers",
+  "auth_policy": "https://nichsedge.github.io/auth.md"
+}

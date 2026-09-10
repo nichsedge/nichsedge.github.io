@@ -1,0 +1,54 @@
+{
+  "status": "success",
+  "count": 6,
+  "data": [
+    {
+      "id": "data-highway",
+      "title": "3D Data Highway Arcade",
+      "category": "Interactive Real-Time Simulation",
+      "description": "Playable Three.js simulation modeling high-throughput Kafka partitions, event serialization, and real-time backpressure mitigation.",
+      "url": "https://nichsedge.github.io/#arcade",
+      "tags": ["three.js", "kafka", "simulation", "typescript"]
+    },
+    {
+      "id": "knowledge-constellation",
+      "title": "3D Knowledge Constellation",
+      "category": "Data Graph Visualization",
+      "description": "3D skill galaxy modeling engineering competencies with gravitational clustering and tech dossier inspection.",
+      "url": "https://nichsedge.github.io/data-lake",
+      "tags": ["d3", "three.js", "graph-theory", "visualization"]
+    },
+    {
+      "id": "server-rack-explorer",
+      "title": "3D Blade Server Rack Explorer",
+      "category": "Infrastructure Digital Twin",
+      "description": "Interactive 3D blade server cluster with slide-out drawers, node metrics, and simulated chaos failovers.",
+      "url": "https://nichsedge.github.io/#server-rack",
+      "tags": ["three.js", "systems-architecture", "failover"]
+    },
+    {
+      "id": "laser-pipeline-router",
+      "title": "3D Laser Pipeline Router",
+      "category": "ETL Stream Architecture",
+      "description": "Photonic ETL constructor with laser channels and real-time energy packet bursts reflecting streaming data flow.",
+      "url": "https://nichsedge.github.io/#laser-router",
+      "tags": ["etl", "streaming", "data-flow"]
+    },
+    {
+      "id": "dbt-lakehouse-pipeline",
+      "title": "Enterprise dbt Lakehouse Framework",
+      "category": "Data Engineering",
+      "description": "Production Kimball dimensional models for BigQuery with automated Elementary data quality alerting and DAG tests.",
+      "url": "https://github.com/nichsedge",
+      "tags": ["dbt", "bigquery", "data-quality", "elementary"]
+    },
+    {
+      "id": "airflow-orchestrator",
+      "title": "Distributed Airflow Ingestion Cluster",
+      "category": "Pipeline Orchestration",
+      "description": "High-resilience Apache Airflow DAGs with custom sensor hooks, SFTP/S3 synchronizers, and Slack incident responders.",
+      "url": "https://github.com/nichsedge",
+      "tags": ["airflow", "python", "gcp", "data-lake"]
+    }
+  ]
+}

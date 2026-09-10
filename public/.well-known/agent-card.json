@@ -1,0 +1,44 @@
+{
+  "$schema": "https://a2a-protocol.org/schemas/agent-card-v1.json",
+  "name": "nichsedge-agent",
+  "displayName": "NICHSEDGE Agent",
+  "description": "Autonomous portfolio and system architecture agent representing Ichsanul Amal (Data Engineer & System Architect). Provides skill evaluations, data lineage inspection, and project dossier retrieval.",
+  "version": "1.0.0",
+  "url": "https://nichsedge.github.io",
+  "contact": {
+    "name": "Ichsanul Amal",
+    "email": "muhammad.ichsanul19@gmail.com",
+    "website": "https://nichsedge.github.io"
+  },
+  "capabilities": [
+    {
+      "id": "query_profile",
+      "name": "Query Profile",
+      "description": "Fetch technical background, education, enterprise experience, and current focus."
+    },
+    {
+      "id": "query_projects",
+      "name": "Query Projects",
+      "description": "Search open-source repositories, data engineering pipelines, and architecture case studies."
+    },
+    {
+      "id": "query_skills",
+      "name": "Query Skills",
+      "description": "Evaluate language proficiencies, orchestration tools, and cloud platforms."
+    },
+    {
+      "id": "ask_technical_question",
+      "name": "NLWeb Ask Technical Question",
+      "description": "Ask natural language questions about data engineering practices, dbt, BigQuery, and pipeline design."
+    }
+  ],
+  "skills": [
+    "https://nichsedge.github.io/.well-known/agent-skills/index.json"
+  ],
+  "endpoints": {
+    "mcp": "https://nichsedge.github.io/.well-known/mcp",
+    "openapi": "https://nichsedge.github.io/openapi.json",
+    "ask": "https://nichsedge.github.io/api/v1/ask"
+  },
+  "protocols": ["a2a-v1", "mcp-v1", "nlweb-v1"]
+}

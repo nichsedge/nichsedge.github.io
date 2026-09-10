@@ -1,0 +1,58 @@
+{
+  "$schema": "https://agent-skills.org/schema/v1.json",
+  "version": "1.0.0",
+  "provider": {
+    "name": "Ichsanul Amal (NICHSEDGE)",
+    "url": "https://nichsedge.github.io"
+  },
+  "skills": [
+    {
+      "id": "data_lineage_inspect",
+      "name": "Data Lineage Inspection",
+      "description": "Inspect multi-stage ETL/ELT pipeline lineage across BigQuery, dbt, Apache Airflow, PostgreSQL, and cloud storage lakes.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pipelineId": { "type": "string", "description": "Identifier of the pipeline or data source" }
+        }
+      },
+      "tags": ["data-engineering", "lineage", "dbt", "airflow"]
+    },
+    {
+      "id": "skill_matrix_eval",
+      "name": "Skill Matrix Evaluation",
+      "description": "Retrieve comprehensive skill matrix covering programming languages, cloud providers (GCP, AWS), data warehouse technologies, and database internals.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "category": { "type": "string", "enum": ["all", "languages", "orchestration", "databases", "cloud", "ai"] }
+        }
+      },
+      "tags": ["skills", "competencies", "languages"]
+    },
+    {
+      "id": "project_dossier_fetch",
+      "name": "Project Dossier Retrieval",
+      "description": "Fetch project architecture, tech stack, repository links, metrics, and documentation for technical projects.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "projectSlug": { "type": "string", "description": "Slug or name of the project" }
+        }
+      },
+      "tags": ["projects", "architecture", "portfolio"]
+    },
+    {
+      "id": "pricing_and_consulting_inquiry",
+      "name": "Pricing and Consulting Inquiry",
+      "description": "Query consulting rates, architectural review packages, and availability for contract data engineering roles.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serviceType": { "type": "string", "description": "Type of service (e.g. consulting, audit, freelance)" }
+        }
+      },
+      "tags": ["pricing", "consulting", "services"]
+    }
+  ]
+}

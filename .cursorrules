@@ -1,0 +1,7 @@
+# Cursor Rules for nichsedge.github.io
+# Modern Next.js + Bun + Tailwind CSS v4
+
+- Always run `bun run check` prior to shipping.
+- Maintain strict TypeScript type safety without ts-ignore or any.
+- Keep semantic HTML accessible with proper ARIA attributes and sequential heading hierarchies.
+- Ensure all agent discovery manifests in public/.well-known remain updated.

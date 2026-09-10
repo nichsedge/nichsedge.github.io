@@ -1,0 +1,8 @@
+{
+  "type": "https://nichsedge.github.io/developers#not-found",
+  "title": "Not Found",
+  "status": 404,
+  "code": "NOT_FOUND",
+  "detail": "The requested API resource does not exist.",
+  "resolution": "Check the API catalog at https://nichsedge.github.io/.well-known/api-catalog or the sitemap at https://nichsedge.github.io/sitemap.xml."
+}

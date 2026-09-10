@@ -1,0 +1,33 @@
+{
+  "status": "success",
+  "data": {
+    "name": "Ichsanul Amal",
+    "role": "Data Quality Engineer & System Architect",
+    "tagline": "Architecting deterministic data engines and zero-entropy pipelines.",
+    "location": "Cimahi, West Java, Indonesia",
+    "coordinates": {
+      "latitude": -6.8722,
+      "longitude": 107.5414
+    },
+    "email": "muhammad.ichsanul19@gmail.com",
+    "website": "https://nichsedge.github.io",
+    "github": "https://github.com/nichsedge",
+    "linkedin": "https://www.linkedin.com/in/ichsanulamal19/",
+    "twitter": "https://twitter.com/nichsedge",
+    "currentCompany": {
+      "name": "Krom Bank Indonesia",
+      "role": "Data Quality Engineer",
+      "since": "2026-06"
+    },
+    "previousCompany": {
+      "name": "Accenture",
+      "role": "Data Engineering, Governance, and Management Analyst",
+      "duration": "2024-09 – 2026-06"
+    },
+    "education": {
+      "institution": "University of Indonesia",
+      "degree": "B.Sc. in Computer Science (Information Systems)",
+      "gpa": "3.77 / 4.00"
+    }
+  }
+}

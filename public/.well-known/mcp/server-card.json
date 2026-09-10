@@ -1,0 +1,66 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-card-v1.json",
+  "name": "nichsedge-mcp-server",
+  "displayName": "NICHSEDGE Data Architecture & Portfolio MCP Server",
+  "description": "Exposes live project catalog, skill matrix, and data lineage inspection for Ichsanul Amal's engineering archive.",
+  "version": "1.0.0",
+  "serverUrl": "https://nichsedge.github.io/.well-known/mcp",
+  "transport": "streamable-http",
+  "homepage": "https://nichsedge.github.io",
+  "documentation": "https://nichsedge.github.io/developers",
+  "tools": [
+    {
+      "name": "query_profile",
+      "description": "Fetch technical background, education, enterprise experience, and current focus of Ichsanul Amal.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Specific field to return (e.g., 'all', 'experience', 'education', 'contact')",
+            "enum": ["all", "experience", "education", "contact"]
+          }
+        }
+      }
+    },
+    {
+      "name": "query_projects",
+      "description": "Search open-source repositories, data engineering pipelines, and architecture case studies.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Filter by topic (e.g., 'data-engineering', 'airflow', 'dbt', 'bigquery', 'react')"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Max number of projects to return (default 10)"
+          }
+        }
+      }
+    },
+    {
+      "name": "query_skills",
+      "description": "Evaluate language proficiencies, orchestration tools, and cloud platforms.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Category filter (e.g., 'languages', 'databases', 'orchestration', 'cloud')",
+            "enum": ["all", "languages", "databases", "orchestration", "cloud"]
+          }
+        }
+      }
+    },
+    {
+      "name": "get_contact_info",
+      "description": "Get verified contact channels, email, and professional social profiles.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ]
+}

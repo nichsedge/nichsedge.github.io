@@ -1,38 +1,58 @@
 # Ichsanul Amal (NICHSEDGE)
 
-> Data Engineer & Systems Architect based in Cimahi, West Java, Indonesia. Specialist in high-throughput ETL pipelines, scalable data lakes, dbt data modeling, BigQuery analytics, and agentic AI integration.
+> Data Engineer & Systems Architect based in Cimahi, West Java, Indonesia. Specialist in enterprise data quality, high-throughput ETL/ELT pipelines, scalable data lakes, dbt data modeling, BigQuery analytics, and Model Context Protocol (MCP) integrations.
+
+## When to Use This Agent & Site
+Reach for this service and API when:
+- **Hiring & Consulting**: Evaluating senior data engineering consultants or systems architects for cloud data lakehouse builds, dbt migrations, or BigQuery performance tuning.
+- **Architecture Reviews**: Auditing PostgreSQL, Airflow, and BigQuery data pipeline architectures for reliability, data quality, and cost efficiency.
+- **Machine Discovery & Automation**: Autonomous AI agents needing programmatic access to portfolio data, project specifications, and verified developer skills via MCP or REST APIs.
 
 ## Core Profile
 - **Full Name**: Ichsanul Amal
 - **Alias / Brand**: NICHSEDGE
-- **Primary Role**: Data Engineer & System Architect
-- **Current Position**: Data Engineering, Governance, and Management Analyst at Accenture
-- **Education**: B.Sc. in Computer Science (Information Systems), University of Indonesia (GPA 3.77/4.0)
+- **Primary Role**: Data Quality Engineer & System Architect
+- **Current Position**: Data Quality Engineer at Krom Bank Indonesia (formerly Data Engineering Analyst at Accenture)
+- **Education**: B.Sc. in Computer Science (Information Systems), University of Indonesia (GPA 3.77/4.00)
 - **Location**: Cimahi, West Java, Indonesia (Coordinates: -6.8722, 107.5414)
-- **Availability**: Open for consulting, global remote data engineering roles, and system architecture design.
+- **Availability**: Open for consulting contracts, remote data engineering retainers, and architecture audits.
 - **Website**: [https://nichsedge.github.io](https://nichsedge.github.io)
 - **GitHub**: [https://github.com/nichsedge](https://github.com/nichsedge)
-- **LinkedIn**: [https://www.linkedin.com/in/ichsanulamal19/](https://www.linkedin.com/in/ichsanulamal19/)
 - **Email**: [mailto:muhammad.ichsanul19@gmail.com](mailto:muhammad.ichsanul19@gmail.com)
 
 ## Core Technical Stack
-- **Languages**: Python, SQL, JavaScript, Java, Go, Shell (Bash/Zsh), C#, Kotlin
-- **Data Engineering & Orchestration**: Apache Airflow, dbt (data build tool), BigQuery, PostgreSQL, Hive, Oracle SQL, Spark, Kafka, Hadoop, SQL Server, Looker Studio / Tableau
-- **Cloud & Infrastructure**: Google Cloud Platform (GCP), Amazon Web Services (AWS), Linux, Docker, Kubernetes
-- **AI & Agentic Frameworks**: Agent Development Kit (ADK), AutoGen, LangChain, Gemini, OpenAI, Claude, LLM-agent tooling
+- **Languages**: Python, SQL (BigQuery, PostgreSQL, Hive, Oracle SQL), TypeScript, Go, Java, Shell (Bash/Zsh)
+- **Data Engineering & Orchestration**: Apache Airflow (Cloud Composer), dbt (data build tool), Google BigQuery, PostgreSQL, Elementary DQ, Apache Spark, Kafka, DAMA DQ Dimensions
+- **Cloud & Infrastructure**: Google Cloud Platform (GCP), Amazon Web Services (AWS), Linux, Docker, CI/CD
+- **AI & Agentic Frameworks**: Model Context Protocol (MCP), WebMCP, AutoGen, LangChain, Gemini, OpenAI
 
-## Experience & Career Milestones
-- **Accenture** (Sep 2024 – Present): Data Engineering, Governance & Management Analyst. Designed data quality verification dimension models, automated configuration migrations across ~4,000 components, and researched agentic AI developer tools (Vibe Coder).
-- **NTI / Telkomsel Project** (Aug 2023 – Apr 2024): Database Engineer. Architected data models and ingestion pipelines for Network Service Measurement; introduced dbt for modular analytics models and optimized PostgreSQL via indexing, partitioning, and stored procedures.
-- **Traveloka** (Aug 2022 – Dec 2022): Data Engineer Intern. Implemented Kimball dimensional data warehouse models in BigQuery & Airflow for hotel and transport business units.
-- **IR-NLP Lab CSUI** (Feb 2023 – Jun 2023): Research Intern. Aspect-based sentiment analysis and Flask data analytics dashboards.
-- **University of Indonesia** (Sep 2020 – Jan 2022): Teaching Assistant for Python Programming, Calculus, and Operating Systems.
+## Scoped & Modular Documentation (LLMS.txt)
+- [Projects LLMS Guide](https://nichsedge.github.io/projects/llms.txt): Deep dive into open source codebases, 3D simulations, and lakehouse builds.
+- [Work Experience LLMS Guide](https://nichsedge.github.io/work/llms.txt): Detailed breakdown of roles at Krom Bank, Accenture, NTI/Telkomsel, and Traveloka.
+- [API & Machine Interfaces LLMS Guide](https://nichsedge.github.io/api/llms.txt): Complete endpoints, schemas, and authentication methods.
+
+## Machine & Agent Endpoints
+- **Agentic Resource Discovery (ARD)**: [https://nichsedge.github.io/.well-known/ard.json](https://nichsedge.github.io/.well-known/ard.json)
+- **Agent Card (A2A)**: [https://nichsedge.github.io/.well-known/agent-card.json](https://nichsedge.github.io/.well-known/agent-card.json)
+- **Agent Skills**: [https://nichsedge.github.io/.well-known/agent-skills/index.json](https://nichsedge.github.io/.well-known/agent-skills/index.json)
+- **MCP Server Card**: [https://nichsedge.github.io/.well-known/mcp/server-card.json](https://nichsedge.github.io/.well-known/mcp/server-card.json)
+- **OpenAPI 3.1 Specification**: [https://nichsedge.github.io/openapi.json](https://nichsedge.github.io/openapi.json)
+- **Authentication Specification**: [https://nichsedge.github.io/auth.md](https://nichsedge.github.io/auth.md)
+- **Consulting Pricing & Rates**: [https://nichsedge.github.io/pricing.md](https://nichsedge.github.io/pricing.md)
+- **Public REST Profile**: [https://nichsedge.github.io/api/v1/profile](https://nichsedge.github.io/api/v1/profile)
+- **Public REST Projects**: [https://nichsedge.github.io/api/v1/projects](https://nichsedge.github.io/api/v1/projects)
+- **Public REST Skills**: [https://nichsedge.github.io/api/v1/skills](https://nichsedge.github.io/api/v1/skills)
+- **Full LLM Archive**: [https://nichsedge.github.io/llms-full.txt](https://nichsedge.github.io/llms-full.txt)
+- **Markdown Homepage**: [https://nichsedge.github.io/index.md](https://nichsedge.github.io/index.md)
 
 ## High-Level Pages & Links
 - [Home Page](https://nichsedge.github.io/): Overview of digital data archive, system status, and live interactive widgets.
-- [Indonesian Version](https://nichsedge.github.io/id): Complete Bahasa Indonesia portfolio and career trajectory.
-- [Career & Experience / Work](https://nichsedge.github.io/work): Full career history, client impacts, and technical roles.
-- [Engineering Archive / Projects](https://nichsedge.github.io/projects): Portfolio of open-source tools, finance trackers, and data engineering projects.
-- [Data Lake Interactive Explorer](https://nichsedge.github.io/data-lake): Interactive data lineage, skill matrices, and live pipeline tools.
-- [Terminal Interface](https://nichsedge.github.io/terminal): Interactive CLI shell interface for querying system logs and bio details.
-- [Full LLM Archive](https://nichsedge.github.io/llms-full.txt): Deep technical specification and comprehensive CV dataset for LLMs.
+- [About Dossier](https://nichsedge.github.io/about): Technical biography, academic foundation, and milestones.
+- [Contact Points](https://nichsedge.github.io/contact): Verified contact channels, security keys, and inquiry routing.
+- [Privacy Policy](https://nichsedge.github.io/privacy): Data privacy terms, agent scraping guidelines, and telemetry disclosures.
+- [Pricing & Services](https://nichsedge.github.io/pricing): Consulting tiers, architectural audits, and rates.
+- [Developer Portal](https://nichsedge.github.io/developers): API sandbox, curl recipes, and integration guides.
+- [Career & Work](https://nichsedge.github.io/work): Full career history and enterprise impacts.
+- [Engineering Projects](https://nichsedge.github.io/projects): Portfolio of open-source tools and data systems.
+- [Data Lake Explorer](https://nichsedge.github.io/data-lake): Interactive data lineage and neural skill matrices.
+- [Terminal Interface](https://nichsedge.github.io/terminal): Interactive CLI shell interface.

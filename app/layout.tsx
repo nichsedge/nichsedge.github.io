@@ -93,6 +93,9 @@ export const metadata: Metadata = {
       'id': 'https://nichsedge.github.io/id',
       'x-default': 'https://nichsedge.github.io',
     },
+    types: {
+      'text/markdown': 'https://nichsedge.github.io/index.md',
+    },
   },
   other: {
     'geo.region': 'ID-JB',
@@ -114,6 +117,7 @@ import { ScrollProgress } from '@/components/scroll-progress';
 import { BiomeSelector } from '@/components/biome-selector';
 // GlobalOverlays is a Client Component — all ssr:false dynamic imports live there
 import { GlobalOverlays } from '@/components/global-overlays';
+import { WebMCPProvider } from '@/components/webmcp-provider';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -123,6 +127,13 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
+      <head>
+        <link rel="alternate" type="text/markdown" href="https://nichsedge.github.io/index.md" />
+        <link rel="service-desc" type="application/vnd.oai.openapi+json" href="https://nichsedge.github.io/openapi.json" />
+        <link rel="alternate" type="application/linkset+json" href="https://nichsedge.github.io/.well-known/api-catalog" />
+        <link rel="help" type="text/markdown" href="https://nichsedge.github.io/auth.md" />
+        <link rel="sitemap" type="application/xml" href="https://nichsedge.github.io/sitemap.xml" />
+      </head>
       <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-20 sm:pb-24">
         <script
           dangerouslySetInnerHTML={{
@@ -149,6 +160,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           }}
         />
         <JsonLd />
+        <WebMCPProvider />
         <ScrollProgress />
         <BiomeSelector />
         <GlobalOverlays />

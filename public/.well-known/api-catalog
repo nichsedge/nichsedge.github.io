@@ -1,0 +1,44 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://nichsedge.github.io/api/v1",
+      "service-desc": [
+        {
+          "href": "https://nichsedge.github.io/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.1"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://nichsedge.github.io/developers",
+          "type": "text/html"
+        },
+        {
+          "href": "https://nichsedge.github.io/llms.txt",
+          "type": "text/plain"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://nichsedge.github.io/api/v1/profile",
+          "type": "application/json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://nichsedge.github.io",
+      "alternate": [
+        {
+          "href": "https://nichsedge.github.io/index.md",
+          "type": "text/markdown"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://nichsedge.github.io/.well-known/ard.json",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

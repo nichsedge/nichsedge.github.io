@@ -1,0 +1,26 @@
+# Work Experience & Enterprise History (LLMS.txt)
+
+> Career history, roles, enterprise deliverables, and client outcomes for Ichsanul Amal (Nichsedge).
+
+## Current Role
+- **Krom Bank Indonesia** (June 2026 – Present)
+  - **Role**: Data Quality Engineer
+  - **Focus**: Managing data quality frameworks for enterprise banking reporting across GCP BigQuery, S3, and SFTP data replication pipelines.
+  - **Technologies**: Google BigQuery, dbt, Elementary, Airflow Composer, Python, Mode BI.
+  - **Key Impact**: Established cross-platform data quality checks conforming to DAMA data quality dimensions and automated upstream issue tracing.
+
+## Past Roles
+- **Accenture** (September 2024 – June 2026)
+  - **Role**: Data Engineering, Governance, and Management Analyst
+  - **Focus**: Enterprise data platforms, governance standards, and automated migrations.
+  - **Technologies**: Python, SQL, Airflow, BigQuery, Metadata Management.
+  - **Key Impact**: Automated configuration migrations across ~4,000 components; researched agentic AI developer tools (Vibe Coder).
+
+- **NTI / Telkomsel Project** (August 2023 – April 2024)
+  - **Role**: Database Engineer
+  - **Focus**: Data models and ingestion pipelines for Network Service Measurement.
+  - **Technologies**: PostgreSQL, dbt, Stored Procedures, Index Optimization, Linux.
+
+- **Traveloka** (August 2022 – December 2022)
+  - **Role**: Data Engineer Intern
+  - **Focus**: Kimball dimensional data warehouse modeling in BigQuery & Airflow for travel business units.

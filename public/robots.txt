@@ -1,0 +1,43 @@
+# Robots.txt for nichsedge.github.io
+# Content Signals & Agent Crawler Directives
+
+Content-Signal: search=yes, ai-train=no
+schemamap: https://nichsedge.github.io/schemamap.xml
+
+User-agent: *
+Allow: /
+Disallow: /private/
+
+# Answer Engine & Search AI Crawlers (Explicitly Allowed)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Training-Only Crawlers (Restricted per Ora Agent Readiness Policy)
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+Sitemap: https://nichsedge.github.io/sitemap.xml

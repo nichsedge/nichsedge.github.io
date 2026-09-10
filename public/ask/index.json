@@ -1,0 +1,14 @@
+{
+  "_meta": {
+    "response_type": "nlweb_answer",
+    "version": "1.0",
+    "provider": "NICHSEDGE NLWeb Service"
+  },
+  "answer": "Ichsanul Amal (Nichsedge) is a Data Quality Engineer & System Architect specializing in scalable data lakes, high-throughput ETL/ELT pipelines with Airflow & dbt, BigQuery optimization, and Model Context Protocol (MCP) integrations based in Cimahi, Indonesia.",
+  "references": [
+    "https://nichsedge.github.io",
+    "https://nichsedge.github.io/developers",
+    "https://nichsedge.github.io/llms.txt",
+    "https://nichsedge.github.io/openapi.json"
+  ]
+}

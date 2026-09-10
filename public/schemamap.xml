@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemamap xmlns="http://www.schemamap.org/schemas/0.1">
+  <feed>
+    <url>https://nichsedge.github.io/api/v1/profile</url>
+    <type>application/ld+json</type>
+    <schema>https://schema.org/Person</schema>
+  </feed>
+  <feed>
+    <url>https://nichsedge.github.io/api/v1/projects</url>
+    <type>application/json</type>
+    <schema>https://schema.org/ItemList</schema>
+  </feed>
+  <feed>
+    <url>https://nichsedge.github.io/api/v1/skills</url>
+    <type>application/json</type>
+    <schema>https://schema.org/ItemList</schema>
+  </feed>
+</schemamap>

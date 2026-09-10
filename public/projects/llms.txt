@@ -1,0 +1,29 @@
+# Projects Archive (LLMS.txt)
+
+> Detailed project documentation for engineering projects built by Ichsanul Amal (Nichsedge).
+
+## Core Projects
+- **DATA_DEFENDER Gamification Engine**:
+  - URL: [https://nichsedge.github.io/](https://nichsedge.github.io/)
+  - Tech: Next.js, React 19, Web Audio API, TypeScript, CSS Variables
+  - Description: Gamified terminal interface featuring clearance levels, real-time quest trackers, and synthesized audio frequencies.
+
+- **3D Data Highway Arcade**:
+  - URL: [https://nichsedge.github.io/#arcade](https://nichsedge.github.io/#arcade)
+  - Tech: Three.js, WebGL, Kafka stream emulation
+  - Description: Real-time 3D arcade simulating streaming Kafka partition throughput, packet delivery, and backpressure mitigation.
+
+- **3D Server Rack Explorer**:
+  - URL: [https://nichsedge.github.io/#server-rack](https://nichsedge.github.io/#server-rack)
+  - Tech: Three.js, Systems Architecture
+  - Description: Interactive 3D blade server rack with slide-out drawer inspection, node telemetry, and automated failover simulations.
+
+- **3D Knowledge Constellation**:
+  - URL: [https://nichsedge.github.io/data-lake](https://nichsedge.github.io/data-lake)
+  - Tech: D3.js, Three.js, Force-directed Graph
+  - Description: Celestial 3D skill galaxy with gravitational attraction and tech dossier inspection.
+
+- **Enterprise dbt Lakehouse Framework**:
+  - URL: [https://github.com/nichsedge](https://github.com/nichsedge)
+  - Tech: dbt, Google BigQuery, Elementary, Python
+  - Description: Modular Kimball dimensional models with automated data quality anomaly detection and schema validation.
