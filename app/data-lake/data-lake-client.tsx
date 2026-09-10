@@ -655,7 +655,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
       {/* Decorative Glow Grid */}
       <div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-accent/5 to-transparent pointer-events-none z-0" />
 
-      <header className="pt-20 pb-8 px-6 border-b border-border-subtle relative z-10">
+      <header className="pt-8 sm:pt-12 md:pt-16 pb-6 sm:pb-8 px-4 sm:px-6 border-b border-border-subtle relative z-10">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="font-mono text-[10px] text-accent uppercase tracking-[0.25em] mb-3 flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" /> 

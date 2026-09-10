@@ -44,8 +44,8 @@ const FADE_UP = {
 
 function Section({ children, label, id, isNSM }: { children: React.ReactNode, label: string, id: string, isNSM?: boolean }) {
   return (
-    <section id={id} className={`py-20 md:py-28 px-6 md:px-10 border-b border-border-subtle group transition-all duration-700 relative z-10 ${isNSM ? 'bg-bg/60 backdrop-blur-sm' : ''}`}>
-      <div className="flex items-center gap-4 mb-12">
+    <section id={id} className={`py-12 sm:py-16 md:py-28 px-4 sm:px-6 md:px-10 border-b border-border-subtle group transition-all duration-700 relative z-10 ${isNSM ? 'bg-bg/60 backdrop-blur-sm' : ''}`}>
+      <div className="flex items-center gap-4 mb-8 sm:mb-12">
         <h2 className="font-mono text-[10px] text-accent uppercase tracking-[0.3em] font-bold">
           <DecryptedText text={label} speed={20} />
         </h2>
@@ -118,7 +118,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       <SubNav items={subNavItems} />
       
       {/* Hero */}
-      <section className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10 relative overflow-hidden group">
+      <section className="pt-6 sm:pt-10 md:pt-16 pb-12 sm:pb-16 px-4 sm:px-6 md:px-10 relative overflow-hidden group">
         <InteractiveGrid />
         
         {/* Subtle Cybernetic Background Compass / HUD Watermark */}

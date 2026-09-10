@@ -158,9 +158,9 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00e1cf_1px,transparent_1px)] [background-size:40px_40px]" />
       </div>
 
-      <main className="relative z-10 pt-24 pb-32 px-6 md:px-12 max-w-6xl mx-auto w-full min-w-0">
+      <main className="relative z-10 pt-6 sm:pt-10 md:pt-16 pb-24 sm:pb-32 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto w-full min-w-0">
         {/* Header Section */}
-        <section id="overview" className="mb-24">
+        <section id="overview" className="mb-14 sm:mb-20 md:mb-24">
           <motion.div {...FADE_UP} className="space-y-6">
             <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.3em]">
               <span className="w-2 h-2 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(0,225,207,0.5)]" />
@@ -375,7 +375,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </section>
 
         {/* Narrative Section */}
-        <section id="philosophy" className="mt-48 pt-24 border-t border-border-subtle">
+        <section id="philosophy" className="mt-16 sm:mt-28 md:mt-48 pt-8 sm:pt-16 md:pt-24 border-t border-border-subtle">
            <motion.div 
              initial={{ opacity: 0 }}
              whileInView={{ opacity: 1 }}
@@ -414,7 +414,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
            </motion.div>
         </section>
         {/* Credentials Section */}
-        <section id="credentials" className="mt-48 pt-24 border-t border-border-subtle">
+        <section id="credentials" className="mt-16 sm:mt-28 md:mt-48 pt-8 sm:pt-16 md:pt-24 border-t border-border-subtle">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

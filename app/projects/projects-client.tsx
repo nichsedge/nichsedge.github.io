@@ -134,7 +134,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
     <div className="min-h-screen pb-20">
       <Navbar />
 
-      <header className="pt-20 pb-12 px-6 border-b border-border-subtle">
+      <header className="pt-8 sm:pt-12 md:pt-16 pb-8 sm:pb-12 px-4 sm:px-6 border-b border-border-subtle">
         <motion.div {...FADE_UP}>
           <div className="font-mono text-[10px] text-accent uppercase tracking-widest mb-4 flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-accent rounded-full" /> {locale === 'id' ? 'Arsip // Proyek' : 'Archives // Projects'}

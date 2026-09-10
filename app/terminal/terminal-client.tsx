@@ -982,7 +982,7 @@ kafka_hub --+          +----------------+          +--------------------+       
   return (
     <div className={`min-h-screen ${themeStyles.bg} ${themeStyles.text} font-mono ${themeStyles.accentSel} transition-all duration-500 selection:bg-accent selection:text-bg`}>
       <Navbar />
-      <div className="pt-20 pb-16 px-4 md:px-8">
+      <div className="pt-6 sm:pt-10 md:pt-14 pb-12 sm:pb-16 px-4 md:px-8">
         <div className={`max-w-4xl mx-auto border ${themeStyles.border} bg-[#000000]/60 backdrop-blur-md ${themeStyles.glow} relative overflow-hidden group transition-all duration-500`}>
           <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ background: 'repeating-linear-gradient(0deg, #00e1cf, #00e1cf 1px, transparent 1px, transparent 2px)' }} />
           
