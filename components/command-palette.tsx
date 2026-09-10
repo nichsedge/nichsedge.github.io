@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard, Volume2, Sparkles } from 'lucide-react';
+import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard, Volume2, Sparkles, Shield, Settings2, Palette } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
@@ -122,7 +122,17 @@ export function CommandPalette() {
     { id: 'terminal', label: 'Open Terminal Console', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal') },
     { id: 'referrals', label: 'View Referrals (Gateways)', icon: <Network size={14} />, category: 'Navigation', action: () => router.push('/referrals') },
     { id: 'pay', label: 'Show Pay / Transfer Node', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pay') },
+    { id: 'settings', label: 'Open System Settings (Ctrl+,)', icon: <Settings2 size={14} />, category: 'System', action: () => window.dispatchEvent(new CustomEvent('open-system-settings')) },
+    { id: 'audio-toggle', label: 'Toggle Audio Soundscape (Mute/Unmute)', icon: <Volume2 size={14} />, category: 'System', action: () => gameEngine.toggleAudio() },
+    { id: 'sensory-lockdown', label: 'Toggle Sensory Lockdown (Noise/FX)', icon: <Shield size={14} />, category: 'System', action: () => window.dispatchEvent(new CustomEvent('toggle-sensory-lockdown')) },
     { id: 'dev-mode', label: 'Toggle Diagnostics (X-Ray)', icon: <Code size={14} />, category: 'System', action: () => document.body.classList.toggle('dev-mode') },
+    { id: 'biome-cyber', label: 'Switch Biome: Cyberneon', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'cyber' })) },
+    { id: 'biome-oled', label: 'Switch Biome: OLED Midnight', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'oled' })) },
+    { id: 'biome-terminal', label: 'Switch Biome: Solarized CRT', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'terminal' })) },
+    { id: 'biome-ocean', label: 'Switch Biome: Ocean Deep', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'ocean' })) },
+    { id: 'biome-forest', label: 'Switch Biome: Emerald Forest', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'forest' })) },
+    { id: 'biome-quantum', label: 'Switch Biome: Quantum Spark', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'quantum' })) },
+    { id: 'biome-nebula', label: 'Switch Biome: Nebula Flare', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'nebula' })) },
     { id: 'reboot', label: 'Reboot Master Node', icon: <Power size={14} />, category: 'System', action: () => { sessionStorage.removeItem('booted'); window.location.reload(); } },
     { id: 'garden', label: 'Open Digital Garden', icon: <ExternalLink size={14} />, category: 'External', action: () => window.open('https://nichsedge.github.io/digital-garden/', '_blank') },
     { id: 'github', label: 'GitHub Profile', icon: <Github size={14} />, category: 'Social', action: () => window.open(resumeData.profile.github, '_blank') },

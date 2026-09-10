@@ -11,7 +11,6 @@ const SystemMonitor = dynamic(() => import('@/components/system-monitor').then(m
 const CursorTracker = dynamic(() => import('@/components/cursor-tracker').then(m => m.CursorTracker), { ssr: false });
 import { BootSequence } from '@/components/boot-sequence';
 const MainframeBypass = dynamic(() => import('@/components/mainframe-bypass').then(m => m.MainframeBypass), { ssr: false });
-const FocusShield = dynamic(() => import('@/components/focus-shield').then(m => m.FocusShield), { ssr: false });
 const NeuralNetworkBg = dynamic(() => import('@/components/neural-network-bg').then(m => m.NeuralNetworkBg), { ssr: false });
 const EventStream = dynamic(() => import('@/components/event-stream').then(m => m.EventStream), { ssr: false });
 const GeoRouting = dynamic(() => import('@/components/geo-routing').then(m => m.GeoRouting), { ssr: false });
@@ -34,7 +33,6 @@ export function GlobalOverlays() {
       <NeuralNetworkBg />
       <BootSequence />
       <MainframeBypass />
-      <FocusShield />
       {isHomePage && (
         <>
           {gameState.telemetry.stream && <EventStream />}

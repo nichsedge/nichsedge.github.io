@@ -1,23 +1,13 @@
 // Re-creating the essential navbar component
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Zap, ZapOff, Volume2, VolumeX } from 'lucide-react';
+import { Zap, ZapOff } from 'lucide-react';
 import { soundEngine } from '@/lib/audio';
 
 export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () => void }) {
   const pathname = usePathname() || '/';
   const isIndonesian = pathname.startsWith('/id');
-  const [audioActive, setAudioActive] = useState(false);
-
-  useEffect(() => {
-    setAudioActive(!soundEngine.getIsMuted());
-  }, []);
-
-  const toggleAudio = () => {
-    const newState = soundEngine.toggleAudio();
-    setAudioActive(newState);
-  };
 
   // Localize internal link resolution with consistent trailing slash matching next.config.ts
   const localizedHref = (href: string) => {
@@ -69,17 +59,6 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
         ))}
       </div>
       <div className="flex items-center gap-1.5 sm:gap-2 text-accent/60 shrink-0 ml-2 sm:ml-3">
-        <button 
-          onClick={toggleAudio}
-          title={audioActive ? "Mute Cyberpunk Soundscape" : "Enable Cyberpunk Soundscape"}
-          className={`flex items-center gap-1 p-1 sm:px-2 sm:py-0.5 border rounded-sm transition-all whitespace-nowrap cursor-pointer ${
-            audioActive ? 'bg-accent/15 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40 text-text-3'
-          }`}
-        >
-          {audioActive ? <Volume2 size={11} className="animate-pulse" /> : <VolumeX size={11} />}
-          <span className="text-[9px] uppercase tracking-tighter hidden sm:inline">{audioActive ? 'AUDIO_ON' : 'AUDIO_OFF'}</span>
-        </button>
-
         <button 
           onClick={() => {
             soundEngine.playClick(1100);

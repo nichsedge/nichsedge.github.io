@@ -114,7 +114,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-6">
+      <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-20 sm:pb-24">
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -129,6 +129,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
                     setTimeout(function() {
                       document.documentElement.classList.remove('is-booting');
                     }, 5000);
+                  }
+
+                  if (localStorage.getItem('sensory-lockdown') === 'true') {
+                    document.body.classList.add('sensory-lockdown');
                   }
                 } catch (e) {}
               })();

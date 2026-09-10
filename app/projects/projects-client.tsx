@@ -412,6 +412,23 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           </button>
         </div>
       )}
+
+      <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1 px-6 mt-16">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
+            <span>© 2026 NICHSEDGE</span>
+            <span className="opacity-20">|</span>
+            <span className="animate-pulse flex items-center gap-1">
+              <div className="w-1 h-1 rounded-full bg-accent" /> {locale === 'id' ? 'ARSIP_STABIL' : 'ARCHIVE_STABLE'}
+            </span>
+          </div>
+          <div className="flex flex-col gap-1 items-end">
+            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">
+              {locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

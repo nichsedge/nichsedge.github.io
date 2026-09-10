@@ -18,6 +18,7 @@ Personal portfolio built with Next.js and deployed to GitHub Pages/Cloudflare.
 - **🗄️ 3D Server Rack Explorer**: Interactive 3D blade server cluster with slide-out drawers, live node metrics, and chaos failover simulations.
 - **🌌 3D Knowledge Constellation**: Celestial 3D skill galaxy with gravitational attraction and tech dossier inspection.
 - **⚡ 3D Laser Pipeline Router**: Photonic ETL data flow constructor with laser channels and real-time energy packet bursts.
+- **🛡️ System Control Panel & Soundscape Controls**: Centralized system settings drawer with real-time theme biome switching, cognitive locale toggling, audio soundscape controls, and sensory lockdown focus mode (disabling ambient animations and environmental noise).
 
 ## Quality Checks
 

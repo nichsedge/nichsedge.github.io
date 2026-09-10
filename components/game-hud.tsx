@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Volume2, VolumeX, Sparkles, CheckCircle2, ChevronUp, ChevronDown, Gamepad2 
+  Sparkles, CheckCircle2, ChevronUp, ChevronDown, Gamepad2 
 } from 'lucide-react';
 import { 
   useGameState, gameEngine, getXpForNextLevel, 
@@ -33,10 +33,6 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
   const activeQuest = INITIAL_QUESTS.find(q => !gameState.completedQuests.includes(q.id));
   const maxLevelXp = getXpForNextLevel(gameState.level);
   const xpPercent = Math.min(100, Math.max(0, (gameState.xp / maxLevelXp) * 100));
-
-  const handleToggleAudio = () => {
-    gameEngine.toggleAudio();
-  };
 
   const handleOpenDrawer = () => {
     soundEngine.playClick(1000, 0.03);
@@ -171,7 +167,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
                 </span>
               </div>
 
-              {/* Controls: 3D Arcade, Audio Toggle, Diagnostic Drawer Trigger & Mobile Collapse */}
+              {/* Controls: 3D Arcade, Diagnostic Drawer Trigger & Mobile Collapse */}
               <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 <button
                   onClick={handleOpenArcade}
@@ -180,18 +176,6 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
                 >
                   <Gamepad2 size={12} />
                   <span className="hidden sm:inline">{isID ? '3D GAME' : '3D GAME'}</span>
-                </button>
-
-                <button
-                  onClick={handleToggleAudio}
-                  className={`p-1 sm:p-1.5 rounded-full border transition-all cursor-pointer ${
-                    gameState.audioEnabled 
-                      ? 'border-accent text-accent bg-accent/10 hover:bg-accent/20' 
-                      : 'border-border-subtle text-text-3 hover:text-text-1 hover:border-border'
-                  }`}
-                  title={gameState.audioEnabled ? (isID ? "Audio Aktif (Klik untuk mute)" : "Audio Active (Click to mute)") : (isID ? "Audio Mute (Klik untuk aktifkan)" : "Audio Muted (Click to enable)")}
-                >
-                  {gameState.audioEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
                 </button>
 
                 <button

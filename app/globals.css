@@ -172,6 +172,10 @@ body.sensory-lockdown span {
 body.sensory-lockdown .text-accent {
   opacity: 0.3;
 }
+body.sensory-lockdown .sys-settings-menu,
+body.sensory-lockdown .sys-settings-menu * {
+  opacity: 1 !important;
+}
 
 /* HUD Widgets */
 .hud-widget {

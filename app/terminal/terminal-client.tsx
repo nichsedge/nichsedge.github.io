@@ -266,21 +266,26 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
       }
     } else if (cmd.startsWith('biome')) {
       const parts = cmd.split(' ');
-      const targetBiome = parts[1];
+      const targetBiome = parts[1]?.toLowerCase();
+      const validBiomes = ['cyber', 'oled', 'terminal', 'ocean', 'forest', 'quantum', 'nebula'];
       if (!targetBiome) {
         let activeBiome = 'cyber';
         if (typeof document !== 'undefined') {
-          if (document.documentElement.classList.contains('biome-ocean')) activeBiome = 'ocean';
-          else if (document.documentElement.classList.contains('biome-forest')) activeBiome = 'forest';
+          for (const b of validBiomes) {
+            if (document.documentElement.classList.contains(`biome-${b}`)) {
+              activeBiome = b;
+              break;
+            }
+          }
         }
         response = [
           "CURRENT_BIOME: " + activeBiome.toUpperCase(),
-          "AVAILABLE_BIOMES: CYBER, OCEAN, FOREST",
+          "AVAILABLE_BIOMES: " + validBiomes.map(b => b.toUpperCase()).join(', '),
           "USAGE: biome <biome_name>"
         ];
-      } else if (['cyber', 'ocean', 'forest'].includes(targetBiome)) {
+      } else if (validBiomes.includes(targetBiome)) {
         if (typeof window !== 'undefined') {
-          document.documentElement.classList.remove('biome-cyber', 'biome-ocean', 'biome-forest');
+          document.documentElement.classList.remove(...validBiomes.map(b => `biome-${b}`));
           document.documentElement.classList.add(`biome-${targetBiome}`);
           localStorage.setItem('selected-biome', targetBiome);
           window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: targetBiome }));
@@ -292,8 +297,48 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
       } else {
         response = [
           `UNKNOWN_BIOME: ${targetBiome}`,
-          "AVAILABLE_BIOMES: CYBER, OCEAN, FOREST"
+          "AVAILABLE_BIOMES: " + validBiomes.map(b => b.toUpperCase()).join(', ')
         ];
+      }
+    } else if (cmd.startsWith('audio') || cmd.startsWith('sound')) {
+      const parts = cmd.split(' ');
+      const action = parts[1]?.toLowerCase();
+      if (!action || action === 'toggle') {
+        const active = gameEngine.toggleAudio();
+        response = [
+          `AUDIO SOUNDSCAPE: ${active ? 'ENGAGED [ACTIVE]' : 'MUTED [IDLE]'}`,
+          "AUDIO HARMONICS CONFIGURED."
+        ];
+      } else if (action === 'on') {
+        if (soundEngine.getIsMuted()) gameEngine.toggleAudio();
+        response = ["AUDIO SOUNDSCAPE: ENGAGED [ACTIVE]"];
+      } else if (action === 'off') {
+        if (!soundEngine.getIsMuted()) gameEngine.toggleAudio();
+        response = ["AUDIO SOUNDSCAPE: MUTED [IDLE]"];
+      } else if (action === 'status') {
+        response = [`AUDIO STATUS: ${!soundEngine.getIsMuted() ? 'ACTIVE' : 'MUTED'}`];
+      } else {
+        response = ["USAGE: audio <on|off|toggle|status>"];
+      }
+    } else if (cmd.startsWith('lockdown')) {
+      const parts = cmd.split(' ');
+      const action = parts[1]?.toLowerCase();
+      const isCurrentlyActive = typeof document !== 'undefined' && document.body.classList.contains('sensory-lockdown');
+      if (!action || action === 'toggle') {
+        window.dispatchEvent(new CustomEvent('toggle-sensory-lockdown'));
+        response = [
+          `SENSORY LOCKDOWN: ${!isCurrentlyActive ? 'ACTIVATED (Noise & FX suppressed)' : 'DISENGAGED (Visuals restored)'}`
+        ];
+      } else if (action === 'on') {
+        if (!isCurrentlyActive) window.dispatchEvent(new CustomEvent('toggle-sensory-lockdown'));
+        response = ["SENSORY LOCKDOWN: ACTIVATED (Noise & FX suppressed)"];
+      } else if (action === 'off') {
+        if (isCurrentlyActive) window.dispatchEvent(new CustomEvent('toggle-sensory-lockdown'));
+        response = ["SENSORY LOCKDOWN: DISENGAGED (Visuals restored)"];
+      } else if (action === 'status') {
+        response = [`SENSORY LOCKDOWN STATUS: ${isCurrentlyActive ? 'ACTIVE' : 'IDLE'}`];
+      } else {
+        response = ["USAGE: lockdown <on|off|toggle|status>"];
       }
     } else if (cmd.startsWith('theme')) {
       const parts = cmd.split(' ');
@@ -388,7 +433,9 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  LS            - TAMPILKAN DIREKTORI VIRTUAL",
             "  CAT <file>    - TAMPILKAN ISI FILE VIRTUAL",
             "  THEME <name>  - UBAH TEMA TERMINAL (CYAN, MATRIX, AMBER, COBALT)",
-            "  BIOME <name>  - UBAH BIOMA ENVIRONMENT SITE (CYBER, OCEAN, FOREST)",
+            "  BIOME <name>  - UBAH BIOMA ENVIRONMENT SITE (CYBER, OLED, TERMINAL, OCEAN, FOREST, QUANTUM, NEBULA)",
+            "  AUDIO <cmd>   - KONTROL SOUNDSCAPE AUDIO (ON, OFF, TOGGLE, STATUS)",
+            "  LOCKDOWN <cmd>- KONTROL SENSORY LOCKDOWN (ON, OFF, TOGGLE, STATUS)",
             "  STATUS        - LAPORAN DIAGNOSTIK LIVE MONITOR SISTEM",
             "  REFERRALS     - DAFTAR GERBANG INGESTI EKSTERNAL",
             "  PAY           - DAFTAR AKUN PEMBAYARAN DAN TRANSFER SECURE",
@@ -413,7 +460,9 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  LS            - LIST VIRTUAL DIRECTORY CONTENT",
             "  CAT <file>    - DISPLAY CONTENT OF A VIRTUAL FILE",
             "  THEME <name>  - CHANGE TERMINAL STYLE (CYAN, MATRIX, AMBER, COBALT)",
-            "  BIOME <name>  - CHANGE GLOBAL ENVIRONMENT BIOME (CYBER, OCEAN, FOREST)",
+            "  BIOME <name>  - CHANGE GLOBAL ENVIRONMENT BIOME (CYBER, OLED, TERMINAL, OCEAN, FOREST, QUANTUM, NEBULA)",
+            "  AUDIO <cmd>   - CONTROL AUDIO SOUNDSCAPE (ON, OFF, TOGGLE, STATUS)",
+            "  LOCKDOWN <cmd>- CONTROL SENSORY LOCKDOWN (ON, OFF, TOGGLE, STATUS)",
             "  STATUS        - PRINT LIVE SYSTEM MONITOR DIAGNOSTIC REPORT",
             "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS",
             "  PAY           - LIST SECURE PAYMENT AND TRANSFER NODES",
@@ -705,7 +754,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
         'help', 'exit', 'quit', 'back', 'home', 'work', 'projects', 'data-lake', 'datalake',
         'garden', 'ghost', 'hack', 'clear', 'neofetch', 'whoami', 'skills', 'theme', 'biome',
         'status', 'diagnose', 'ls', 'cat', 'referrals', 'gateways', 'pipeline', 'monitor',
-        'pay', 'transfer', 'benchmark', 'voice', 'export', 'audio', 'quest', 'solve', 'vault'
+        'pay', 'transfer', 'benchmark', 'voice', 'export', 'audio', 'sound', 'lockdown', 'quest', 'solve', 'vault'
       ];
       const match = commandsList.find(c => c.startsWith(input.trim().toLowerCase()));
       if (match) {
