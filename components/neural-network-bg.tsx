@@ -53,8 +53,10 @@ export function NeuralNetworkBg() {
 
     let animationFrameId: number;
     let lastTime = 0;
+    let isRunning = false;
 
     const draw = (time: number) => {
+      if (!isRunning) return;
       // Cap at ~24 FPS
       if (time - lastTime < 42) {
         animationFrameId = requestAnimationFrame(draw);
@@ -100,7 +102,25 @@ export function NeuralNetworkBg() {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    animationFrameId = requestAnimationFrame(draw);
+    const updateVisibility = () => {
+      const isDocVisible = typeof document !== 'undefined' ? !document.hidden : true;
+      const isLockdown = typeof document !== 'undefined' ? document.body.classList.contains('sensory-lockdown') : false;
+      const shouldRun = isDocVisible && !isLockdown;
+
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(draw);
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+
+    const onVisibilityChange = () => updateVisibility();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('toggle-sensory-lockdown', onVisibilityChange);
+
+    updateVisibility();
 
     const handleResize = () => {
       width = window.innerWidth;
@@ -111,7 +131,10 @@ export function NeuralNetworkBg() {
 
     window.addEventListener('resize', handleResize, { passive: true });
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       window.removeEventListener('resize', handleResize);
     };
   }, []);

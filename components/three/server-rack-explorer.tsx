@@ -205,11 +205,14 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
 
-    // Animation Loop
+    // Animation Loop with Visibility & Battery Optimization
     let animationId: number;
     let clock = new THREE.Clock();
+    let isRunning = false;
+    let isIntersecting = true;
 
     const animate = () => {
+      if (!isRunning) return;
       animationId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
@@ -244,7 +247,36 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       renderer.render(scene, camera);
     };
 
-    animate();
+    const updateVisibility = () => {
+      const isDocVisible = typeof document !== 'undefined' ? !document.hidden : true;
+      const isLockdown = typeof document !== 'undefined' ? document.body.classList.contains('sensory-lockdown') : false;
+      const shouldRun = isIntersecting && isDocVisible && !isLockdown;
+
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        clock.getDelta();
+        animate();
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationId);
+      }
+    };
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && container) {
+      observer = new IntersectionObserver(([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        updateVisibility();
+      }, { threshold: 0.05 });
+      observer.observe(container);
+    }
+
+    const onVisibilityChange = () => updateVisibility();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('toggle-sensory-lockdown', onVisibilityChange);
+
+    // Initial check and kick-off
+    updateVisibility();
 
     const handleResize = () => {
       if (!container) return;
@@ -258,7 +290,11 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
     window.addEventListener('resize', handleResize);
 
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationId);
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       container.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);

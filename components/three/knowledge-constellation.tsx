@@ -1074,9 +1074,13 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       soundEngine.playClick(800);
     };
 
-    // Animation Loop
+    // Animation Loop with Visibility & Battery Optimization
     let animationId: number;
+    let isRunning = false;
+    let isIntersecting = true;
+
     const animate = () => {
+      if (!isRunning) return;
       animationId = requestAnimationFrame(animate);
 
       if (!isDragging && isAutoRotating) {
@@ -1099,7 +1103,35 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       renderer.render(scene, camera);
     };
 
-    animate();
+    const updateVisibility = () => {
+      const isDocVisible = typeof document !== 'undefined' ? !document.hidden : true;
+      const isLockdown = typeof document !== 'undefined' ? document.body.classList.contains('sensory-lockdown') : false;
+      const shouldRun = isIntersecting && isDocVisible && !isLockdown;
+
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        animate();
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationId);
+      }
+    };
+
+    let intersectionObserver: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && container) {
+      intersectionObserver = new IntersectionObserver(([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        updateVisibility();
+      }, { threshold: 0.05 });
+      intersectionObserver.observe(container);
+    }
+
+    const onVisibilityChange = () => updateVisibility();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('toggle-sensory-lockdown', onVisibilityChange);
+
+    // Initial check and kick-off
+    updateVisibility();
 
     // High-fidelity dynamic resize observer
     const resizeObserver = new ResizeObserver(entries => {
@@ -1116,7 +1148,11 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
     resizeObserver.observe(container);
 
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationId);
+      intersectionObserver?.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       resizeObserver.disconnect();
       container.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);

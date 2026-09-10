@@ -676,23 +676,15 @@ export function HumanRuntimeScanner({
     resizeObserver.observe(container);
     window.addEventListener('resize', handleResize);
 
-    // 5. Intersection Observer
-    let isVisible = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(container);
-
-    // 6. Main Animation Loop
+    // 5. Visibility & Battery Optimization
+    let isRunning = false;
+    let isIntersecting = true;
     let animationFrameId: number;
     const currentLookAt = new THREE.Vector3(0, 0, 0);
 
     const animate = () => {
+      if (!isRunning) return;
       animationFrameId = requestAnimationFrame(animate);
-      if (!isVisible) return;
 
       const state = stateRef.current;
       state.time += 0.016;
@@ -817,12 +809,42 @@ export function HumanRuntimeScanner({
       renderer.render(scene, camera);
     };
 
-    animate();
+    const updateVisibility = () => {
+      const isDocVisible = typeof document !== 'undefined' ? !document.hidden : true;
+      const isLockdown = typeof document !== 'undefined' ? document.body.classList.contains('sensory-lockdown') : false;
+      const shouldRun = isIntersecting && isDocVisible && !isLockdown;
+
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        animate();
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && container) {
+      observer = new IntersectionObserver(([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        updateVisibility();
+      }, { threshold: 0.05 });
+      observer.observe(container);
+    }
+
+    const onVisibilityChange = () => updateVisibility();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('toggle-sensory-lockdown', onVisibilityChange);
+
+    updateVisibility();
 
     // 7. Cleanup
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationFrameId);
-      observer.disconnect();
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
       dom.removeEventListener('mousedown', onPointerDown);

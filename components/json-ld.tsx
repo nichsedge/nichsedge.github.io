@@ -45,8 +45,8 @@ export function JsonLd({
       },
       worksFor: {
         '@type': 'Organization',
-        name: 'Accenture',
-        url: 'https://www.accenture.com',
+        name: 'Krom Bank Indonesia',
+        url: 'https://krom.id',
       },
       alumniOf: [
         {

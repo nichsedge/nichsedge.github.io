@@ -33,8 +33,10 @@ export function MatrixRain({ active }: { active: boolean }) {
 
     let animationFrameId: number;
     let lastTime = 0;
+    let isRunning = false;
 
     const draw = (time: number) => {
+      if (!isRunning) return;
       if (time - lastTime < 33) {
         animationFrameId = requestAnimationFrame(draw);
         return;
@@ -60,10 +62,31 @@ export function MatrixRain({ active }: { active: boolean }) {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    animationFrameId = requestAnimationFrame(draw);
+    const updateVisibility = () => {
+      const isDocVisible = typeof document !== 'undefined' ? !document.hidden : true;
+      const isLockdown = typeof document !== 'undefined' ? document.body.classList.contains('sensory-lockdown') : false;
+      const shouldRun = isDocVisible && !isLockdown;
+
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(draw);
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+
+    const onVisibilityChange = () => updateVisibility();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('toggle-sensory-lockdown', onVisibilityChange);
+
+    updateVisibility();
 
     return () => {
+      isRunning = false;
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
   }, [active]);

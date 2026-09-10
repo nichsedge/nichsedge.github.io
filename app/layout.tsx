@@ -57,6 +57,14 @@ export const metadata: Metadata = {
     description: 'Data engineer specializing in scalable data lakes, high-throughput ETL pipelines, and robust database architectures. Based in Cimahi, West Java, Indonesia.',
     url: 'https://nichsedge.github.io',
     siteName: 'NICHSEDGE // DATA ARCHIVE',
+    images: [
+      {
+        url: 'https://nichsedge.github.io/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Ichsanul Amal | Data Engineer & System Architect',
+      },
+    ],
     locale: 'en_US',
     alternateLocale: 'id_ID',
     type: 'website',
@@ -66,6 +74,7 @@ export const metadata: Metadata = {
     title: 'NICHSEDGE // Ichsanul Amal | Data Engineer & System Architect',
     description: 'Data engineer specializing in scalable data lakes, high-throughput ETL pipelines, and robust database architectures.',
     creator: '@nichsedge',
+    images: ['https://nichsedge.github.io/opengraph-image'],
   },
   icons: {
     icon: [
