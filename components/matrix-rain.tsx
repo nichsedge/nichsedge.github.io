@@ -53,6 +53,22 @@ export function MatrixRain({ active }: { active: boolean }) {
     };
     window.addEventListener('resize', handleResize);
 
+    const getAccentColor = () => {
+      if (typeof window === 'undefined') return '#00e1cf';
+      const style = getComputedStyle(document.documentElement);
+      return style.getPropertyValue('--theme-accent').trim() || '#00e1cf';
+    };
+
+    let accentColor = getAccentColor();
+
+    const updateAccent = () => {
+      accentColor = getAccentColor();
+    };
+
+    window.addEventListener('selected-biome-change', updateAccent);
+    const observer = new MutationObserver(() => updateAccent());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     let animationFrameId: number;
     let lastTime = 0;
     let isRunning = false;
@@ -75,7 +91,7 @@ export function MatrixRain({ active }: { active: boolean }) {
 
       for (let i = 0; i < drops.length; i++) {
         const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillStyle = Math.random() > 0.92 ? '#ffffff' : '#00e1cf';
+        ctx.fillStyle = Math.random() > 0.92 ? '#ffffff' : accentColor;
         ctx.fillText(text, i * fontSize + fontSize / 2, drops[i] * fontSize);
 
         if (drops[i] * fontSize > height && Math.random() > 0.975) {
@@ -109,6 +125,8 @@ export function MatrixRain({ active }: { active: boolean }) {
     return () => {
       isRunning = false;
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('selected-biome-change', updateAccent);
+      observer.disconnect();
       document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('toggle-sensory-lockdown', onVisibilityChange);
       cancelAnimationFrame(animationFrameId);
