@@ -61,5 +61,14 @@
   "recipient": "MUHAMMAD ICHSANUL AMAL",
   "details": "Superbank digital bank transfer",
   "details_id": "Transfer bank digital Superbank"
+ },
+ {
+  "id": "cimb",
+  "name": "Bank CIMB Niaga",
+  "category": "Bank Node",
+  "number": "709134020600",
+  "recipient": "MUHAMMAD ICHSANUL AMAL",
+  "details": "Bank CIMB Niaga transfer protocol",
+  "details_id": "Protokol transfer Bank CIMB Niaga"
  }
 ]

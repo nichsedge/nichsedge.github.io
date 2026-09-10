@@ -5,8 +5,8 @@
   "scripts": {
     "build": "next build",
     "build:pages": "next build",
-    "dev": "next dev",
-    "start": "next start",
+    "dev": "next dev -p 3002",
+    "start": "next start -p 3002",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "check": "bun run lint && bun run typecheck && bun run build",
