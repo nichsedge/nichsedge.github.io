@@ -4,10 +4,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Zap, ZapOff } from 'lucide-react';
+import { Zap, ZapOff, ExternalLink } from 'lucide-react';
 import { soundEngine } from '@/lib/audio';
+import { useNSM } from '@/lib/nsm';
 
-export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () => void }) {
+export function Navbar({ isNSM: propIsNSM, toggleNSM: propToggleNSM }: { isNSM?: boolean, toggleNSM?: () => void } = {}) {
+  const globalNSM = useNSM();
+  const isNSM = propIsNSM !== undefined ? propIsNSM : globalNSM.isNSM;
+  const toggleNSM = propToggleNSM !== undefined ? propToggleNSM : globalNSM.toggleNSM;
   const pathname = usePathname() || '/';
   const isIndonesian = pathname.startsWith('/id');
 
@@ -39,11 +43,13 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
                 href={link.href} 
                 target="_blank" 
                 rel="noopener noreferrer"
+                title={isIndonesian ? "Kebun Digital (Tautan Eksternal)" : "Digital Garden (External Link)"}
                 onClick={() => soundEngine.playClick(900)}
                 className="hover:text-text-0 transition-colors group flex items-center whitespace-nowrap shrink-0"
               >
                 <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity mr-1 font-bold">[</span>
-                {link.name}
+                <span>{link.name}</span>
+                <ExternalLink size={10} className="ml-1 opacity-60 group-hover:opacity-100 group-hover:text-accent transition-all shrink-0" />
                 <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity ml-1 font-bold">]</span>
               </a>
             ) : (
@@ -84,20 +90,14 @@ export function Navbar({ isNSM, toggleNSM }: { isNSM?: boolean, toggleNSM?: () =
           <span className="hidden sm:inline">{isIndonesian ? 'Cari' : 'Search'}</span>
           <span className="hidden md:inline ml-1.5 opacity-40 text-[8px] font-mono">[Ctrl+K]</span>
         </button>
-        {toggleNSM && (
-          <button 
-            onClick={() => {
-              if (!isNSM) soundEngine.playModemHandshake();
-              else soundEngine.playClick(500);
-              toggleNSM();
-            }}
-            title={isNSM ? "Disable Neural Link" : "Enable Neural Link"}
-            className={`flex items-center gap-1.5 p-1 sm:px-2 sm:py-0.5 border rounded-sm transition-all whitespace-nowrap cursor-pointer ${isNSM ? 'bg-accent/20 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40'}`}
-          >
-            {isNSM ? <Zap size={11} className="animate-pulse" /> : <ZapOff size={11} />}
-            <span className="text-[9px] uppercase tracking-tighter hidden sm:inline">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
-          </button>
-        )}
+        <button 
+          onClick={toggleNSM}
+          title={isNSM ? "Disable Neural Link" : "Enable Neural Link"}
+          className={`flex items-center gap-1.5 p-1 sm:px-2 sm:py-0.5 border rounded-sm transition-all whitespace-nowrap cursor-pointer ${isNSM ? 'bg-accent/20 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40'}`}
+        >
+          {isNSM ? <Zap size={11} className="animate-pulse" /> : <ZapOff size={11} />}
+          <span className="text-[9px] uppercase tracking-tighter hidden sm:inline">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
+        </button>
       </div>
     </nav>
   );

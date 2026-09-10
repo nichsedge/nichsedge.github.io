@@ -14,9 +14,10 @@ import { DecryptedText } from '@/components/decrypted-text';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { DataOracle } from '@/components/data-oracle';
 import { DataPipeline } from '@/components/data-pipeline';
+import { useNSM } from '@/lib/nsm';
+import { useWideLayout } from '@/hooks/use-wide-layout';
 
 // Dynamic imports for heavy visualizer/canvas components to optimize initial JS bundle size
-const MatrixRain = dynamic(() => import('@/components/matrix-rain').then(m => m.MatrixRain), { ssr: false });
 const KnowledgeGraph = dynamic(() => import('@/components/knowledge-graph').then(m => m.KnowledgeGraph), {
   ssr: false,
   loading: () => (
@@ -57,7 +58,8 @@ function Section({ children, label, id, isNSM }: { children: React.ReactNode, la
 
 export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
-  const [isNSM, setIsNSM] = React.useState(false);
+  useWideLayout('lg');
+  const { isNSM, toggleNSM } = useNSM();
   const [showOverlay, setShowOverlay] = React.useState(false);
   const [activeArchTab, setActiveArchTab] = React.useState<'3d-laser' | '3d-cluster' | 'live-arch' | 'pipeline' | 'stream' | 'lineage' | 'sql' | 'oracle'>('3d-laser');
   const [skills3DView, setSkills3DView] = React.useState(true);
@@ -93,28 +95,6 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
     { name: 'Runtime', href: '#human-runtime' },
   ];
 
-  React.useEffect(() => {
-    let sequence = '';
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-      
-      sequence += e.key.toLowerCase();
-      if (sequence.length > 3) {
-        sequence = sequence.slice(-3);
-      }
-      
-      if (sequence === 'nsm') {
-        setIsNSM(prev => !prev);
-        sequence = '';
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
   return (
     <div className="min-h-screen relative">
       <AnimatePresence>
@@ -134,9 +114,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         )}
       </AnimatePresence>
 
-      <MatrixRain active={isNSM} />
-      
-      <Navbar isNSM={isNSM} toggleNSM={() => setIsNSM(!isNSM)} />
+      <Navbar isNSM={isNSM} toggleNSM={toggleNSM} />
       <SubNav items={subNavItems} />
       
       {/* Hero */}
@@ -162,7 +140,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             </span>
             <span className="hidden sm:inline text-border-subtle">•</span>
             <button 
-              onClick={() => setIsNSM(!isNSM)} 
+              onClick={toggleNSM} 
               className="px-2 py-0.5 border border-accent/30 text-accent hover:bg-accent/10 transition-colors rounded-sm cursor-pointer"
             >
               {isNSM ? '[MATRIX: ACTIVE]' : '[SYNC NEURAL LINK]'}
@@ -174,14 +152,14 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             {locale === 'id' ? (
               <>
                 <GlitchText text="Rekayasa Sistem Data Deterministik" />{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-teal-300 to-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-white/90 to-accent">
                   & Integritas Zero-Entropy.
                 </span>
               </>
             ) : (
               <>
                 <GlitchText text="Architecting Deterministic Data Engines" />{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-teal-300 to-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-white/90 to-accent">
                   & Zero-Entropy Pipelines.
                 </span>
               </>
@@ -209,15 +187,15 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             </div>
             <div className="sm:border-r border-border-subtle/50 pr-2">
               <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">02 // ARCHITECTURE</span>
-              <span className="text-emerald-400 font-bold text-[9px] sm:text-[10px]">ZERO-ENTROPY</span>
+              <span className="text-accent font-bold text-[9px] sm:text-[10px]">ZERO-ENTROPY</span>
             </div>
             <div className="border-r border-border-subtle/50 pr-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-border-subtle/30">
               <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">03 // STACK</span>
-              <span className="text-text-1 font-bold truncate block text-[9px] sm:text-[10px]">GCP · DBT · SPARK</span>
+              <span className="text-accent font-bold truncate block text-[9px] sm:text-[10px]">GCP · DBT · SPARK</span>
             </div>
             <div className="pt-2 sm:pt-0 border-t sm:border-t-0 border-border-subtle/30">
               <span className="text-text-3 block text-[8px] sm:text-[9px] uppercase tracking-wider">04 // EXECUTION</span>
-              <span className="text-amber-400 font-bold text-[9px] sm:text-[10px]">AI ORCHESTRATION</span>
+              <span className="text-accent font-bold text-[9px] sm:text-[10px]">AI ORCHESTRATION</span>
             </div>
           </div>
 

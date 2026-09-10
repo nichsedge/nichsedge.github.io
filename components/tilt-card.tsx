@@ -48,7 +48,7 @@ export function TiltCard({ children, className = '' }: { children: React.ReactNo
         backfaceVisibility: 'hidden',
         WebkitFontSmoothing: 'antialiased',
       }}
-      className={className}
+      className={`min-w-0 max-w-full ${className}`}
     >
       <div 
         className="w-full h-full"

@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard, Volume2, Sparkles, Shield, Settings2, Palette } from 'lucide-react';
+import { Search, Terminal, FileText, Github, Linkedin, Mail, ExternalLink, X, Zap, Loader2, Database, Code, Power, Network, Brain, Trash2, CreditCard, Volume2, Shield, Settings2, Palette } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import resumeData from '@/data/cv.json';
-import { getFallbackAuditReport } from '@/lib/ai-fallback';
+import { getFallbackAuditReport, getFallbackGhostResponse } from '@/lib/ai-fallback';
 import { gameEngine } from '@/lib/game-engine';
+import { toggleNSM } from '@/lib/nsm';
 
 interface CommandItem {
   id: string;
@@ -28,13 +29,6 @@ export function CommandPalette() {
   const [isChatMode, setIsChatMode] = useState(false);
   const [aiStatus, setAiStatus] = useState<'LIVE' | 'LOCAL' | null>(null);
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
-
-  const PRESET_PROMPTS = [
-    "⚡ Summarize Tech Stack",
-    "📊 Data Lake Schema",
-    "🚀 Top Repositories",
-    "💼 Career Highlights"
-  ];
 
   const speakText = (text: string, index: number) => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
@@ -105,9 +99,10 @@ export function CommandPalette() {
       setChatHistory(prev => [...prev, { role: 'assistant', content: data.response }]);
       setAiStatus(data.status);
     } catch {
+      const fallbackReply = getFallbackGhostResponse(userMsg);
       setChatHistory(prev => [...prev, { 
         role: 'assistant', 
-        content: "CRITICAL_CONNECTION_ERROR: Could not establish a secure uplink to the cognitive core. Fallback mode is active." 
+        content: fallbackReply
       }]);
       setAiStatus('LOCAL');
     } finally {
@@ -124,6 +119,7 @@ export function CommandPalette() {
     { id: 'pay', label: 'Show Pay / Transfer Node', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pay') },
     { id: 'settings', label: 'Open System Settings (Ctrl+,)', icon: <Settings2 size={14} />, category: 'System', action: () => window.dispatchEvent(new CustomEvent('open-system-settings')) },
     { id: 'audio-toggle', label: 'Toggle Audio Soundscape (Mute/Unmute)', icon: <Volume2 size={14} />, category: 'System', action: () => gameEngine.toggleAudio() },
+    { id: 'nsm-toggle', label: 'Toggle Neural Sync Mode (NSM Matrix Rain)', icon: <Zap size={14} />, category: 'System', action: () => toggleNSM() },
     { id: 'sensory-lockdown', label: 'Toggle Sensory Lockdown (Noise/FX)', icon: <Shield size={14} />, category: 'System', action: () => window.dispatchEvent(new CustomEvent('toggle-sensory-lockdown')) },
     { id: 'dev-mode', label: 'Toggle Diagnostics (X-Ray)', icon: <Code size={14} />, category: 'System', action: () => document.body.classList.toggle('dev-mode') },
     { id: 'biome-cyber', label: 'Switch Biome: Cyberneon', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'cyber' })) },
@@ -377,7 +373,7 @@ export function CommandPalette() {
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[1000] flex items-start justify-center pt-[15vh] px-4">
+          <div className="fixed inset-0 z-[1000] flex items-start justify-center pt-4 sm:pt-[15vh] px-3 sm:px-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -389,15 +385,15 @@ export function CommandPalette() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="relative w-full max-w-xl bg-[#09090b]/95 backdrop-blur-xl border border-accent/25 shadow-[0_0_60px_rgba(0,225,207,0.07)] overflow-hidden rounded-sm"
+              className="relative w-full max-w-xl bg-[#09090b]/95 backdrop-blur-xl border border-accent/25 shadow-[0_0_60px_rgba(0,225,207,0.07)] overflow-hidden rounded-sm flex flex-col max-h-[85vh] sm:max-h-none"
             >
               {/* Header Input with AI Connection Indicator */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle/30 bg-black/20">
-                <div className="flex items-center flex-1 mr-3">
+              <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border-subtle/30 bg-black/20 gap-2">
+                <div className="flex items-center flex-1 min-w-0">
                   {isChatMode ? (
-                    <Brain size={14} className="text-accent mr-3 animate-pulse" />
+                    <Brain size={14} className="text-accent mr-2.5 shrink-0 animate-pulse" />
                   ) : (
-                    <Search size={14} className="text-text-3 mr-3" />
+                    <Search size={14} className="text-text-3 mr-2.5 shrink-0" />
                   )}
                   <input 
                     autoFocus
@@ -406,44 +402,44 @@ export function CommandPalette() {
                         ? "Ask a follow-up about career, repos, or referrals..." 
                         : "Ask about me or search a command..."
                     }
-                    className="flex-1 bg-transparent border-none outline-none text-[13px] text-text-0 focus:ring-0 placeholder:text-text-3/60 font-mono tracking-wide"
+                    className="w-full bg-transparent border-none outline-none text-sm sm:text-[13px] text-text-0 focus:ring-0 placeholder:text-text-3/60 font-mono tracking-wide"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
                 </div>
                 
-                {/* AI Connection State Badge */}
-                {aiStatus !== null && (
-                  <span className={`font-mono text-[8px] font-bold tracking-widest px-2.5 py-0.5 border ${
-                    aiStatus === 'LIVE' 
-                      ? 'border-accent/40 text-accent bg-accent/5' 
-                      : 'border-yellow-500/30 text-yellow-500 bg-yellow-500/5'
-                  }`}>
-                    {aiStatus === 'LIVE' ? 'COGNITIVE_CORE: ONLINE' : 'LOCAL_EMULATION: ACTIVE'}
-                  </span>
-                )}
+                <div className="flex items-center gap-2 shrink-0">
+                  {/* AI Connection State Badge */}
+                  {aiStatus !== null && (
+                    <span className={`font-mono text-[8px] font-bold tracking-wider sm:tracking-widest px-1.5 sm:px-2.5 py-0.5 border shrink-0 whitespace-nowrap ${
+                      aiStatus === 'LIVE' 
+                        ? 'border-accent/40 text-accent bg-accent/5' 
+                        : 'border-yellow-500/30 text-yellow-500 bg-yellow-500/5'
+                    }`}>
+                      <span className="hidden sm:inline">
+                        {aiStatus === 'LIVE' ? 'COGNITIVE_CORE: ONLINE' : 'LOCAL_EMULATION: ACTIVE'}
+                      </span>
+                      <span className="sm:hidden flex items-center gap-1">
+                        <span className={`size-1.5 rounded-full ${aiStatus === 'LIVE' ? 'bg-accent animate-pulse' : 'bg-yellow-500'}`} />
+                        {aiStatus === 'LIVE' ? 'ONLINE' : 'LOCAL'}
+                      </span>
+                    </span>
+                  )}
+
+                  {/* Explicit Close Button */}
+                  <button
+                    onClick={handleClose}
+                    title="Close"
+                    aria-label="Close command palette"
+                    className="text-text-3 hover:text-text-0 p-1 rounded transition-colors"
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
               </div>
 
-              {/* Quick Preset Prompts Bar when input is active */}
-              {!isChatMode && query === '' && (
-                <div className="px-4 py-2 bg-black/40 border-b border-border-subtle/20 flex flex-wrap gap-1.5 items-center">
-                  <span className="text-[9px] text-text-3 font-mono uppercase tracking-wider mr-1 flex items-center gap-1">
-                    <Sparkles size={10} className="text-accent" /> Quick Prompts:
-                  </span>
-                  {PRESET_PROMPTS.map((prompt, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleAiAsk(prompt.replace(/^[^\w]+/, ''))}
-                      className="px-2 py-0.5 bg-accent/5 hover:bg-accent/15 border border-accent/20 rounded text-[9px] text-accent font-mono transition-all hover:scale-105"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-              )}
-
               {/* Body Content: Command List vs Chat Area */}
-              <div className="max-h-[300px] overflow-y-auto p-4 scrollbar-thin">
+              <div className="max-h-[55vh] sm:max-h-[340px] overflow-y-auto p-2.5 sm:p-4 scrollbar-thin">
                 {isChatMode ? (
                   /* Conversational Terminal Mode */
                   <div className="space-y-4">
@@ -534,7 +530,7 @@ export function CommandPalette() {
               </div>
 
               {/* Bottom Instructions / Reset Actions Bar */}
-              <div className="px-4 py-2.5 border-t border-border-subtle/30 bg-black/40 flex justify-between items-center font-mono text-[8px] sm:text-[9px] text-text-3 uppercase tracking-wider">
+              <div className="px-3 sm:px-4 py-2 sm:py-2.5 border-t border-border-subtle/30 bg-black/40 flex justify-between items-center font-mono text-[8px] sm:text-[9px] text-text-3 uppercase tracking-wider">
                 {isChatMode ? (
                   <div className="flex gap-4 items-center">
                     <button 
@@ -545,12 +541,19 @@ export function CommandPalette() {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex gap-4">
-                    <span><span className="text-accent font-bold">↑↓</span> to navigate</span>
-                    <span><span className="text-accent font-bold">↵</span> to select</span>
+                  <div className="flex gap-4 items-center">
+                    <span className="hidden sm:inline"><span className="text-accent font-bold">↑↓</span> to navigate</span>
+                    <span className="hidden sm:inline"><span className="text-accent font-bold">↵</span> to select</span>
+                    <span className="sm:hidden text-text-3/80">Tap command to execute</span>
                   </div>
                 )}
-                <div>ESC to close</div>
+                <button
+                  onClick={handleClose}
+                  className="hover:text-text-1 transition-colors cursor-pointer"
+                >
+                  <span className="hidden sm:inline">ESC to close</span>
+                  <span className="sm:hidden text-text-3 hover:text-text-1">ESC / Close</span>
+                </button>
               </div>
             </motion.div>
           </div>

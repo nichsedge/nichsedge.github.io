@@ -22,6 +22,7 @@ import { TiltCard } from '@/components/tilt-card';
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
+import { useNSM } from '@/lib/nsm';
 
 interface Period {
   start: string;
@@ -131,7 +132,7 @@ const STAGGER_CONTAINER = {
 export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
   useWideLayout('lg');
-  const [isNSM, setIsNSM] = React.useState(false);
+  const { isNSM, toggleNSM } = useNSM();
   const work = resumeData.work as unknown as WorkItem[];
   const { narrative, profile } = resumeData;
 
@@ -147,24 +148,9 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
     { name: 'Credentials', href: '#credentials' },
   ];
 
-  React.useEffect(() => {
-    let sequence = '';
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      sequence += e.key.toLowerCase();
-      if (sequence.length > 3) sequence = sequence.slice(-3);
-      if (sequence === 'nsm') {
-        setIsNSM(prev => !prev);
-        sequence = '';
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-bg relative selection:bg-accent/30 selection:text-accent">
-      <Navbar isNSM={isNSM} toggleNSM={() => setIsNSM(!isNSM)} />
+    <div className="min-h-screen bg-bg relative selection:bg-accent/30 selection:text-accent w-full max-w-full overflow-x-clip">
+      <Navbar isNSM={isNSM} toggleNSM={toggleNSM} />
       <SubNav items={subNavItems} />
       
       {/* Background Subtle Elements */}
@@ -172,7 +158,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00e1cf_1px,transparent_1px)] [background-size:40px_40px]" />
       </div>
 
-      <main className="relative z-10 pt-24 pb-32 px-6 md:px-12 max-w-6xl mx-auto">
+      <main className="relative z-10 pt-24 pb-32 px-6 md:px-12 max-w-6xl mx-auto w-full min-w-0">
         {/* Header Section */}
         <section id="overview" className="mb-24">
           <motion.div {...FADE_UP} className="space-y-6">
@@ -200,11 +186,11 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                 <div className="flex items-center gap-2 font-mono text-[9px] text-text-3 uppercase mb-4 tracking-widest">
                   <Cpu size={12} /> {locale === 'id' ? 'Inti Teknis' : 'Technical Core'}
                 </div>
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4 font-mono text-[11px] text-accent/80">
-                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full"/> DISTRIBUTED_SYS</div>
-                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full"/> STREAM_PROCESSING</div>
-                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full"/> CLOUD_INFRA</div>
-                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full"/> DATA_MODELING</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 font-mono text-[11px] text-accent/80">
+                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full shrink-0"/> <span className="truncate">DISTRIBUTED_SYS</span></div>
+                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full shrink-0"/> <span className="truncate">STREAM_PROCESSING</span></div>
+                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full shrink-0"/> <span className="truncate">CLOUD_INFRA</span></div>
+                  <div className="flex items-center gap-2"><div className="w-1 h-1 bg-accent rounded-full shrink-0"/> <span className="truncate">DATA_MODELING</span></div>
                 </div>
               </div>
             </div>
@@ -230,10 +216,10 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               <motion.div 
                 key={`${role.company}-${role.role}-${idx}`}
                 variants={FADE_UP}
-                className="group relative grid md:grid-cols-12 gap-8 md:gap-4 pl-6 md:pl-0"
+                className="group relative grid md:grid-cols-12 gap-8 md:gap-4 pl-6 md:pl-0 w-full min-w-0"
               >
                 {/* Period & Temporal Metadata */}
-                <div className="md:col-span-3 flex flex-col items-start md:items-end md:text-right pr-0 md:pr-8 relative">
+                <div className="md:col-span-3 min-w-0 flex flex-col items-start md:items-end md:text-right pr-0 md:pr-8 relative">
                   {/* Timeline Connector Line */}
                   <div 
                     className={`absolute left-[-18px] md:left-auto md:right-[-9px] w-px bg-border-subtle group-hover:bg-accent/40 transition-all z-10 ${
@@ -279,7 +265,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                 </div>
 
                 {/* Content */}
-                <div className="md:col-span-9 space-y-6">
+                <div className="md:col-span-9 min-w-0 space-y-6">
                   <div>
                     <h3 className="text-2xl font-bold text-text-0 mb-1 group-hover:text-accent transition-colors flex items-center gap-3">
                       {role.company} <ArrowUpRight className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-accent" size={16} />
@@ -479,11 +465,11 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                       <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SECURITY_KEYCHAIN_PROTOCOLS:</div>
                       <ul className="space-y-2 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
                         {resumeData.certificates.map((cert: any, idx: number) => (
-                          <li key={idx} className="flex items-center justify-between gap-2 border-b border-border-subtle/30 pb-1.5 last:border-0 last:pb-0">
-                            <div className="truncate">
+                          <li key={idx} className="flex items-center justify-between gap-2 border-b border-border-subtle/30 pb-1.5 last:border-0 last:pb-0 min-w-0">
+                            <div className="truncate min-w-0 flex-1">
                               <span className="text-accent mr-1.5 font-bold">●</span>
                               <span className="text-text-1 group-hover:text-text-0 transition-colors" title={cert.title}>{cert.title}</span>
-                              <span className="text-text-3 text-[10px] block font-sans">{cert.issuer} ({cert.date})</span>
+                              <span className="text-text-3 text-[10px] block font-sans truncate">{cert.issuer} ({cert.date})</span>
                             </div>
                             {cert.link && (
                               <a 
@@ -576,10 +562,10 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
              <div className="font-mono text-[10px] text-accent tracking-[0.4em] uppercase">{locale === 'id' ? 'Siap terhubung?' : 'Ready to connect?'}</div>
              <h3 className="text-3xl font-bold text-text-0 tracking-tight">{locale === 'id' ? 'Mari bangun sesuatu yang sistemik.' : "Let's build something systemic."}</h3>
           </div>
-          <div className="flex gap-8 font-mono text-[11px] text-text-3 uppercase tracking-widest">
-            <a href={`mailto:${profile.email}`} className="hover:text-accent transition-colors">{profile.email}</a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">LinkedIn</a>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a>
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-8 font-mono text-[11px] text-text-3 uppercase tracking-wider sm:tracking-widest">
+            <a href={`mailto:${profile.email}`} className="hover:text-accent transition-colors break-all">{profile.email}</a>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors shrink-0">LinkedIn</a>
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors shrink-0">GitHub</a>
           </div>
         </div>
       </footer>

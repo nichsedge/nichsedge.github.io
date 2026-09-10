@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Copy, Check, Server, Network, Terminal, Search, X, ShieldAlert, Cpu } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { InteractiveGrid } from '@/components/interactive-grid';
-import { MatrixRain } from '@/components/matrix-rain';
 import { TiltCard } from '@/components/tilt-card';
 import { DecryptedText } from '@/components/decrypted-text';
 import referralsData from '@/data/referrals.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
+import { useNSM } from '@/lib/nsm';
 
 interface Referral {
   id: string;
@@ -23,7 +23,7 @@ interface Referral {
 
 export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   useWideLayout('lg');
-  const [isNSM, setIsNSM] = useState(false);
+  const { isNSM, toggleNSM } = useNSM();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -56,8 +56,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
 
   return (
     <div className="min-h-screen relative bg-bg">
-      <MatrixRain active={isNSM} />
-      <Navbar isNSM={isNSM} toggleNSM={() => setIsNSM(!isNSM)} />
+      <Navbar isNSM={isNSM} toggleNSM={toggleNSM} />
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-6 py-12 md:py-20 relative z-20">

@@ -78,6 +78,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 115px; /* Offset to prevent content from being covered by sticky Navbar (56px) + SubNav (40px) */
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 /* INITIAL BOOT SEQUENCE STATE */
@@ -95,7 +97,8 @@ body {
   background-color: var(--bg);
   color: var(--text-2);
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .noise-overlay {

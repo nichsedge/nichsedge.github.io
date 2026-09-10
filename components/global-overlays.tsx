@@ -21,16 +21,21 @@ const SystemStatsWidget = dynamic(() => import('@/components/system-stats-widget
 import { usePathname } from 'next/navigation';
 import { useGameState } from '@/lib/game-engine';
 import { GameHUD } from '@/components/game-hud';
+import { useNSM } from '@/lib/nsm';
+
+import { MatrixRain } from '@/components/matrix-rain';
 
 export function GlobalOverlays() {
   const pathname = usePathname();
   const gameState = useGameState();
+  const { isNSM } = useNSM();
   const isHomePage = pathname === '/' || pathname === '/id' || pathname === '/id/';
   const locale = pathname?.startsWith('/id') ? 'id' : 'en';
 
   return (
     <>
       <NeuralNetworkBg />
+      <MatrixRain active={isNSM} />
       <BootSequence />
       <MainframeBypass />
       {isHomePage && (

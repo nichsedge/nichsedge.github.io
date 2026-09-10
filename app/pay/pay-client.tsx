@@ -6,10 +6,10 @@ import { Copy, Check, Server, Terminal, Cpu, AlertCircle, Search, X } from 'luci
 
 import { Navbar } from '@/components/navbar';
 import { InteractiveGrid } from '@/components/interactive-grid';
-import { MatrixRain } from '@/components/matrix-rain';
 import { TiltCard } from '@/components/tilt-card';
 import { DecryptedText } from '@/components/decrypted-text';
 import { useWideLayout } from '@/hooks/use-wide-layout';
+import { useNSM } from '@/lib/nsm';
 import payData from '@/data/pay.json';
 
 interface PayNode {
@@ -124,7 +124,7 @@ const renderLogos = (id: string) => {
 
 export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   useWideLayout('lg');
-  const [isNSM, setIsNSM] = useState(false);
+  const { isNSM, toggleNSM } = useNSM();
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -177,8 +177,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
   return (
     <div className="min-h-screen relative bg-bg">
-      <MatrixRain active={isNSM} />
-      <Navbar isNSM={isNSM} toggleNSM={() => setIsNSM(!isNSM)} />
+      <Navbar isNSM={isNSM} toggleNSM={toggleNSM} />
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-6 py-12 md:py-20 relative z-20">

@@ -13,7 +13,8 @@ import referralsData from '@/data/referrals.json';
 import { Navbar } from '@/components/navbar';
 import { DataVisualizer } from '@/components/data-visualizer';
 import { useWideLayout } from '@/hooks/use-wide-layout';
-import { InteractiveSqlWorkbench } from '@/components/interactive-sql-workbench';
+import { soundEngine } from '@/lib/audio';
+import { gameEngine } from '@/lib/game-engine';
 
 export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
   const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
@@ -113,7 +114,13 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         code: node.code,
         benefit: node.benefit,
         status: node.status
-      }))
+      })),
+      pipeline_telemetry: [
+        { id: 1, node_id: 'kafka-ingest-01', status: 'OPTIMAL', throughput_gb_sec: '4.8 GB/s', latency_p99_ms: '2.1 ms' },
+        { id: 2, node_id: 'spark-transform-04', status: 'OPTIMAL', throughput_gb_sec: '12.2 GB/s', latency_p99_ms: '14.8 ms' },
+        { id: 3, node_id: 'duckdb-vector-02', status: 'OPTIMAL', throughput_gb_sec: '18.4 GB/s', latency_p99_ms: '0.8 ms' },
+        { id: 4, node_id: 'clickhouse-olap-01', status: 'OPTIMAL', throughput_gb_sec: '22.0 GB/s', latency_p99_ms: '4.2 ms' }
+      ]
     };
   }, [resumeData, locale]);
 
@@ -174,11 +181,20 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         { name: 'benefit', type: 'VARCHAR(255)', primary: false, desc: locale === 'id' ? 'Spesifikasi detail muatan unduhan' : 'Download payload payload specifications' },
         { name: 'status', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Status koneksi jalur pipa rujukan' : 'Tunnel pathway connection state' },
       ],
+      pipeline_telemetry: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID catatan unik node' : 'Unique node record identifier' },
+        { name: 'node_id', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Pengenal node komputasi pipeline' : 'Pipeline compute node identifier' },
+        { name: 'status', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Status kesehatan kluster' : 'Cluster node health status' },
+        { name: 'throughput_gb_sec', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Laju transfer data pipeline' : 'Pipeline data throughput rate' },
+        { name: 'latency_p99_ms', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Latensi persentil p99 node' : 'P99 percentile node latency' },
+      ],
     };
   }, [locale]);
 
   const SAVED_QUERIES = React.useMemo(() => {
     return locale === 'id' ? [
+      { name: 'Telemetri pipeline realtime', query: "SELECT node_id, status, throughput_gb_sec, latency_p99_ms FROM pipeline_telemetry WHERE status = 'OPTIMAL' ORDER BY latency_p99_ms ASC;" },
+      { name: 'Stack keahlian Python & SQL', query: "SELECT role, company, period, tech_stack FROM experience WHERE tech_stack LIKE '%Python%' OR tech_stack LIKE '%SQL%';" },
       { name: 'Dapatkan semua pengalaman', query: 'SELECT * FROM experience;' },
       { name: 'Bahasa pemrograman saja', query: "SELECT * FROM skills WHERE category = 'Language';" },
       { name: 'Riwayat pendidikan', query: 'SELECT * FROM education;' },
@@ -189,6 +205,8 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
       { name: 'Gerbang rujukan aktif', query: 'SELECT * FROM referrals;' },
       { name: 'Deskripsikan skema keterampilan', query: 'DESCRIBE skills;' }
     ] : [
+      { name: 'Realtime pipeline telemetry', query: "SELECT node_id, status, throughput_gb_sec, latency_p99_ms FROM pipeline_telemetry WHERE status = 'OPTIMAL' ORDER BY latency_p99_ms ASC;" },
+      { name: 'Python & SQL experience stack', query: "SELECT role, company, period, tech_stack FROM experience WHERE tech_stack LIKE '%Python%' OR tech_stack LIKE '%SQL%';" },
       { name: 'Get all experience', query: 'SELECT * FROM experience;' },
       { name: 'Languages only', query: "SELECT * FROM skills WHERE category = 'Language';" },
       { name: 'Education history', query: 'SELECT * FROM education;' },
@@ -202,11 +220,17 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
   }, [locale]);
 
   useWideLayout('xl');
+  const [activeDialect, setActiveDialect] = useState<'duckdb' | 'bigquery' | 'snowflake' | 'postgres'>('duckdb');
   const [query, setQuery] = useState('SELECT * FROM experience;');
   const [results, setResults] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [viewMode, setViewMode] = useState<'table' | 'chart'>('table');
+  const [viewMode, setViewMode] = useState<'table' | 'chart' | 'plan'>('table');
+  const [queryMetrics, setQueryMetrics] = useState<{ executionMs: number; rowsScanned: number; memoryKb: number } | null>({
+    executionMs: 0.94,
+    rowsScanned: 1250,
+    memoryKb: 48
+  });
   
   // Immersive Sidebar & Telemetry states
   const [sidebarTab, setSidebarTab] = useState<'schema' | 'saved' | 'history'>('schema');
@@ -283,6 +307,9 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
   const executeQuery = () => {
     if (!query.trim()) return;
     
+    soundEngine.playSqlExecute();
+    gameEngine.completeQuest('execute_query');
+
     setIsExecuting(true);
     setError(null);
     setResults(null);
@@ -291,7 +318,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
     const tStart = performance.now();
     const logs: string[] = [];
     
-    logs.push(`[${new Date().toLocaleTimeString()}] COMPILER_INIT: Activating BigQuery Virtual Engine Core...`);
+    logs.push(`[${new Date().toLocaleTimeString()}] COMPILER_INIT: Activating ${activeDialect.toUpperCase()} Virtual Engine Core...`);
 
     setTimeout(() => {
       try {
@@ -317,9 +344,18 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
           }));
           
           const tEnd = performance.now();
+          const execMs = parseFloat((tEnd - tStart).toFixed(2)) || 0.84;
+          const rowsScanned = resultData.length * 6 + 48;
+          const memAlloc = Math.floor(resultData.length * 2.2 + 16);
+
           logs.push(`[OPTIMIZER] Full schema catalog lookup completed.`);
-          logs.push(`[EXECUTOR] Query execution finished successfully in ${(tEnd - tStart).toFixed(2)}ms returning ${resultData.length} entries.`);
+          logs.push(`[EXECUTOR] ${activeDialect.toUpperCase()} query finished in ${execMs}ms returning ${resultData.length} schema entries (scanned ${rowsScanned} records, memory: ${memAlloc} KB).`);
           
+          setQueryMetrics({
+            executionMs: execMs < 0.1 ? 0.75 : execMs,
+            rowsScanned,
+            memoryKb: memAlloc
+          });
           setResults(resultData);
           setTelemetry(logs);
           saveQueryToHistory(query);
@@ -545,8 +581,17 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         }
         
         const tEnd = performance.now();
-        logs.push(`[EXECUTOR] Job completed successfully in ${(tEnd - tStart).toFixed(2)}ms returning ${data.length} records.`);
+        const execMs = parseFloat((tEnd - tStart).toFixed(2)) || 1.08;
+        const rowsScanned = data.length * 12 + Math.floor(Math.random() * 350 + 110);
+        const memAlloc = Math.floor(data.length * 3.8 + 28);
+
+        logs.push(`[EXECUTOR] ${activeDialect.toUpperCase()} job finished successfully in ${execMs}ms returning ${data.length} records (scanned ${rowsScanned} records, memory: ${memAlloc} KB).`);
         
+        setQueryMetrics({
+          executionMs: execMs < 0.1 ? 0.94 : execMs,
+          rowsScanned,
+          memoryKb: memAlloc
+        });
         setResults(data);
         setTelemetry(logs);
         saveQueryToHistory(query);
@@ -563,6 +608,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
   // Exporters
   const exportToJSON = () => {
     if (!results || results.length === 0) return;
+    soundEngine.playChime();
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
@@ -575,6 +621,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
   const exportToCSV = () => {
     if (!results || results.length === 0) return;
+    soundEngine.playChime();
     const headers = Object.keys(results[0]);
     const rows = results.map(row => 
       headers.map(header => {
@@ -625,10 +672,6 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
           </p>
         </motion.div>
       </header>
-
-      <div className="px-6 relative z-10">
-        <InteractiveSqlWorkbench locale={locale} />
-      </div>
 
       <div className="flex flex-col lg:flex-row border-b border-border-subtle h-auto lg:h-[750px] relative z-10">
 
@@ -813,22 +856,51 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
           <div className="flex-1 border-b border-border-subtle p-4 flex flex-col relative bg-bg/85 min-h-[300px] lg:min-h-0 lg:overflow-y-auto">
             
             {/* Editor Utilities Bar */}
-            <div className="flex items-center justify-between mb-2 pb-2 border-b border-border-subtle/50 font-mono text-[9px] uppercase tracking-wider select-none">
-              <div className="flex items-center gap-2 text-text-3">
-                <Terminal size={12} className="text-accent" /> {locale === 'id' ? 'Konsol_Mock_BigQuery' : 'BigQuery_Mock_Console'}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-2 pb-2 border-b border-border-subtle/50 font-mono text-[9px] uppercase tracking-wider select-none">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1.5 text-text-0 font-bold">
+                  <Terminal size={12} className="text-accent" />
+                  <span>{locale === 'id' ? 'Workbench SQL Terpadu' : 'Unified SQL Workbench'}</span>
+                </div>
+                <div className="flex bg-bg-2 border border-border-subtle rounded p-0.5 ml-1">
+                  {(['duckdb', 'bigquery', 'snowflake', 'postgres'] as const).map(d => (
+                    <button
+                      key={d}
+                      onClick={() => {
+                        soundEngine.playClick(800);
+                        setActiveDialect(d);
+                      }}
+                      className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-wider transition-colors cursor-pointer ${
+                        activeDialect === d ? 'bg-accent text-bg font-bold shadow-xs' : 'text-text-3 hover:text-text-1'
+                      }`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+                <div className="hidden sm:flex items-center gap-1.5 text-[8px] text-text-3 pl-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <span>ENGINE: {activeDialect.toUpperCase()}_WASM</span>
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <button 
-                  onClick={formatSQL}
+                  onClick={() => {
+                    soundEngine.playClick(750);
+                    formatSQL();
+                  }}
                   title="Format SQL Keyword Capitalization"
-                  className="hover:text-accent transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded-sm hover:bg-bg-1 border border-transparent hover:border-border-subtle"
+                  className="hover:text-accent transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded-sm hover:bg-bg-1 border border-transparent hover:border-border-subtle cursor-pointer"
                 >
                   <Sparkles size={9} /> FORMAT
                 </button>
                 <button 
-                  onClick={clearEditor}
+                  onClick={() => {
+                    soundEngine.playClick(750);
+                    clearEditor();
+                  }}
                   title="Clear Query Canvas"
-                  className="hover:text-red-400 transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded-sm hover:bg-bg-1 border border-transparent hover:border-border-subtle"
+                  className="hover:text-red-400 transition-colors flex items-center gap-1 px-1.5 py-0.5 rounded-sm hover:bg-bg-1 border border-transparent hover:border-border-subtle cursor-pointer"
                 >
                   <Trash2 size={9} /> {locale === 'id' ? 'BERSIH' : 'CLEAR'}
                 </button>
@@ -918,51 +990,77 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
             ) : results ? (
                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col min-h-0">
                  
-                 {/* Output Header Panel */}
-                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 font-mono select-none shrink-0 border-b border-border-subtle/30 pb-3">
-                   
-                   <div className="text-[10px] text-text-3 uppercase tracking-widest flex items-center gap-1.5">
-                     <Check size={11} className="text-accent" /> Completed ({results.length} rows returned)
-                   </div>
-                   
-                   <div className="flex flex-wrap items-center gap-3">
-                     
-                     {/* Export suite */}
-                     <div className="flex border border-border-subtle rounded-sm font-mono text-[9px] uppercase tracking-wider overflow-hidden">
-                       <button 
-                         onClick={exportToJSON}
-                         className="px-2.5 py-1 flex items-center gap-1 bg-bg hover:bg-bg-1 text-text-2 hover:text-accent transition-colors border-r border-border-subtle"
-                       >
-                         {copySuccess === 'json' ? <Check size={10} className="text-green-400" /> : <Download size={10} />}
-                         JSON
-                       </button>
-                       <button 
-                         onClick={exportToCSV}
-                         className="px-2.5 py-1 flex items-center gap-1 bg-bg hover:bg-bg-1 text-text-2 hover:text-accent transition-colors"
-                       >
-                         {copySuccess === 'csv' ? <Check size={10} className="text-green-400" /> : <FileDown size={10} />}
-                         CSV
-                       </button>
-                     </div>
+                  {/* Output Header Panel */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3 font-mono select-none shrink-0 border-b border-border-subtle/30 pb-3">
+                    
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <div className="text-[10px] text-text-3 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+                        <Check size={11} className="text-accent" /> {results.length} {locale === 'id' ? 'baris ditemukan' : 'rows returned'}
+                      </div>
+                      {queryMetrics && (
+                        <div className="flex items-center gap-2 text-[9px] text-text-3 bg-bg-2/90 border border-border-subtle/70 px-2.5 py-0.5 rounded-xs">
+                          <span>LATENCY: <strong className="text-accent">{queryMetrics.executionMs} ms</strong></span>
+                          <span className="opacity-30">•</span>
+                          <span>SCANNED: <strong className="text-text-1">{queryMetrics.rowsScanned.toLocaleString()}</strong></span>
+                          <span className="opacity-30">•</span>
+                          <span>RAM: <strong className="text-text-1">{queryMetrics.memoryKb} KB</strong></span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-wrap items-center gap-3">
+                      
+                      {/* Export suite */}
+                      <div className="flex border border-border-subtle rounded-sm font-mono text-[9px] uppercase tracking-wider overflow-hidden">
+                        <button 
+                          onClick={exportToJSON}
+                          className="px-2.5 py-1 flex items-center gap-1 bg-bg hover:bg-bg-1 text-text-2 hover:text-accent transition-colors border-r border-border-subtle cursor-pointer"
+                        >
+                          {copySuccess === 'json' ? <Check size={10} className="text-green-400" /> : <Download size={10} />}
+                          JSON
+                        </button>
+                        <button 
+                          onClick={exportToCSV}
+                          className="px-2.5 py-1 flex items-center gap-1 bg-bg hover:bg-bg-1 text-text-2 hover:text-accent transition-colors cursor-pointer"
+                        >
+                          {copySuccess === 'csv' ? <Check size={10} className="text-green-400" /> : <FileDown size={10} />}
+                          CSV
+                        </button>
+                      </div>
 
-                     {/* Visualization Mode tabs */}
-                     <div className="flex border border-border-subtle rounded-sm font-mono text-[9px] uppercase tracking-widest overflow-hidden">
-                       <button 
-                         onClick={() => setViewMode('table')}
-                         className={`px-3 py-1 flex items-center gap-1.5 transition-colors ${viewMode === 'table' ? 'bg-accent/15 text-accent' : 'text-text-3 hover:bg-bg'}`}
-                       >
-                         <TableIcon size={10} /> Table
-                       </button>
-                       <button 
-                         onClick={() => setViewMode('chart')}
-                         className={`px-3 py-1 flex items-center gap-1.5 transition-colors border-l border-border-subtle ${viewMode === 'chart' ? 'bg-accent/15 text-accent' : 'text-text-3 hover:bg-bg'}`}
-                       >
-                         <BarChart2 size={10} /> Chart
-                       </button>
-                     </div>
+                      {/* Visualization Mode tabs */}
+                      <div className="flex border border-border-subtle rounded-sm font-mono text-[9px] uppercase tracking-widest overflow-hidden">
+                        <button 
+                          onClick={() => {
+                            soundEngine.playClick(750);
+                            setViewMode('table');
+                          }}
+                          className={`px-3 py-1 flex items-center gap-1.5 transition-colors cursor-pointer ${viewMode === 'table' ? 'bg-accent/15 text-accent font-bold' : 'text-text-3 hover:bg-bg'}`}
+                        >
+                          <TableIcon size={10} /> Table
+                        </button>
+                        <button 
+                          onClick={() => {
+                            soundEngine.playClick(750);
+                            setViewMode('chart');
+                          }}
+                          className={`px-3 py-1 flex items-center gap-1.5 transition-colors border-l border-border-subtle cursor-pointer ${viewMode === 'chart' ? 'bg-accent/15 text-accent font-bold' : 'text-text-3 hover:bg-bg'}`}
+                        >
+                          <BarChart2 size={10} /> Chart
+                        </button>
+                        <button 
+                          onClick={() => {
+                            soundEngine.playClick(750);
+                            setViewMode('plan');
+                          }}
+                          className={`px-3 py-1 flex items-center gap-1.5 transition-colors border-l border-border-subtle cursor-pointer ${viewMode === 'plan' ? 'bg-accent/15 text-accent font-bold' : 'text-text-3 hover:bg-bg'}`}
+                        >
+                          <Cpu size={10} /> Plan
+                        </button>
+                      </div>
 
-                   </div>
-                 </div>
+                    </div>
+                  </div>
                  
                  {/* Dynamic Table/Chart view container */}
                  <div className="flex-1 overflow-auto min-h-0 bg-bg/35 border border-border-subtle/50 rounded-sm custom-scrollbar p-1">
@@ -999,8 +1097,51 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
                          ))}
                        </tbody>
                      </table>
-                   ) : (
+                   ) : viewMode === 'chart' ? (
                      <DataVisualizer data={results} />
+                   ) : (
+                     <div className="p-4 text-[10px] space-y-3 font-mono text-text-2 bg-bg/80 border border-border-subtle/40 rounded-sm">
+                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle/50 pb-2">
+                         <div className="text-accent uppercase font-bold tracking-widest text-[9px] flex items-center gap-1.5">
+                           <Cpu size={12} />
+                           PHYSICAL EXECUTION PLAN ({activeDialect.toUpperCase()} VECTOR ENGINE)
+                         </div>
+                         <span className="text-[8px] bg-accent/15 border border-accent/30 text-accent px-1.5 py-0.5 rounded font-bold uppercase">
+                           {activeDialect === 'duckdb' ? 'Vectorized C++ Chunk' : `${activeDialect.toUpperCase()}_OPTIMIZER`}
+                         </span>
+                       </div>
+                       <div className="p-3 bg-bg-1 border border-border-subtle/60 rounded space-y-2 text-[10px] leading-relaxed">
+                         <div className="text-text-0 font-bold">┌─ 📊 RESULT_OUTPUT ({results.length} rows returned)</div>
+                         <div className="text-text-2 pl-3">└─ 🔄 PROJECTION ({Object.keys(results[0] || {}).join(', ') || '*'})</div>
+                         {query.toLowerCase().includes('order by') && (
+                           <div className="text-text-2 pl-6">└─ 🔀 SORT (TopN RadixSort Heap)</div>
+                         )}
+                         {query.toLowerCase().includes('where') && (
+                           <div className="text-text-2 pl-6">└─ 🔍 FILTER (ScanPredicate: Vectorized SIMD Filter Pushdown)</div>
+                         )}
+                         <div className="text-accent pl-9">
+                           └─ 🚀 {activeDialect === 'duckdb' ? 'DUCKDB_COLUMN_SCAN' : `${activeDialect.toUpperCase()}_SCAN`} (ChunkSize: 2048, ColumnPruning: ENABLED)
+                         </div>
+                       </div>
+                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-[9px] text-text-3">
+                         <div className="bg-bg p-2 border border-border-subtle/40 rounded">
+                           <div className="opacity-60 text-[8px] uppercase">Engine Kernel</div>
+                           <div className="text-text-1 font-bold">{activeDialect.toUpperCase()} WASM</div>
+                         </div>
+                         <div className="bg-bg p-2 border border-border-subtle/40 rounded">
+                           <div className="opacity-60 text-[8px] uppercase">SIMD Width</div>
+                           <div className="text-text-1 font-bold">256-bit AVX2</div>
+                         </div>
+                         <div className="bg-bg p-2 border border-border-subtle/40 rounded">
+                           <div className="opacity-60 text-[8px] uppercase">Cardinality Est.</div>
+                           <div className="text-text-1 font-bold">{results.length} rows</div>
+                         </div>
+                         <div className="bg-bg p-2 border border-border-subtle/40 rounded">
+                           <div className="opacity-60 text-[8px] uppercase">Cost Metric</div>
+                           <div className="text-text-1 font-bold">0.0038 sCU</div>
+                         </div>
+                       </div>
+                     </div>
                    )}
                  </div>
                </motion.div>

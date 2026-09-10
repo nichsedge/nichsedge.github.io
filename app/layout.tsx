@@ -134,7 +134,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel="help" type="text/markdown" href="https://nichsedge.github.io/auth.md" />
         <link rel="sitemap" type="application/xml" href="https://nichsedge.github.io/sitemap.xml" />
       </head>
-      <body className="antialiased selection:bg-accent/30 selection:text-text-0 pb-20 sm:pb-24">
+      <body suppressHydrationWarning className="antialiased selection:bg-accent/30 selection:text-text-0 pb-20 sm:pb-24">
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -154,6 +154,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
                   if (localStorage.getItem('sensory-lockdown') === 'true') {
                     document.body.classList.add('sensory-lockdown');
                   }
+
+                  if (localStorage.getItem('nsm-active') === 'true') {
+                    document.body.classList.add('nsm-active');
+                  }
                 } catch (e) {}
               })();
             `
@@ -165,7 +169,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <BiomeSelector />
         <GlobalOverlays />
         <div className="noise-overlay" />
-        <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[860px] mx-auto bg-bg shadow-2xl">
+        <div id="main-layout-container" className="relative z-10 min-h-screen border-x border-border-subtle max-w-[860px] mx-auto bg-bg shadow-2xl w-full overflow-x-clip">
           {children}
         </div>
       </body>
