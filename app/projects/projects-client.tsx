@@ -114,14 +114,25 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
   }, [repos]);
 
   const displayedTopics = useMemo(() => {
-    if (showAllTopics) return allTopicsSorted;
+    if (showAllTopics) {
+      return [...allTopicsSorted].sort(([topicA], [topicB]) => {
+        const aSel = selectedTopics.includes(topicA) ? 1 : 0;
+        const bSel = selectedTopics.includes(topicB) ? 1 : 0;
+        return bSel - aSel;
+      });
+    }
 
     // Always include selected topics, even if they aren't in the top 15
     const top15 = allTopicsSorted.slice(0, 15);
     const selectedNotRestricted = allTopicsSorted.filter(([topic]) =>
       selectedTopics.includes(topic) && !top15.some(([t]) => t === topic)
     );
-    return [...top15, ...selectedNotRestricted];
+    const combined = [...top15, ...selectedNotRestricted];
+    return combined.sort(([topicA], [topicB]) => {
+      const aSel = selectedTopics.includes(topicA) ? 1 : 0;
+      const bSel = selectedTopics.includes(topicB) ? 1 : 0;
+      return bSel - aSel;
+    });
   }, [allTopicsSorted, showAllTopics, selectedTopics]);
 
   const toggleTopic = (topic: string) => {
@@ -265,8 +276,8 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
       </header>
 
       {/* Filters */}
-      <div className="sticky top-[61px] z-30 bg-bg/85 backdrop-blur-md border-b border-border-subtle px-6 py-4 space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="sticky top-[45px] sm:top-[52px] z-30 bg-bg/85 backdrop-blur-md border-b border-border-subtle px-4 sm:px-6 py-2.5 sm:py-4 space-y-2.5 sm:space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-4">
           <div className="relative w-full md:max-w-md">
             <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${search ? 'text-accent' : 'text-text-3'}`} />
             <input
@@ -274,7 +285,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
               placeholder={locale === 'id' ? 'Cari proyek...' : 'Search projects...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-bg-1 border border-border-subtle rounded-sm py-2 pl-9 pr-4 text-[12px] font-mono outline-none focus:border-accent/40 focus:bg-bg-1/80 transition-all focus:shadow-[0_0_12px_rgba(0,225,207,0.05)] text-text-0"
+              className="w-full bg-bg-1 border border-border-subtle rounded-sm py-1.5 sm:py-2 pl-9 pr-4 text-[12px] font-mono outline-none focus:border-accent/40 focus:bg-bg-1/80 transition-all focus:shadow-[0_0_12px_rgba(0,225,207,0.05)] text-text-0"
             />
           </div>
 
@@ -288,10 +299,13 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           )}
         </div>
 
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider flex items-center gap-1.5">
-              <Filter size={10} className="text-accent" /> Topics:
+              <Filter size={10} className="text-accent" /> {locale === 'id' ? 'Topik:' : 'Topics:'}
+              {selectedTopics.length > 0 && (
+                <span className="text-accent font-semibold">({selectedTopics.length} {locale === 'id' ? 'aktif' : 'active'})</span>
+              )}
             </span>
 
             {allTopicsSorted.length > 15 && (
@@ -299,32 +313,39 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 onClick={() => setShowAllTopics(!showAllTopics)}
                 className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
               >
-                <span>{showAllTopics ? 'Show Less' : `See all (${allTopicsSorted.length})`}</span>
+                <span>{showAllTopics ? (locale === 'id' ? 'Tutup' : 'Show Less') : `${locale === 'id' ? 'Semua' : 'See all'} (${allTopicsSorted.length})`}</span>
                 <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllTopics ? '-rotate-90' : 'rotate-90'}`} />
               </button>
             )}
           </div>
 
-          <div className={`flex flex-wrap gap-2 transition-all duration-300 ${showAllTopics
-              ? 'max-h-40 overflow-y-auto pr-2 py-2 border border-border-subtle bg-bg-1/25 p-2 rounded-sm shadow-[inset_0_0_12px_rgba(0,225,207,0.02)]'
-              : ''
-            }`}>
+          <div
+            className={`transition-all duration-300 ${
+              showAllTopics
+                ? 'flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-2 py-2 border border-border-subtle bg-bg-1/25 p-2 rounded-sm shadow-[inset_0_0_12px_rgba(0,225,207,0.02)]'
+                : 'flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible gap-2 pb-1.5 md:pb-0 scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] mask-scroll-fade'
+            }`}
+          >
             {displayedTopics.map(([topic, count]) => {
               const isSelected = selectedTopics.includes(topic);
               return (
                 <button
                   key={topic}
                   onClick={() => toggleTopic(topic)}
-                  className={`px-2 py-1 text-[9px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${isSelected
+                  className={`shrink-0 px-2 py-1 text-[9px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${
+                    isSelected
                       ? 'bg-accent/10 border-accent/80 text-accent shadow-[0_0_8px_rgba(0,225,207,0.12)]'
                       : 'bg-bg-1 border-border-subtle text-text-3 hover:border-text-3 hover:text-text-1 hover:bg-bg-1/80'
-                    }`}
+                  }`}
                 >
                   <span>#{topic}</span>
-                  <span className={`px-1 rounded-sm text-[8px] font-semibold ${isSelected
-                      ? 'bg-accent/25 text-accent'
-                      : 'bg-bg-2 text-text-3 border border-border-subtle'
-                    }`}>
+                  <span
+                    className={`px-1 rounded-sm text-[8px] font-semibold ${
+                      isSelected
+                        ? 'bg-accent/25 text-accent'
+                        : 'bg-bg-2 text-text-3 border border-border-subtle'
+                    }`}
+                  >
                     {count}
                   </span>
                 </button>
