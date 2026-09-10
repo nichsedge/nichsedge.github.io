@@ -56,21 +56,21 @@ export function SubNav({ items }: SubNavProps) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="sticky top-[56px] z-40 w-full bg-bg/60 backdrop-blur-sm border-b border-border-subtle/50 px-6 py-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="sticky top-[47px] sm:top-[52px] z-40 w-full bg-bg/85 backdrop-blur-md border-b border-border-subtle/50 px-4 sm:px-6 py-1.5 sm:py-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] mask-scroll-fade">
       <div className="flex items-center min-w-max md:min-w-0">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
           <div className="flex items-center gap-1.5 font-mono text-[9px] text-text-3 uppercase tracking-widest shrink-0">
             <ChevronRight size={10} className="text-accent" />
             <span>Local_Jump</span>
           </div>
           <div className="h-3 w-px bg-border-subtle" />
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 sm:gap-5">
             {items.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setActiveItem(item.name)}
-                className="group relative py-1 shrink-0"
+                className="group relative py-1.5 shrink-0"
               >
                 <span className="font-mono text-[10px] uppercase tracking-wider text-text-3 group-hover:text-accent transition-colors">
                   {item.name}

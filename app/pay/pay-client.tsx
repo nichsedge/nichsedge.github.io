@@ -227,21 +227,22 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
         {/* Search Controller */}
         <div className="relative z-10 border border-border-subtle bg-bg-1/25 p-4 rounded-sm mb-10">
           <div className="relative w-full">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[10px]">
-              <Search size={14} className="text-accent" />
-              <span className="opacity-60">SEARCH &gt;</span>
+            <div className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[10px] pointer-events-none select-none">
+              <Search size={14} className="text-accent shrink-0" />
+              <span className="opacity-60 hidden sm:inline">SEARCH &gt;</span>
             </div>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={translations.searchPlaceholder}
-              className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
+              className="w-full pl-10 sm:pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-3 hover:text-accent transition-colors"
+                className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 text-text-3 hover:text-accent p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center transition-colors cursor-pointer"
+                title="Clear Search"
               >
                 <X size={14} />
               </button>

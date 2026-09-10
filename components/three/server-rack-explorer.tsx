@@ -201,9 +201,66 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       }
     };
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        prevMouseX = touch.clientX;
+        prevMouseY = touch.clientY;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (isDragging && e.touches.length === 1) {
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - prevMouseX;
+        const deltaY = touch.clientY - prevMouseY;
+        targetRotY += deltaX * 0.008;
+        targetRotX = Math.max(-0.4, Math.min(0.6, targetRotX + deltaY * 0.008));
+        prevMouseX = touch.clientX;
+        prevMouseY = touch.clientY;
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const dist = Math.hypot(prevMouseX - touchStartX, prevMouseY - touchStartY);
+      if (dist < 10) {
+        const rect = container.getBoundingClientRect();
+        mouse.x = ((prevMouseX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((prevMouseY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true);
+        if (intersects.length > 0) {
+          let hitGroup: any = intersects[0].object;
+          while (hitGroup.parent && hitGroup.parent !== scene) {
+            hitGroup = hitGroup.parent;
+          }
+
+          if (hitGroup.userData && typeof hitGroup.userData.nodeIndex === 'number') {
+            const idx = hitGroup.userData.nodeIndex;
+            soundEngine.playNodeConnect();
+            selectedNodeRef.current = selectedNodeRef.current === idx ? null : idx;
+            setSelectedNode(selectedNodeRef.current !== null ? SERVER_NODES[selectedNodeRef.current] : null);
+            gameEngine.completeQuest('inspect_telemetry');
+          }
+        }
+      }
+    };
+
     container.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('touchend', onTouchEnd, { passive: true });
 
     // Animation Loop with Visibility & Battery Optimization
     let animationId: number;
@@ -216,9 +273,11 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       animationId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth camera orbit lerp
-      camera.position.x = Math.sin(targetRotY) * 7.5;
-      camera.position.z = Math.cos(targetRotY) * 7.5;
+      // Smooth camera orbit lerp with portrait aspect scaling
+      const currentAspect = container.clientWidth / (container.clientHeight || 1);
+      const orbitDistance = currentAspect < 1 ? 7.5 / Math.max(0.65, currentAspect) : 7.5;
+      camera.position.x = Math.sin(targetRotY) * orbitDistance;
+      camera.position.z = Math.cos(targetRotY) * orbitDistance;
       camera.position.y = targetRotX * 6 + 1.5;
       camera.lookAt(0, 0, 0);
 
@@ -298,6 +357,9 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       container.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', handleResize);
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
@@ -322,7 +384,7 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   return (
     <div className="relative w-full h-[450px] bg-[#09090b] border border-border-subtle rounded-lg overflow-hidden font-mono select-none">
       {/* 3D Canvas */}
-      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing [touch-action:none]" />
 
       {/* Top Controls Bar */}
       <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 z-10 pointer-events-none">

@@ -306,7 +306,7 @@ export function CommandPalette() {
       <button 
         onClick={() => setIsOpen(true)}
         title="Consult Neural Oracle & Search Commands (Ctrl+K)"
-        className="fixed bottom-[72px] lg:bottom-6 right-3.5 sm:right-6 z-[85] bg-[#09090b]/90 border border-accent/30 p-2.5 sm:p-3.5 rounded-full text-accent hover:text-text-0 hover:bg-accent/10 transition-all flex items-center justify-center group shadow-[0_0_20px_rgba(0,225,207,0.15)] hover:shadow-[0_0_25px_rgba(0,225,207,0.35)] hover:scale-105 duration-300 outline-none focus:outline-none focus:ring-0"
+        className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] sm:bottom-[72px] lg:bottom-6 right-16 sm:right-6 z-[85] bg-[#09090b]/90 border border-accent/30 p-3 min-w-[42px] min-h-[42px] rounded-full text-accent hover:text-text-0 hover:bg-accent/10 transition-all flex items-center justify-center group shadow-[0_0_20px_rgba(0,225,207,0.15)] hover:shadow-[0_0_25px_rgba(0,225,207,0.35)] hover:scale-105 duration-300 outline-none focus:outline-none focus:ring-0 cursor-pointer"
       >
         <div className="relative flex items-center justify-center">
           <Brain className="size-4 sm:size-[19px] group-hover:scale-110 transition-transform text-accent" />
@@ -373,7 +373,7 @@ export function CommandPalette() {
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[1000] flex items-start justify-center pt-4 sm:pt-[15vh] px-3 sm:px-4">
+          <div className="fixed inset-0 z-[1000] flex items-start justify-center pt-3 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] sm:pt-[15vh] px-3 sm:px-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -426,14 +426,14 @@ export function CommandPalette() {
                     </span>
                   )}
 
-                  {/* Explicit Close Button */}
+                  {/* Explicit Close Button with Comfortable Touch Target */}
                   <button
                     onClick={handleClose}
                     title="Close"
                     aria-label="Close command palette"
-                    className="text-text-3 hover:text-text-0 p-1 rounded transition-colors"
+                    className="text-text-3 hover:text-text-0 p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded transition-colors cursor-pointer"
                   >
-                    <X size={15} />
+                    <X size={16} />
                   </button>
                 </div>
               </div>

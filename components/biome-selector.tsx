@@ -170,7 +170,7 @@ export function BiomeSelector() {
     <>
       <div 
         ref={containerRef}
-        className="sys-settings-menu fixed bottom-[120px] lg:bottom-20 right-3.5 sm:right-6 z-[85] flex flex-col items-end gap-2"
+        className="sys-settings-menu fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] sm:bottom-[120px] lg:bottom-20 right-3.5 sm:right-6 z-[85] flex flex-col items-end gap-2"
       >
         <AnimatePresence>
           {isOpen && (
@@ -178,7 +178,7 @@ export function BiomeSelector() {
               initial={{ opacity: 0, scale: 0.9, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              className="flex flex-col gap-1.5 sm:gap-2 bg-bg border border-border-subtle p-2.5 rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] min-w-[170px] relative z-[1000]"
+              className="flex flex-col gap-1.5 sm:gap-2 bg-bg border border-border-subtle p-2.5 rounded-md shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] min-w-[180px] relative z-[1000]"
               role="menu"
               aria-label="System Settings Menu"
             >
@@ -196,9 +196,9 @@ export function BiomeSelector() {
                       setIsOpen(false);
                       window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: biome.id }));
                     }}
-                    className={`flex items-center gap-2 px-2.5 py-1.5 text-[9px] font-mono uppercase tracking-widest rounded-sm transition-colors justify-start ${currentBiome === biome.id ? 'bg-accent/20 text-accent font-bold' : 'text-text-3 hover:bg-bg-1 hover:text-accent'}`}
+                    className={`flex items-center gap-2 px-2.5 py-2 sm:py-1.5 text-[10px] sm:text-[9px] font-mono uppercase tracking-widest rounded-sm transition-colors justify-start min-h-[36px] sm:min-h-0 cursor-pointer ${currentBiome === biome.id ? 'bg-accent/20 text-accent font-bold' : 'text-text-3 hover:bg-bg-1 hover:text-accent'}`}
                   >
-                    <biome.icon className="size-3 shrink-0" />
+                    <biome.icon className="size-3.5 sm:size-3 shrink-0" />
                     {biome.label}
                   </button>
                 ))}
@@ -310,7 +310,7 @@ export function BiomeSelector() {
 
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className={`relative p-2.5 sm:p-3 rounded-full border bg-bg-1 transition-all flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)] outline-none focus:outline-none focus:ring-0 ${
+          className={`relative p-3 min-w-[42px] min-h-[42px] rounded-full border bg-bg-1 transition-all flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.5)] outline-none focus:outline-none focus:ring-0 ${
             isOpen 
               ? 'border-accent text-accent scale-105 rotate-45' 
               : isSensoryLockdown
@@ -336,7 +336,7 @@ export function BiomeSelector() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="sys-settings-menu fixed bottom-[176px] lg:bottom-[136px] right-3.5 sm:right-6 z-[1000] bg-bg border border-accent p-3 sm:p-3.5 font-mono text-[9px] sm:text-[10px] w-64 sm:w-72 uppercase tracking-widest text-accent shadow-2xl backdrop-blur-md rounded-sm"
+            className="sys-settings-menu fixed bottom-[calc(9rem+env(safe-area-inset-bottom,0px))] lg:bottom-[136px] right-3.5 sm:right-6 z-[1000] bg-bg border border-accent p-3 sm:p-3.5 font-mono text-[9px] sm:text-[10px] w-64 sm:w-72 uppercase tracking-widest text-accent shadow-2xl backdrop-blur-md rounded-sm"
           >
             <div className="flex items-center justify-between mb-1.5 font-bold">
               <div className="flex items-center gap-2">

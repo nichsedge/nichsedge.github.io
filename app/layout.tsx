@@ -110,6 +110,7 @@ export const viewport = {
   themeColor: '#00e1cf',
   width: 'device-width',
   initialScale: 1,
+  viewportFit: 'cover',
 };
 
 // Static imports — small, critical-path components safe in a Server Component
@@ -134,7 +135,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel="help" type="text/markdown" href="https://nichsedge.github.io/auth.md" />
         <link rel="sitemap" type="application/xml" href="https://nichsedge.github.io/sitemap.xml" />
       </head>
-      <body suppressHydrationWarning className="antialiased selection:bg-accent/30 selection:text-text-0 pb-20 sm:pb-24">
+      <body suppressHydrationWarning className="antialiased selection:bg-accent/30 selection:text-text-0 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] sm:pb-24">
         <script
           dangerouslySetInnerHTML={{
             __html: `

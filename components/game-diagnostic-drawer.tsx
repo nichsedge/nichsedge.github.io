@@ -57,11 +57,11 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
             </button>
           </div>
 
-          {/* Nav Tabs */}
-          <div className="flex border-b border-border-subtle bg-bg-1/50 px-4 gap-2 font-mono text-[11px]">
+          {/* Nav Tabs with Horizontal Scroll for Mobile */}
+          <div className="flex border-b border-border-subtle bg-bg-1/50 px-4 gap-2 font-mono text-[11px] overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mask-scroll-fade">
             <button
               onClick={() => setActiveTab('quests')}
-              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
                 activeTab === 'quests' 
                   ? 'border-accent text-accent font-bold' 
                   : 'border-transparent text-text-3 hover:text-text-1'
@@ -72,7 +72,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
             </button>
             <button
               onClick={() => setActiveTab('badges')}
-              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
                 activeTab === 'badges' 
                   ? 'border-accent text-accent font-bold' 
                   : 'border-transparent text-text-3 hover:text-text-1'
@@ -83,7 +83,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
             </button>
             <button
               onClick={() => setActiveTab('telemetry')}
-              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`py-2.5 px-3 border-b-2 flex items-center gap-2 transition-colors cursor-pointer shrink-0 ${
                 activeTab === 'telemetry' 
                   ? 'border-accent text-accent font-bold' 
                   : 'border-transparent text-text-3 hover:text-text-1'
@@ -95,7 +95,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
           </div>
 
           {/* Content Area */}
-          <div className="p-5 overflow-y-auto space-y-4 text-xs font-mono">
+          <div className="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs font-mono pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
             {activeTab === 'quests' && (
               <div className="space-y-3">
                 {onOpenArcade && (

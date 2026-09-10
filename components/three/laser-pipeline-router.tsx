@@ -62,12 +62,14 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
 
     const width = container.clientWidth || 600;
     const height = container.clientHeight || 450;
+    const aspect = width / height;
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x09090b, 0.02);
 
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 50);
-    camera.position.set(0, 0, 8.2);
+    const camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 50);
+    const initialOrbitZ = aspect < 1 ? 8.2 / Math.max(0.55, aspect) : 8.2;
+    camera.position.set(0, 0, initialOrbitZ);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -194,6 +196,8 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
     let prevX = 0;
     let prevY = 0;
     let rotY = 0;
@@ -201,6 +205,8 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
 
     const onMouseDown = (e: MouseEvent) => {
       isDragging = true;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
       prevX = e.clientX;
       prevY = e.clientY;
     };
@@ -249,9 +255,69 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       }
     };
 
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        const touch = e.touches[0];
+        dragStartX = touch.clientX;
+        dragStartY = touch.clientY;
+        prevX = touch.clientX;
+        prevY = touch.clientY;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (isDragging && e.touches.length === 1) {
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - prevX;
+        const deltaY = touch.clientY - prevY;
+        rotY -= deltaX * 0.007;
+        rotX = Math.max(-0.4, Math.min(0.4, rotX + deltaY * 0.005));
+        prevX = touch.clientX;
+        prevY = touch.clientY;
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const dist = Math.hypot(prevX - dragStartX, prevY - dragStartY);
+      if (dist < 10) {
+        const rect = container.getBoundingClientRect();
+        mouse.x = ((prevX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((prevY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(nodeMeshes, true);
+        if (intersects.length > 0) {
+          let hitGroup: any = intersects[0].object;
+          while (hitGroup.parent && hitGroup.parent !== scene) {
+            hitGroup = hitGroup.parent;
+          }
+
+          if (hitGroup.userData && typeof hitGroup.userData.nodeIndex === 'number') {
+            const node = NODES_3D[hitGroup.userData.nodeIndex];
+            soundEngine.playNodeConnect();
+            setSelectedNodeInfo(node);
+            if (node.tier === 'source') {
+              setActiveSources(prev => prev.includes(node.id) ? (prev.length > 1 ? prev.filter(i => i !== node.id) : prev) : [...prev, node.id]);
+            } else if (node.tier === 'transform') {
+              setActiveTransforms(prev => prev.includes(node.id) ? (prev.length > 1 ? prev.filter(i => i !== node.id) : prev) : [...prev, node.id]);
+            } else {
+              setActiveSinks(prev => prev.includes(node.id) ? (prev.length > 1 ? prev.filter(i => i !== node.id) : prev) : [...prev, node.id]);
+            }
+            gameEngine.completeQuest('calibrate_pipeline');
+          }
+        }
+      }
+    };
+
     container.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('touchend', onTouchEnd, { passive: true });
 
     // Animation Loop with Visibility & Battery Optimization
     let animationId: number;
@@ -262,9 +328,11 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       if (!isRunning) return;
       animationId = requestAnimationFrame(animate);
 
-      // Smooth camera orbit
-      camera.position.x = Math.sin(rotY) * 8.5;
-      camera.position.z = Math.cos(rotY) * 8.5;
+      // Smooth camera orbit with aspect-ratio awareness
+      const currentAspect = container.clientWidth / (container.clientHeight || 1);
+      const orbitDist = currentAspect < 1 ? 8.5 / Math.max(0.55, currentAspect) : 8.5;
+      camera.position.x = Math.sin(rotY) * orbitDist;
+      camera.position.z = Math.cos(rotY) * orbitDist;
       camera.position.y = rotX * 5;
       camera.lookAt(0, 0, 0);
 
@@ -336,6 +404,9 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       container.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', handleResize);
       nodeGeo.dispose();
       photonGeo.dispose();
@@ -360,7 +431,7 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
   return (
     <div className="relative w-full h-[450px] bg-[#09090b] border border-border-subtle rounded-lg overflow-hidden font-mono select-none">
       {/* 3D Canvas */}
-      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing [touch-action:none]" />
 
       {/* Top Header & Burst Action */}
       <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 z-10 pointer-events-none">

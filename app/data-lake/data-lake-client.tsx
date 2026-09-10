@@ -907,8 +907,8 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
               </div>
             </div>
 
-            {/* Quick Templates Toolbar */}
-            <div className="flex flex-wrap items-center gap-2 pb-2 font-mono text-[9px] text-text-3 shrink-0">
+            {/* Quick Templates Toolbar with Mobile Horizontal Scroll */}
+            <div className="flex items-center gap-2 pb-2 font-mono text-[9px] text-text-3 shrink-0 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mask-scroll-fade">
               <span className="select-none shrink-0">// CONSTRUCT:</span>
               {[
                 { label: 'SELECT * FROM', text: 'SELECT * FROM ' },
@@ -1065,38 +1065,44 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
                  {/* Dynamic Table/Chart view container */}
                  <div className="flex-1 overflow-auto min-h-0 bg-bg/35 border border-border-subtle/50 rounded-sm custom-scrollbar p-1">
                    {viewMode === 'table' ? (
-                     <table className="w-full min-w-[650px] text-left font-mono text-[12px] border-collapse">
-                       <thead className="text-text-3 bg-bg-1/80 sticky top-0 z-20">
-                         <tr>
-                           {Object.keys(results[0] || {}).map(k => (
-                             <th key={k} className="p-2 border-b border-border-subtle uppercase font-bold text-[10px] tracking-wider select-none">{k}</th>
-                           ))}
-                         </tr>
-                       </thead>
-                       <tbody>
-                         {results.map((row, i) => (
-                           <tr key={i} className="border-b border-border-subtle/20 hover:bg-bg/40 transition-colors text-text-2 font-mono">
-                             {Object.values(row).map((val: any, j) => (
-                               <td key={j} className="p-2 align-top break-words max-w-[280px]">
-                                 {val === null || val === undefined ? (
-                                   <span className="opacity-30 italic">NULL</span>
-                                 ) : typeof val === 'string' && val.includes(',') ? (
-                                   <div className="flex flex-wrap gap-1 mt-0.5">
-                                     {val.split(',').map((tag: string, tid: number) => (
-                                       <span key={tid} className="text-[9px] bg-bg border border-border-subtle px-1.5 py-0.5 rounded-sm font-mono font-normal">
-                                         {tag.trim()}
-                                       </span>
-                                     ))}
-                                   </div>
-                                 ) : (
-                                   val
-                                 )}
-                               </td>
+                     <div className="flex flex-col min-w-full">
+                       <div className="sm:hidden text-[9px] text-accent/80 font-mono py-1 px-2 mb-1 bg-accent/5 border border-accent/20 rounded-xs flex items-center justify-between select-none">
+                         <span>← {locale === 'id' ? 'Geser tabel horizontal' : 'Swipe table horizontally'} →</span>
+                         <span className="opacity-60">[{Object.keys(results[0] || {}).length} COLS]</span>
+                       </div>
+                       <table className="w-full min-w-[650px] text-left font-mono text-[12px] border-collapse">
+                         <thead className="text-text-3 bg-bg-1/80 sticky top-0 z-20">
+                           <tr>
+                             {Object.keys(results[0] || {}).map(k => (
+                               <th key={k} className="p-2 border-b border-border-subtle uppercase font-bold text-[10px] tracking-wider select-none">{k}</th>
                              ))}
                            </tr>
-                         ))}
-                       </tbody>
-                     </table>
+                         </thead>
+                         <tbody>
+                           {results.map((row, i) => (
+                             <tr key={i} className="border-b border-border-subtle/20 hover:bg-bg/40 transition-colors text-text-2 font-mono">
+                               {Object.values(row).map((val: any, j) => (
+                                 <td key={j} className="p-2 align-top break-words max-w-[280px]">
+                                   {val === null || val === undefined ? (
+                                     <span className="opacity-30 italic">NULL</span>
+                                   ) : typeof val === 'string' && val.includes(',') ? (
+                                     <div className="flex flex-wrap gap-1 mt-0.5">
+                                       {val.split(',').map((tag: string, tid: number) => (
+                                         <span key={tid} className="text-[9px] bg-bg border border-border-subtle px-1.5 py-0.5 rounded-sm font-mono font-normal">
+                                           {tag.trim()}
+                                         </span>
+                                       ))}
+                                     </div>
+                                   ) : (
+                                     val
+                                   )}
+                                 </td>
+                               ))}
+                             </tr>
+                           ))}
+                         </tbody>
+                       </table>
+                     </div>
                    ) : viewMode === 'chart' ? (
                      <DataVisualizer data={results} />
                    ) : (

@@ -197,7 +197,37 @@ export function DataHighwayArcade({ onClose, locale = 'en' }: DataHighwayArcadeP
       }
     };
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!gameStateRef.current.isPlaying) return;
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!gameStateRef.current.isPlaying) return;
+      if (e.changedTouches.length === 1) {
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(deltaX) > 25 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < 0) {
+            gameStateRef.current.targetLane = Math.max(-1, gameStateRef.current.targetLane - 1);
+            soundEngine.playClick(1100, 0.02);
+          } else {
+            gameStateRef.current.targetLane = Math.min(1, gameStateRef.current.targetLane + 1);
+            soundEngine.playClick(1100, 0.02);
+          }
+        }
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     // Animation Loop
     let animationId: number;
@@ -288,6 +318,8 @@ export function DataHighwayArcade({ onClose, locale = 'en' }: DataHighwayArcadeP
       clearInterval(spawnInterval);
       cancelAnimationFrame(animationId);
       window.removeEventListener('keydown', handleKeyDown);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('resize', handleResize);
       packets.forEach(p => scene.remove(p.mesh));
       greenGeo.dispose();
@@ -349,7 +381,7 @@ export function DataHighwayArcade({ onClose, locale = 'en' }: DataHighwayArcadeP
   return (
     <div className="relative w-full h-[420px] sm:h-[480px] bg-[#09090b] border border-border-subtle rounded-lg overflow-hidden font-mono select-none">
       {/* 3D WebGL Canvas */}
-      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing [touch-action:none]" />
 
       {/* Top HUD Overlay */}
       <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10 text-xs">
@@ -397,25 +429,30 @@ export function DataHighwayArcade({ onClose, locale = 'en' }: DataHighwayArcadeP
 
       {/* Touch / Click Lane Controls for Mobile */}
       {isPlaying && (
-        <div className="absolute bottom-3 left-3 right-3 flex gap-2 z-10 sm:hidden">
-          <button 
-            onClick={() => {
-              gameStateRef.current.targetLane = Math.max(-1, gameStateRef.current.targetLane - 1);
-              soundEngine.playClick(1100, 0.02);
-            }}
-            className="flex-1 py-3 bg-bg-1/80 border border-border-subtle active:border-accent text-accent font-bold rounded"
-          >
-            ← LEFT
-          </button>
-          <button 
-            onClick={() => {
-              gameStateRef.current.targetLane = Math.min(1, gameStateRef.current.targetLane + 1);
-              soundEngine.playClick(1100, 0.02);
-            }}
-            className="flex-1 py-3 bg-bg-1/80 border border-border-subtle active:border-accent text-accent font-bold rounded"
-          >
-            RIGHT →
-          </button>
+        <div className="absolute bottom-3 left-3 right-3 flex flex-col gap-1 z-10 sm:hidden">
+          <div className="flex gap-2">
+            <button 
+              onClick={() => {
+                gameStateRef.current.targetLane = Math.max(-1, gameStateRef.current.targetLane - 1);
+                soundEngine.playClick(1100, 0.02);
+              }}
+              className="flex-1 py-3 bg-bg-1/90 border border-border-subtle active:border-accent text-accent font-bold rounded cursor-pointer select-none"
+            >
+              ← LEFT
+            </button>
+            <button 
+              onClick={() => {
+                gameStateRef.current.targetLane = Math.min(1, gameStateRef.current.targetLane + 1);
+                soundEngine.playClick(1100, 0.02);
+              }}
+              className="flex-1 py-3 bg-bg-1/90 border border-border-subtle active:border-accent text-accent font-bold rounded cursor-pointer select-none"
+            >
+              RIGHT →
+            </button>
+          </div>
+          <div className="text-[8px] text-text-3 text-center uppercase tracking-widest opacity-70 select-none">
+            {isID ? 'TOMBOL ATAU SWIPE KIRI/KANAN' : 'BUTTONS OR SWIPE SCREEN'}
+          </div>
         </div>
       )}
 

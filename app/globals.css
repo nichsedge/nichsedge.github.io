@@ -111,9 +111,21 @@ body {
   mix-blend-mode: overlay;
 }
 
+button, a, [role="button"], input, select, textarea {
+  touch-action: manipulation;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .mask-scroll-fade {
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+  .mask-scroll-fade-both {
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   }
 }
 

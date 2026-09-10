@@ -105,20 +105,20 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
       </AnimatePresence>
 
       {/* Persistent Game HUD Dock */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-[80] pointer-events-auto">
+      <div className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-[80] pointer-events-auto">
         {minimized ? (
           <motion.button
             initial={{ opacity: 0, y: 10, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             onClick={() => setMinimized(false)}
-            className="bg-[#09090b]/95 border border-accent/40 hover:border-accent rounded-full px-3.5 py-1.5 backdrop-blur-md shadow-[0_8px_25px_rgba(0,0,0,0.8)] flex items-center gap-2 text-xs font-mono cursor-pointer transition-all"
+            className="bg-[#09090b]/95 border border-accent/40 hover:border-accent rounded-full px-3.5 py-2 backdrop-blur-md shadow-[0_8px_25px_rgba(0,0,0,0.8)] flex items-center gap-2 text-xs font-mono cursor-pointer transition-all min-h-[36px]"
             title={isID ? "Buka Game HUD" : "Expand Game HUD"}
             aria-label="Expand Game HUD"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span className="text-accent font-bold text-[10px]">LVL {gameState.level}</span>
             <span className="text-text-3 text-[10px]">•</span>
-            <span className="text-text-2 text-[10px] max-w-[130px] truncate">
+            <span className="text-text-2 text-[10px] max-w-[120px] sm:max-w-[130px] truncate">
               {activeQuest ? (isID ? activeQuest.titleId : activeQuest.title) : 'SYSTEM ROOT'}
             </span>
             <ChevronUp size={12} className="text-accent ml-0.5" />
@@ -128,7 +128,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
             <div className="bg-[#09090b]/90 border border-border-subtle hover:border-accent/40 rounded-full px-2.5 py-1.5 sm:px-4 sm:py-2.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.6)] flex items-center justify-between gap-1.5 sm:gap-2.5 text-xs font-mono transition-colors">
               
               {/* Rank & XP Bar */}
-              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0">
                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent font-bold text-[10px] shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                   <span>LVL {gameState.level}</span>
@@ -153,7 +153,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
               {/* Active Mission Pill */}
               <div 
                 onClick={handleOpenDrawer}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1/60 hover:bg-accent/10 border border-border-subtle hover:border-accent/30 cursor-pointer transition-all min-w-0 max-w-[180px] sm:max-w-none"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1/60 hover:bg-accent/10 border border-border-subtle hover:border-accent/30 cursor-pointer transition-all min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-none"
                 title={isID ? "Klik untuk melihat matriks misi" : "Click to view mission matrix"}
               >
                 <span className="text-accent text-[11px] shrink-0">🎯</span>
@@ -192,7 +192,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
 
                 <button
                   onClick={() => setMinimized(true)}
-                  className="p-1 rounded-full text-text-3 hover:text-accent transition-colors cursor-pointer sm:hidden"
+                  className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center rounded-full text-text-3 hover:text-accent transition-colors cursor-pointer sm:hidden"
                   title={isID ? "Kecilkan HUD" : "Minimize HUD"}
                   aria-label="Minimize HUD"
                 >

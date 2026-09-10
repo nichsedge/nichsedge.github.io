@@ -762,6 +762,11 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
 
     const width = container.clientWidth || 600;
     const height = container.clientHeight || 450;
+    const isPortrait = width / height < 1;
+    const defaultCameraZ = isPortrait ? 9.2 : 7.8;
+    if (rotationRef.current.cameraZ === 7.8 && isPortrait) {
+      rotationRef.current.cameraZ = defaultCameraZ;
+    }
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x09090b, 0.02);
@@ -1052,10 +1057,98 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       rotationRef.current.cameraZ = camera.position.z;
     };
 
+    // Touch controls for mobile & touchscreen devices
+    let touchStartDist = 0;
+    let initialCameraZ = camera.position.z;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        isDragging = true;
+        dragStartX = touch.clientX;
+        dragStartY = touch.clientY;
+        prevX = touch.clientX;
+        prevY = touch.clientY;
+      } else if (e.touches.length === 2) {
+        isDragging = false;
+        touchStartDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialCameraZ = camera.position.z;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 1 && isDragging) {
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        mouse.x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+        const deltaX = touch.clientX - prevX;
+        const deltaY = touch.clientY - prevY;
+        rotY += deltaX * 0.007;
+        rotX += deltaY * 0.007;
+        rotationRef.current.rotX = rotX;
+        rotationRef.current.rotY = rotY;
+        prevX = touch.clientX;
+        prevY = touch.clientY;
+      } else if (e.touches.length === 2 && touchStartDist > 0) {
+        const currentDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = touchStartDist / currentDist;
+        camera.position.z = THREE.MathUtils.clamp(initialCameraZ * factor, 3.8, 14);
+        rotationRef.current.cameraZ = camera.position.z;
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (isDragging) {
+        isDragging = false;
+        const dist = Math.hypot(prevX - dragStartX, prevY - dragStartY);
+        if (dist < 10) {
+          const rect = container.getBoundingClientRect();
+          mouse.x = ((prevX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((prevY - rect.top) / rect.height) * 2 + 1;
+
+          raycaster.setFromCamera(mouse, camera);
+          const intersects = raycaster.intersectObjects(scene.children, true);
+          if (intersects.length > 0) {
+            let detectedIndex: number | null = null;
+            for (const hit of intersects) {
+              let obj: any = hit.object;
+              while (obj && obj !== scene) {
+                if (obj.userData && typeof obj.userData.nodeIndex === 'number') {
+                  detectedIndex = obj.userData.nodeIndex;
+                  break;
+                }
+                obj = obj.parent;
+              }
+              if (detectedIndex !== null) break;
+            }
+            if (detectedIndex !== null) {
+              const node = SKILL_NODES[detectedIndex];
+              soundEngine.playNodeConnect();
+              setActiveSkill(node);
+              gameEngine.completeQuest('constellation_galaxy');
+              gameEngine.unlockBadge('celestial_stargazer');
+            }
+          }
+        }
+      }
+      touchStartDist = 0;
+    };
+
     container.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
     container.addEventListener('wheel', onWheel, { passive: false });
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('touchend', onTouchEnd, { passive: true });
 
     // Controls exposed to buttons
     sceneRefs.current.resetCamera = () => {
@@ -1063,8 +1156,8 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       rotY = 0;
       rotationRef.current.rotX = 0;
       rotationRef.current.rotY = 0;
-      rotationRef.current.cameraZ = 7.8;
-      camera.position.set(0, 0, 7.8);
+      rotationRef.current.cameraZ = defaultCameraZ;
+      camera.position.set(0, 0, defaultCameraZ);
       soundEngine.playClick(600);
     };
 
@@ -1158,6 +1251,9 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('wheel', onWheel);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
 
       sphereGeo.dispose();
       ringGeo.dispose();
@@ -1173,7 +1269,7 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
   const renderConstellationUI = () => (
     <>
       {/* 3D Canvas Mount Point */}
-      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
+      <div ref={mountRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing [touch-action:none]" />
 
       {/* Top Header & Controls Bar */}
       <div className="absolute top-3 left-3 right-3 z-20 flex items-start justify-between gap-2.5 pointer-events-none">

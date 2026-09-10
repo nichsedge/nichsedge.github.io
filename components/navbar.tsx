@@ -34,8 +34,8 @@ export function Navbar({ isNSM: propIsNSM, toggleNSM: propToggleNSM }: { isNSM?:
   ];
 
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between px-3 sm:px-4 py-3 bg-bg/80 backdrop-blur-md border-b border-border-subtle font-mono text-[10px] sm:text-[11px] uppercase tracking-wider sm:tracking-widest overflow-hidden">
-      <div className="flex items-center gap-2 sm:gap-3.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1 min-w-0 mr-2 sm:mr-3">
+    <nav className="sticky top-0 z-50 flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-bg/80 backdrop-blur-md border-b border-border-subtle font-mono text-[10px] sm:text-[11px] uppercase tracking-wider sm:tracking-widest overflow-hidden">
+      <div className="flex items-center gap-2 sm:gap-3.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex-1 min-w-0 mr-2 sm:mr-3 mask-scroll-fade">
         {links.map((link) => (
           <React.Fragment key={link.href}>
             {link.external ? (
@@ -45,7 +45,7 @@ export function Navbar({ isNSM: propIsNSM, toggleNSM: propToggleNSM }: { isNSM?:
                 rel="noopener noreferrer"
                 title={isIndonesian ? "Kebun Digital (Tautan Eksternal)" : "Digital Garden (External Link)"}
                 onClick={() => soundEngine.playClick(900)}
-                className="hover:text-text-0 transition-colors group flex items-center whitespace-nowrap shrink-0"
+                className="hover:text-text-0 transition-colors group flex items-center whitespace-nowrap shrink-0 py-1"
               >
                 <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity mr-1 font-bold">[</span>
                 <span>{link.name}</span>
@@ -56,7 +56,7 @@ export function Navbar({ isNSM: propIsNSM, toggleNSM: propToggleNSM }: { isNSM?:
               <Link 
                 href={localizedHref(link.href)} 
                 onClick={() => soundEngine.playClick(900)}
-                className="hover:text-text-0 transition-colors group flex items-center whitespace-nowrap shrink-0"
+                className="hover:text-text-0 transition-colors group flex items-center whitespace-nowrap shrink-0 py-1"
               >
                 <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity mr-1 font-bold">[</span>
                 {link.name}
