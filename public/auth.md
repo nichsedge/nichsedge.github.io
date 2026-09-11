@@ -27,6 +27,9 @@ Content-Type: application/json
 
 ## 2. Pick a Method
 
+> [!NOTE]
+> **Static Export Architecture**: Because `nichsedge.github.io` is deployed as a deterministic static Next.js export on GitHub Pages, all public endpoints (`/api/v1/profile`, `/api/v1/projects`, `/api/v1/skills`, `/api/v1/ask`) operate unconditionally in **`anonymous` public read** mode. No token minting is required for discovery or machine consumption. Dynamic OAuth token exchange flows below document reference architecture specifications.
+
 The NICHSEDGE platform supports three agent authentication patterns under `agent_auth`:
 
 1. **Anonymous / Public Read (`anonymous`)**:

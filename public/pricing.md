@@ -53,9 +53,9 @@
 
 ## Payment & Settlement Channels
 Supported payment nodes and remittance channels:
-- **International Wire & SWIFT / Wise**: Supported
-- **Bank Transfer (Indonesia)**: Bank Mandiri, BNI, Bank Aladin Syariah, Krom Bank, Bank Jago
+- **International Remittance**: PayPal (`muhammad.ichsanul19@gmail.com`), Wise upon invoice request
+- **Bank Transfer (Indonesia)**: Bank Mandiri, BNI, Bank Aladin Syariah, Krom Bank, Bank Jago Syariah, Superbank, Bank CIMB Niaga
 - **Digital Wallets**: GoPay, ShopeePay, OVO
-- **Crypto / On-Chain**: USDC / USDT on Ethereum, Arbitrum, or Solana
+- **Crypto / On-Chain**: USDC / USDT on EVM networks (Ethereum, Arbitrum, Polygon) to `0xaf875b7BCf42D1382537dcCbD6c98C704E926d12`
 
-For booking and technical inquiries, contact: `muhammad.ichsanul19@gmail.com` or review [/contact](https://nichsedge.github.io/contact).
+For complete account numbers and verified addresses, visit [/pay](https://nichsedge.github.io/pay). For booking and technical inquiries, contact: `muhammad.ichsanul19@gmail.com` or review [/contact](https://nichsedge.github.io/contact).

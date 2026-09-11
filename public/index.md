@@ -17,7 +17,7 @@ Ichsanul Amal (Nichsedge) designs high-resilience data platforms across Google C
 
 ## Professional Experience
 - **Krom Bank Indonesia** (Jun 2026 – Present): Data Quality Engineer. Leading data quality verification frameworks for enterprise banking reporting in BigQuery, cross-platform replication tests (S3, SFTP), and automated alerting in Mode BI.
-- **Accenture** (Sep 2024 – Jun 2026): Data Engineering, Governance, and Management Analyst. Designed data quality verification dimension models, automated metadata migrations across ~4,000 components, and researched agentic AI developer tooling.
+- **Accenture** (Sep 2024 – Jun 2026): Data Engineering, Governance, and Management Analyst. Designed data quality verification models, automated telecom metadata migrations across ~4,000 components, supported enterprise distribution systems (DMS / ERP) for multinational FMCG clients, and researched agentic AI developer tooling.
 - **NTI / Telkomsel Project** (Aug 2023 – Apr 2024): Database Engineer. Architected data models and ingestion pipelines for Network Service Measurement; integrated dbt and optimized PostgreSQL query execution.
 - **Traveloka** (Aug 2022 – Dec 2022): Data Engineer Intern. Implemented Kimball dimensional data warehouse models in BigQuery & Airflow for hotel and transport business units.
 

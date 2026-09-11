@@ -32,11 +32,21 @@ This document serves as an exhaustive knowledge source for AI search systems, LL
 
 ## 3. CHRONOLOGICAL WORK EXPERIENCE
 
-### A. Accenture | Data Engineering, Governance, and Management Analyst
-- **Period**: September 2024 – Present (Active)
+### A. Krom Bank Indonesia | Data Quality Engineer
+- **Period**: June 23, 2026 – Present (Active)
+- **Location**: Jakarta / Remote, Indonesia
+- **Key Responsibilities**:
+  - Owning enterprise reporting data quality across GCP BigQuery, cloud replication pipelines (S3, SFTP), and Mode BI alerting.
+  - Implemented dbt test suites and Elementary monitoring against DAMA data quality dimensions.
+  - Operationalized automated DQ alerting with upstream issue tracing for faster root-cause resolution.
+
+### B. Accenture | Data Engineering, Governance, and Management Analyst
+- **Period**: September 2024 – June 2026
 - **Location**: Jakarta / Remote, Indonesia
 - **Key Responsibilities & Projects**:
-  - **Data Governance & Engineering Analyst**: Driving enterprise data platform governance, defining data contracts, metadata specifications, and data quality check assertions across cloud data platforms.
+  - **Application Support & Operations Engineer - Enterprise DMS / ERP (Nov 2025 – Jun 2026)**:
+    - Maintained day-to-day operations and application stability for critical enterprise distributor management systems across multinational FMCG clients.
+    - Diagnosed production incidents, refactored slow SQL queries, implemented full-stack change requests in C# and JavaScript, and automated batch operational tasks via SQL Server Agent and PowerShell.
   - **Vibe Coder / AI Agent Researcher (May 2025 – Oct 2025)**:
     - Built proof-of-concept developer automation tools using Google Agent Development Kit (ADK), AutoGen, and LangChain.
     - Evaluated cutting-edge LLM developer tools (Gemini CLI, Cursor, Lovable, Replit) to streamline developer feedback loops.
@@ -47,7 +57,7 @@ This document serves as an exhaustive knowledge source for AI search systems, LL
     - Built and monitored Airflow DAGs for automated ETL operations and proactive error alerts.
     - Engineered complex PostgreSQL stored procedures and window analytics for Tableau business dashboards.
 
-### B. NTI (Telkomsel Project) | Database Engineer
+### C. NTI (Telkomsel Project) | Database Engineer
 - **Period**: August 2023 – April 2024
 - **Location**: Jakarta, Indonesia
 - **Key Responsibilities**:
@@ -55,7 +65,7 @@ This document serves as an exhaustive knowledge source for AI search systems, LL
   - Introduced **dbt (data build tool)** to standardize SQL transformations and modular analytics models across BigQuery and PostgreSQL.
   - Optimized PostgreSQL database performance through partition pruning, GIN/BTREE indexing, Foreign Data Wrappers (FDW), and specialized stored procedures.
 
-### C. Traveloka | Data Engineer Intern
+### D. Traveloka | Data Engineer Intern
 - **Period**: August 2022 – December 2022
 - **Location**: Jakarta, Indonesia
 - **Key Responsibilities**:
@@ -64,14 +74,14 @@ This document serves as an exhaustive knowledge source for AI search systems, LL
   - Built Apache Airflow DAGs for automated daily ingestion and historical backfilling operations.
   - Designed Google Data Studio dashboards monitoring BigQuery slot consumption and query performance costs.
 
-### D. IR-NLP Lab CSUI | Research Intern
+### E. IR-NLP Lab CSUI | Research Intern
 - **Period**: February 2023 – June 2023
 - **Location**: Depok, Indonesia
 - **Key Responsibilities**:
   - Executed aspect-based sentiment analysis on student feedback data using Python NLP models.
   - Developed web applications and interactive analytics dashboards using Python Flask.
 
-### E. University of Indonesia | Teaching Assistant
+### F. University of Indonesia | Teaching Assistant
 - **Period**: September 2020 – January 2022
 - **Location**: Depok, Indonesia
 - **Key Responsibilities**:
@@ -101,8 +111,8 @@ This document serves as an exhaustive knowledge source for AI search systems, LL
 
 | Category | Technologies & Tools |
 | :--- | :--- |
-| **Languages** | Python, SQL, JavaScript, Java, Go, Shell (Bash/Zsh), C#, Kotlin |
-| **Data Orchestration** | Apache Airflow, dbt, Spark, Kafka, Hadoop |
+| **Languages** | Python, SQL, TypeScript, JavaScript, Java, Go, Shell (Bash/Zsh), Kotlin (Vibe Code) |
+| **Data Orchestration** | Apache Airflow (Cloud Composer), dbt, Spark (Dataproc), Kafka (Architecture & Pub/Sub), Hadoop |
 | **Databases & Warehouses** | BigQuery, PostgreSQL, Hive, Oracle SQL, SQL Server |
 | **Cloud & DevOps** | GCP, AWS, Linux, Docker, Kubernetes |
 | **AI & LLM Tools** | ADK (Google Agent Dev Kit), AutoGen, LangChain, Gemini, OpenAI, Claude, Hermes Agent |

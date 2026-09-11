@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Career & Experience | Ichsanul Amal',
-    description: 'Explore the professional trajectory of Ichsanul Amal at Accenture, Telkomsel, Traveloka, and UI — building enterprise ETL pipelines and data lakes.',
+    description: 'Explore the professional trajectory of Ichsanul Amal at Krom Bank, Accenture, Telkomsel, Traveloka, and UI — building enterprise ETL pipelines and data lakes.',
     type: 'website',
     url: 'https://nichsedge.github.io/work',
     siteName: 'NICHSEDGE',
@@ -50,6 +50,7 @@ export default function WorkPage() {
           { name: 'Work', item: 'https://nichsedge.github.io/work' },
         ]}
         itemList={[
+          { name: 'Krom Bank Indonesia - Data Quality Engineer', description: 'Enterprise banking reporting data quality frameworks, BigQuery dbt assertions & Mode BI alerting.' },
           { name: 'Accenture - Data Engineering & Governance Analyst', description: 'Enterprise data platform governance, DQ validation & AI agent tools.' },
           { name: 'NTI (Telkomsel Project) - Database Engineer', description: 'Architected network measurement models using dbt, Airflow & PostgreSQL.' },
           { name: 'Traveloka - Data Engineer Intern', description: 'Kimball dimensional warehouse models on BigQuery & Airflow.' },

@@ -282,7 +282,7 @@ export function HumanRuntimeScanner({
           status = 'VOLATILITY_HEDGE';
         } else if (computeMode === 'literature') {
           baseBpm = 64 + Math.floor(Math.random() * 4);
-          status = 'TOKEN_INGESTION_450WPM';
+          status = 'TOKEN_INGESTION_250WPM';
         }
       } else if (currentSubsystem === 'multiplayer') {
         if (multiplayerMode === 'futsal') {

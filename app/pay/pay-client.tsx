@@ -96,6 +96,33 @@ const SuperbankLogo = () => (
   </svg>
 );
 
+const CimbLogo = () => (
+  <svg viewBox="0 0 100 100" className="w-10 h-10 rounded-sm select-none shrink-0" fill="none">
+    <rect width="100" height="100" rx="20" fill="#7D0000" />
+    <path d="M25 35h50v8H25zm0 14h36v8H25zm0 14h50v8H25z" fill="#ED1C24" />
+    <path d="M28 35l22 36h-8L20 35z" fill="white" />
+  </svg>
+);
+
+const EvmLogo = () => (
+  <svg viewBox="0 0 100 100" className="w-10 h-10 rounded-sm select-none shrink-0" fill="none">
+    <rect width="100" height="100" rx="20" fill="#1C1E24" />
+    <path d="M50 18L26 50l24 14 24-14L50 18z" fill="#627EEA" />
+    <path d="M50 18v46l24-14L50 18z" fill="#455BC7" />
+    <path d="M50 67L26 53l24 33 24-33-24 14z" fill="#627EEA" />
+    <path d="M50 67v33l24-33-24-14z" fill="#455BC7" />
+  </svg>
+);
+
+const PaypalLogo = () => (
+  <svg viewBox="0 0 100 100" className="w-10 h-10 rounded-sm select-none shrink-0" fill="none">
+    <rect width="100" height="100" rx="20" fill="#003087" />
+    <path d="M36 26h22c8 0 14 5 13 13-1 8-7 13-15 13H43l-4 22H27l11-48h-2z" fill="#0079C1" />
+    <path d="M44 38h16c6 0 11 4 10 10-1 7-6 11-13 11H47l-3 15H33l7-36h4z" fill="#00457C" opacity="0.6" />
+    <path d="M41 44h15c5 0 9 3 9 8-1 6-5 9-11 9H44l-3 15H33l6-32h2z" fill="#0079C1" />
+  </svg>
+);
+
 const renderLogos = (id: string) => {
   switch (id) {
     case 'ewallets':
@@ -118,6 +145,12 @@ const renderLogos = (id: string) => {
       return <JagoLogo />;
     case 'superbank':
       return <SuperbankLogo />;
+    case 'cimb':
+      return <CimbLogo />;
+    case 'evm':
+      return <EvmLogo />;
+    case 'paypal':
+      return <PaypalLogo />;
     default:
       return null;
   }

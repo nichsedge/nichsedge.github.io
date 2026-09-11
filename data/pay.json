@@ -70,5 +70,23 @@
   "recipient": "MUHAMMAD ICHSANUL AMAL",
   "details": "Bank CIMB Niaga transfer protocol",
   "details_id": "Protokol transfer Bank CIMB Niaga"
+ },
+ {
+  "id": "evm",
+  "name": "EVM Network (Ethereum, Arbitrum, Polygon)",
+  "category": "Crypto Node",
+  "number": "0xaf875b7BCf42D1382537dcCbD6c98C704E926d12",
+  "recipient": "Ichsanul Amal",
+  "details": "USDC / USDT on Ethereum, Arbitrum, or Polygon",
+  "details_id": "USDC / USDT di jaringan Ethereum, Arbitrum, atau Polygon"
+ },
+ {
+  "id": "paypal",
+  "name": "PayPal",
+  "category": "Global Settlement Node",
+  "number": "muhammad.ichsanul19@gmail.com",
+  "recipient": "Ichsanul Amal",
+  "details": "International PayPal remittance",
+  "details_id": "Remitansi internasional PayPal"
  }
 ]

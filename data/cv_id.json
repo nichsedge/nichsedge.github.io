@@ -16,11 +16,11 @@
       "company": "Krom Bank Indonesia",
       "role": "Data Quality Engineer",
       "period": {
-        "start": "2026-06-01",
+        "start": "2026-06-23",
         "end": null
       },
       "shortDescription": "Menjaga kualitas data untuk pelaporan perbankan lintas platform replikasi di GCP.",
-      "fullDescription": "Memastikan kualitas data untuk pelaporan: dbt test dan monitoring Elementary di BigQuery, pemeriksaan DQ lintas pipeline replikasi (S3, SFTP), manajemen alert di Mode BI, dan penelusuran isu ke upstream \u2014 berbasis dimensi DAMA data quality.",
+      "fullDescription": "Memastikan kualitas data untuk pelaporan: dbt test dan monitoring Elementary di BigQuery, pemeriksaan DQ lintas pipeline replikasi (S3, SFTP), manajemen alert di Mode BI, dan penelusuran isu ke upstream — berbasis dimensi DAMA data quality.",
       "tech": [
         "GCP",
         "BigQuery",
@@ -62,6 +62,31 @@
         "Memelopori verifikasi kualitas data enterprise dan kerangka kerja tata kelola metadata di seluruh pipeline platform data."
       ],
       "projects": [
+        {
+          "role": "Application Support & Operations Engineer (Enterprise DMS / ERP)",
+          "period": {
+            "start": "2025-11-01",
+            "end": "2026-06-01"
+          },
+          "shortDescription": "Memelihara dan mendukung platform Distributor Management System (DMS / ERP) enterprise untuk klien multinasional FMCG terkemuka, mengoptimalkan kueri SQL, serta mengimplementasikan permintaan fitur full-stack.",
+          "fullDescription": "Menangani dukungan IT dan operasional sistem distribusi enterprise untuk klien Fast-Moving Consumer Goods (FMCG) global. Mendiagnosis dan memperbaiki bug pada aplikasi web dan mobile warisan (legacy), mengoptimalkan performa SQL Server, mengembangkan change request kustom full-stack, serta mengotomatiskan rutinitas operasional menggunakan SQL Server Agent dan skrip PowerShell.",
+          "tech": [
+            "SQL Server",
+            "SQL",
+            "C# (Pemeliharaan Legacy)",
+            "PowerShell",
+            "JavaScript",
+            "ERP / DMS",
+            "IT Operations",
+            "SQL Server Agent"
+          ],
+          "impact": [
+            "Memelihara stabilitas operasional dan aplikasi sistem distribusi enterprise harian untuk klien FMCG multinasional.",
+            "Mendiagnosis insiden produksi, memperbaiki kueri SQL dan stored procedure yang lambat, serta meningkatkan akurasi data operasional.",
+            "Mengembangkan change request fitur full-stack dan logika bisnis kustom pada platform web dan mobile warisan.",
+            "Mengotomatiskan pemeliharaan berkala dan alur kerja batch menggunakan SQL Server Agent, CMD, dan skrip PowerShell."
+          ]
+        },
         {
           "role": "Vibe Coder",
           "period": {
@@ -350,11 +375,11 @@
     "languages": [
       "Python",
       "SQL",
+      "TypeScript",
       "JavaScript",
       "Java",
       "Go",
       "Shell",
-      "C#",
       "Kotlin (Vibe Code)"
     ],
     "infrastructure": [
@@ -379,7 +404,7 @@
       "Hive",
       "Oracle",
       "Spark",
-      "Kafka",
+      "Kafka (Arsitektur & Pub/Sub)",
       "Hadoop",
       "Looker Studio",
       "SQL Server"

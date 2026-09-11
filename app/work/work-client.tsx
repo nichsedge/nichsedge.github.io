@@ -86,8 +86,10 @@ function formatPeriod(period: Period, yearOnly = false, locale = 'en'): string {
 function calculateDuration(period: Period, locale = 'en'): string {
   if (!period || !period.start) return '';
   const start = new Date(period.start);
-  const end = period.end && period.end !== 'Present' ? new Date(period.end) : new Date('2026-05-19');
+  const end = period.end && period.end !== 'Present' ? new Date(period.end) : new Date();
   
+  if (end < start) return '';
+
   let years = end.getFullYear() - start.getFullYear();
   let months = end.getMonth() - start.getMonth();
   

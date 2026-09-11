@@ -93,7 +93,7 @@ export default function PricingPage() {
         <section className="space-y-4">
           <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Settlement & Remittance Rails</h2>
           <p className="text-text-muted leading-relaxed">
-            Invoices can be settled via international bank wire (Wise / SWIFT), Indonesian national banking rails (Bank Mandiri, BNI, Bank Aladin Syariah, Krom Bank), digital e-wallets, or USDC/USDT on major EVM networks. Details available at <Link href="/pay" className="text-accent underline">/pay</Link>.
+            Invoices can be settled via international remittance (PayPal, Wise upon request), Indonesian national banking rails (Bank Mandiri, BNI, Bank Aladin Syariah, Krom Bank, Bank Jago, Superbank, CIMB Niaga), digital e-wallets (ShopeePay, GoPay, OVO), or on-chain USDC/USDT on EVM networks (Ethereum, Arbitrum, Polygon). Complete verified account details and wallet addresses are published at <Link href="/pay" className="text-accent underline">/pay</Link>.
           </p>
         </section>
 

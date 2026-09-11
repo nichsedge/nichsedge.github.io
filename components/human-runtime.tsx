@@ -181,7 +181,7 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     <Activity size={11} className="animate-pulse" />
                     {isID ? 'STATUS METABOLISME' : 'METABOLIC STATUS'}
                   </span>
-                  <span className="text-amber-400 font-bold">98% EFFICIENCY</span>
+                  <span className="text-amber-400 font-bold">{isID ? 'KESEIMBANGAN SEDENTER' : 'SEDENTARY EQUILIBRIUM'}</span>
                 </div>
 
                 {/* Progress bars & badges */}
@@ -261,7 +261,7 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     <div>
                       <span className="text-text-0 font-bold block">Core 3 · Literature</span>
                       <span className="text-text-3 text-[10px] leading-tight block">
-                        {isID ? 'Batch ingesti teks (450 WPM)' : 'High-rate text parsing (450 WPM)'}
+                        {isID ? 'Batch ingesti teks & docs (~250 WPM)' : 'Deep technical reading (~250 WPM)'}
                       </span>
                     </div>
                   </div>
@@ -329,23 +329,23 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
                 {/* 3 Illustrated Protocol Panels */}
                 <div className="space-y-3 mb-5 font-mono">
-                  {/* 1. Futsal: Kinetic Cardio & Sprint Mesh */}
+                  {/* 1. Futsal: Casual Recreational Decompression */}
                   <div className="border border-border-subtle/70 bg-bg/60 p-2.5 rounded-sm hover:border-emerald-500/50 transition-colors">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1.5">
                         <Activity size={12} className="text-emerald-400" />
-                        <span className="text-text-0 text-[11px] font-bold">Futsal // Kinetic Flush</span>
+                        <span className="text-text-0 text-[11px] font-bold">Futsal // Desk Decompression</span>
                       </div>
                       <span className="text-[8px] px-1.5 py-0.5 border border-emerald-500/30 text-emerald-400 bg-emerald-500/10 uppercase font-bold">
-                        UDP MESH
+                        {isID ? 'REKREASI CASUAL' : 'CASUAL RECREATION'}
                       </span>
                     </div>
 
                     {/* SVG Pitch & Sprint Trajectory Vector */}
                     <div className="my-1.5 overflow-hidden rounded border border-emerald-500/20 bg-emerald-950/20 p-2">
                       <div className="flex justify-between items-center text-[8px] font-mono text-emerald-400/80 mb-1">
-                        <span className="font-bold">VO2 MAX: 165 BPM</span>
-                        <span className="text-emerald-400 font-bold">SPRINT DISSIPATION</span>
+                        <span className="font-bold">PEAK HR: ~155 BPM</span>
+                        <span className="text-emerald-400 font-bold">{isID ? 'CADENCE: 1-2X / BULAN' : 'CADENCE: 1-2X / MO'}</span>
                       </div>
                       <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Court Pitch Schematic */}
@@ -362,8 +362,8 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
                     <p className="text-[10px] text-text-3 leading-snug">
                       {isID
-                        ? 'Interupsi kardio intensif; membersihkan cache stres mental & fragmentasi kognitif.'
-                        : 'High-intensity cardio sprint; flushes mental stress cache & cognitive fragmentation.'}
+                        ? 'Olahraga rekreasi akhir pekan sesekali bersama kawan; melemaskan otot kaku akibat duduk lama dan membersihkan cache stres mental.'
+                        : 'Occasional weekend run or futsal rally with friends; flushes sedentary desk stiffness and resets the cognitive cache.'}
                     </p>
                   </div>
 
@@ -382,8 +382,8 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                     {/* SVG Radial Waves & Sound Spectrum */}
                     <div className="my-1.5 overflow-hidden rounded border border-blue-400/20 bg-blue-950/20 p-2">
                       <div className="flex justify-between items-center text-[8px] font-mono text-blue-400/80 mb-1">
-                        <span className="font-bold">94 dB // 80Hz-1.1kHz</span>
-                        <span className="text-blue-400 font-bold">DOPAMINE PEAK</span>
+                        <span className="font-bold">90 dB // 80Hz-1.1kHz</span>
+                        <span className="text-blue-400 font-bold">{isID ? 'REFRESH DOPAMIN' : 'DOPAMINE REFRESH'}</span>
                       </div>
                       <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Concentric acoustic ripples */}
@@ -410,28 +410,28 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
                     <p className="text-[10px] text-text-3 leading-snug">
                       {isID
-                        ? 'Resonansi akustik multi-oktaf bersama peer cluster; memaksimalkan output dopamin.'
-                        : 'Multi-octave acoustic resonance across peer cluster; maximizes social dopamine throughput.'}
+                        ? 'Sesi bernyanyi santai bersama lingkar kawan terdekat; penyegar suasana efektif pasca sprint mingguan yang padat.'
+                        : 'Casual acoustic singing sessions with close peers; a reliable social dopamine refresh after heavy sprint weeks.'}
                     </p>
                   </div>
 
-                  {/* 3. Tennis: Trajectory Arc & Physics Curve */}
+                  {/* 3. Casual Motion // Low-Impact Orbit */}
                   <div className="border border-border-subtle/70 bg-bg/60 p-2.5 rounded-sm hover:border-amber-400/50 transition-colors">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-1.5">
                         <Target size={12} className="text-amber-400" />
-                        <span className="text-text-0 text-[11px] font-bold">Tennis // Trajectory AI</span>
+                        <span className="text-text-0 text-[11px] font-bold">Stroll // Low-Impact Orbit</span>
                       </div>
                       <span className="text-[8px] px-1.5 py-0.5 border border-amber-400/30 text-amber-400 bg-amber-500/10 uppercase font-bold">
-                        v0.1 BETA
+                        {isID ? 'ORBIT SANTAI' : 'LOW STRAIN'}
                       </span>
                     </div>
 
                     {/* SVG Parabolic Arc & Ball Flight Physics */}
                     <div className="my-1.5 overflow-hidden rounded border border-amber-400/20 bg-amber-950/20 p-2">
                       <div className="flex justify-between items-center text-[8px] font-mono text-amber-400/80 mb-1">
-                        <span className="font-bold">ACCURACY: 38%</span>
-                        <span className="text-amber-400 font-bold">TOPSPIN CURVE</span>
+                        <span className="font-bold">{isID ? 'BEBAN: RENDAH' : 'STRAIN: MINIMAL'}</span>
+                        <span className="text-amber-400 font-bold">{isID ? 'POSTUR DESK RESET' : 'POSTURE RESET'}</span>
                       </div>
                       <svg viewBox="0 0 280 26" className="w-full h-6" preserveAspectRatio="none">
                         {/* Baseline court */}
@@ -449,8 +449,8 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
                     <p className="text-[10px] text-text-3 leading-snug">
                       {isID
-                        ? 'Pelatihan model prediksi trayektori bola; sedang dalam tahap kalibrasi coaching awal.'
-                        : 'Ball trajectory prediction model in training; undergoing early coaching calibration.'}
+                        ? 'Jalan santai akhir pekan, rekreasi ringan, dan obrolan kopi untuk meregangkan postur di sela rutinitas meja kerja.'
+                        : 'Low-strain weekend strolls, casual recreation, and coffee catch-ups to reset posture between intensive desk sessions.'}
                     </p>
                   </div>
                 </div>

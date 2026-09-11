@@ -47,6 +47,12 @@ export default function WorkPageID() {
           { name: 'Beranda', item: 'https://nichsedge.github.io/id' },
           { name: 'Karir', item: 'https://nichsedge.github.io/id/work' },
         ]}
+        itemList={[
+          { name: 'Krom Bank Indonesia - Data Quality Engineer', description: 'Kerangka kerja kualitas data pelaporan perbankan enterprise, asersi dbt BigQuery & peringatan Mode BI.' },
+          { name: 'Accenture - Data Engineering & Governance Analyst', description: 'Tata kelola platform data enterprise, validasi DQ & alat AI agent.' },
+          { name: 'NTI (Proyek Telkomsel) - Database Engineer', description: 'Arsitektur model pengukuran jaringan menggunakan dbt, Airflow & PostgreSQL.' },
+          { name: 'Traveloka - Data Engineer Intern', description: 'Model data warehouse dimensional Kimball di BigQuery & Airflow.' },
+        ]}
       />
       <WorkClient locale="id" />
     </>

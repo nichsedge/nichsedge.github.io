@@ -26,13 +26,13 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
   const [questStage, setQuestStage] = useState<number>(0);
   const [history, setHistory] = useState<string[]>(
     locale === 'id' ? [
-      "PORTFOLIO_OS V2.0.5 (Mei 2026)",
+      "PORTFOLIO_OS V2.1.0 (September 2026)",
       "AUTENTIKASI: BERHASIL (SEBAGAI GUEST)",
       "MENGINISIASI PROTOKOL NEURAL_GHOST...",
       "KETIK 'HELP' UNTUK DAFTAR PERINTAH ATAU 'QUEST' UNTUK MAINFRAME DIAGNOSTIC",
       " "
     ] : [
-      "PORTFOLIO_OS V2.0.5 (May 2026)",
+      "PORTFOLIO_OS V2.1.0 (September 2026)",
       "AUTHENTICATION: SUCCESS (AS GUEST)",
       "INITIALIZING NEURAL_GHOST PROTOCOL...",
       "TYPE 'HELP' FOR LIST OF COMMANDS OR 'QUEST' FOR MAINFRAME DIAGNOSTIC",
