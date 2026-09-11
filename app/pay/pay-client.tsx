@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Copy, Check, Server, Terminal, Cpu, AlertCircle, Search, X } from 'lucide-react';
+import { Copy, Check, Server, Terminal, Cpu, AlertCircle, Search, X, ShieldCheck } from 'lucide-react';
 
 import { Navbar } from '@/components/navbar';
 import { InteractiveGrid } from '@/components/interactive-grid';
@@ -11,6 +11,7 @@ import { DecryptedText } from '@/components/decrypted-text';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { useNSM } from '@/lib/nsm';
 import payData from '@/data/pay.json';
+import transparencyData from '@/data/transparency.json';
 
 interface PayNode {
   id: string;
@@ -222,6 +223,71 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Sovereign Financial Transparency & Barbell Radar */}
+        <div className="relative z-10 border border-border-subtle bg-bg-1/40 p-5 rounded-sm mb-10 font-mono">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-border-subtle/60 pb-3 mb-4">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="text-emerald-400" size={16} />
+              <span className="text-[11px] font-bold tracking-wider text-text-0 uppercase">
+                {locale === 'id' ? 'VERIFIKASI NERACA SOVEREIGN' : 'SOVEREIGN BALANCE SHEET VERIFICATION'}
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2 py-0.5 border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] tracking-widest font-bold rounded-sm flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                {transparencyData.sovereign_status?.badge || '100% DEBT-FREE'}
+              </span>
+              <span className="px-2 py-0.5 border border-blue-500/30 bg-blue-500/10 text-blue-400 text-[10px] tracking-widest font-bold rounded-sm">
+                {transparencyData.sovereign_status?.runway_tier || 'FORTRESS RUNWAY'}
+              </span>
+            </div>
+          </div>
+
+          {/* Allocation Distribution Bar */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center text-[10px] text-text-3 mb-1.5">
+              <span>{locale === 'id' ? 'ALOKASI STRATEGI BARBELL (ANTI-FRAGILE)' : 'BARBELL ALLOCATION RADAR (ANTI-FRAGILE)'}</span>
+              <span className="text-accent">{transparencyData.telemetry?.deep_work_hours_30d}h WORK TELEMETRY (30D)</span>
+            </div>
+            <div className="w-full h-2.5 bg-bg-1 border border-border-subtle rounded-sm flex overflow-hidden">
+              {transparencyData.barbell_allocation?.map((item: any, i: number) => {
+                const colors = ['bg-indigo-500', 'bg-emerald-500', 'bg-cyan-500', 'bg-amber-500', 'bg-purple-500'];
+                return (
+                  <div
+                    key={i}
+                    style={{ width: `${item.percentage}%` }}
+                    className={`${colors[i % colors.length]} h-full transition-all`}
+                    title={`${item.asset_class}: ${item.percentage}%`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Allocation Details Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[10px]">
+            {transparencyData.barbell_allocation?.map((item: any, i: number) => {
+              const borderColors = ['border-indigo-500/30', 'border-emerald-500/30', 'border-cyan-500/30', 'border-amber-500/30', 'border-purple-500/30'];
+              const textColors = ['text-indigo-400', 'text-emerald-400', 'text-cyan-400', 'text-amber-400', 'text-purple-400'];
+              return (
+                <div key={i} className={`border ${borderColors[i % borderColors.length]} bg-bg-1/60 p-2.5 rounded-sm`}>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-bold text-text-1">{item.asset_class}</span>
+                    <span className={`font-bold ${textColors[i % textColors.length]}`}>{item.percentage}%</span>
+                  </div>
+                  <p className="text-[9px] text-text-3 leading-tight mb-1">{item.description}</p>
+                  <span className="text-[8px] text-text-3/60 block uppercase tracking-wider">{item.risk_profile}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-3 pt-2.5 border-t border-border-subtle/40 flex justify-between items-center text-[9px] text-text-3">
+            <span>// SSOT: Synced from iERP events.db & portfolio-integration (Zero private IDR disclosed)</span>
+            <span className="text-emerald-400 font-bold">{transparencyData.sovereign_status?.runway_months}m ZERO-INCOME HORIZON</span>
+          </div>
         </div>
 
         {/* Search Controller */}

@@ -10,6 +10,7 @@ import {
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
 import referralsData from '@/data/referrals.json';
+import transparencyData from '@/data/transparency.json';
 import { Navbar } from '@/components/navbar';
 import { DataVisualizer } from '@/components/data-visualizer';
 import { useWideLayout } from '@/hooks/use-wide-layout';
@@ -120,6 +121,19 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         { id: 2, node_id: 'spark-transform-04', status: 'OPTIMAL', throughput_gb_sec: '12.2 GB/s', latency_p99_ms: '14.8 ms' },
         { id: 3, node_id: 'duckdb-vector-02', status: 'OPTIMAL', throughput_gb_sec: '18.4 GB/s', latency_p99_ms: '0.8 ms' },
         { id: 4, node_id: 'clickhouse-olap-01', status: 'OPTIMAL', throughput_gb_sec: '22.0 GB/s', latency_p99_ms: '4.2 ms' }
+      ],
+      barbell_allocation: (transparencyData.barbell_allocation || []).map((item: any, idx: number) => ({
+        id: idx + 1,
+        asset_class: item.asset_class,
+        percentage: item.percentage,
+        risk_profile: item.risk_profile,
+        description: item.description
+      })),
+      sovereign_balance_sheet: [
+        { id: 1, metric: 'Balance Sheet Status', value: transparencyData.sovereign_status?.badge || '100% Debt-Free' },
+        { id: 2, metric: 'Runway Tier', value: transparencyData.sovereign_status?.runway_tier || 'Fortress' },
+        { id: 3, metric: 'Zero-Income Runway', value: `${transparencyData.sovereign_status?.runway_months || 0} Months` },
+        { id: 4, metric: 'Focus Telemetry (30d)', value: `${transparencyData.telemetry?.deep_work_hours_30d || 0} hrs (${transparencyData.telemetry?.velocity_percentile || 'Top 1%'})` }
       ]
     };
   }, [resumeData, locale]);
@@ -188,11 +202,25 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         { name: 'throughput_gb_sec', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Laju transfer data pipeline' : 'Pipeline data throughput rate' },
         { name: 'latency_p99_ms', type: 'VARCHAR(20)', primary: false, desc: locale === 'id' ? 'Latensi persentil p99 node' : 'P99 percentile node latency' },
       ],
+      barbell_allocation: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID unik kelas aset' : 'Unique asset class identifier' },
+        { name: 'asset_class', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Kelas instrumen portofolio' : 'Portfolio instrument class' },
+        { name: 'percentage', type: 'DECIMAL(5,2)', primary: false, desc: locale === 'id' ? 'Persentase alokasi (%)' : 'Allocation percentage (%)' },
+        { name: 'risk_profile', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Profil risiko & peran alokasi' : 'Risk profile & allocation purpose' },
+        { name: 'description', type: 'VARCHAR(255)', primary: false, desc: locale === 'id' ? 'Instrumen pendukung portofolio' : 'Underlying instrument vehicles' },
+      ],
+      sovereign_balance_sheet: [
+        { name: 'id', type: 'INTEGER', primary: true, desc: locale === 'id' ? 'ID metrik' : 'Metric identifier' },
+        { name: 'metric', type: 'VARCHAR(50)', primary: false, desc: locale === 'id' ? 'Nama indikator transparansi' : 'Transparency indicator name' },
+        { name: 'value', type: 'VARCHAR(100)', primary: false, desc: locale === 'id' ? 'Nilai verifikasi (tanpa angka rupiah privat)' : 'Verifiable value (zero private IDR)' },
+      ],
     };
   }, [locale]);
 
   const SAVED_QUERIES = React.useMemo(() => {
     return locale === 'id' ? [
+      { name: 'Alokasi portofolio Barbell', query: 'SELECT asset_class, percentage, risk_profile FROM barbell_allocation ORDER BY percentage DESC;' },
+      { name: 'Verifikasi neraca sovereign', query: 'SELECT metric, value FROM sovereign_balance_sheet;' },
       { name: 'Telemetri pipeline realtime', query: "SELECT node_id, status, throughput_gb_sec, latency_p99_ms FROM pipeline_telemetry WHERE status = 'OPTIMAL' ORDER BY latency_p99_ms ASC;" },
       { name: 'Stack keahlian Python & SQL', query: "SELECT role, company, period, tech_stack FROM experience WHERE tech_stack LIKE '%Python%' OR tech_stack LIKE '%SQL%';" },
       { name: 'Dapatkan semua pengalaman', query: 'SELECT * FROM experience;' },
@@ -205,6 +233,8 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
       { name: 'Gerbang rujukan aktif', query: 'SELECT * FROM referrals;' },
       { name: 'Deskripsikan skema keterampilan', query: 'DESCRIBE skills;' }
     ] : [
+      { name: 'Barbell asset allocation', query: 'SELECT asset_class, percentage, risk_profile FROM barbell_allocation ORDER BY percentage DESC;' },
+      { name: 'Sovereign balance sheet verification', query: 'SELECT metric, value FROM sovereign_balance_sheet;' },
       { name: 'Realtime pipeline telemetry', query: "SELECT node_id, status, throughput_gb_sec, latency_p99_ms FROM pipeline_telemetry WHERE status = 'OPTIMAL' ORDER BY latency_p99_ms ASC;" },
       { name: 'Python & SQL experience stack', query: "SELECT role, company, period, tech_stack FROM experience WHERE tech_stack LIKE '%Python%' OR tech_stack LIKE '%SQL%';" },
       { name: 'Get all experience', query: 'SELECT * FROM experience;' },

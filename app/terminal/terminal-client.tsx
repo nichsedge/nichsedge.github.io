@@ -9,6 +9,7 @@ import { getFallbackGhostResponse } from '@/lib/ai-fallback';
 
 import referralsData from '@/data/referrals.json';
 import payData from '@/data/pay.json';
+import transparencyData from '@/data/transparency.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { generateSystemStats } from '@/lib/data-hub';
 import { soundEngine } from '@/lib/audio';
@@ -439,6 +440,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  STATUS        - LAPORAN DIAGNOSTIK LIVE MONITOR SISTEM",
             "  REFERRALS     - DAFTAR GERBANG INGESTI EKSTERNAL",
             "  PAY           - DAFTAR AKUN PEMBAYARAN DAN TRANSFER SECURE",
+            "  TRANSPARENCY  - RADAR TRANSPARANSI FINANSIAL & ALLOKASI BARBELL",
             "  PIPELINE      - LIVE SIMULATOR PIPELINE DATA"
           ] : [
             "AVAILABLE_COMMANDS:",
@@ -466,6 +468,7 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "  STATUS        - PRINT LIVE SYSTEM MONITOR DIAGNOSTIC REPORT",
             "  REFERRALS     - LIST EXTERNAL INGESTION GATEWAYS",
             "  PAY           - LIST SECURE PAYMENT AND TRANSFER NODES",
+            "  TRANSPARENCY  - VERIFIABLE SOVEREIGN RUNWAY & BARBELL ALLOCATION",
             "  PIPELINE      - LIVE DATA PIPELINE SIMULATOR"
           ];
           break;
@@ -676,6 +679,30 @@ export default function TerminalClient({ locale = 'en' }: { locale?: 'en' | 'id'
             "+----------------------+--------------------+-----------------+-------------------------+",
             `| ${(locale === 'id' ? "TIP: Navigasi ke /pay di browser untuk melihat detail pembayaran." : "TIP: Navigate to /pay in browser to view the payment details page.").padEnd(83)} |`,
             "+----------------------+--------------------+-----------------+-------------------------+"
+          ];
+          break;
+        case 'transparency':
+        case 'sovereignty':
+        case 'runway':
+        case 'barbell':
+          response = [
+            "+----------------------------------------------------------------------------------+",
+            "|                🏛️  SOVEREIGN FINANCIAL TRANSPARENCY & BARBELL RADAR               |",
+            "+----------------------------------------------------------------------------------+",
+            `| BALANCE SHEET STATUS: ${(transparencyData.sovereign_status.badge).padEnd(58)} |`,
+            `| RUNWAY RESILIENCE:    ${(transparencyData.sovereign_status.runway_tier).padEnd(58)} |`,
+            `| PRESERVATION PROFILE: ${(transparencyData.sovereign_status.capital_preservation).padEnd(58)} |`,
+            "+----------------------------------------------------------------------------------+",
+            "| ASSET CLASS          | ALLOCATION | RISK REGIME / PURPOSE                        |",
+            "+----------------------+------------+----------------------------------------------+",
+            ...transparencyData.barbell_allocation.map((item: any) => 
+              `| ${item.asset_class.padEnd(20)} | ${(item.percentage.toFixed(1) + '%').padStart(10)} | ${item.risk_profile.padEnd(44)} |`
+            ),
+            "+----------------------+------------+----------------------------------------------+",
+            `| DEEP FOCUS TELEMETRY: ${(`${transparencyData.telemetry.deep_work_hours_30d} hrs active work / 30d (${transparencyData.telemetry.velocity_percentile})`).padEnd(58)} |`,
+            "+----------------------------------------------------------------------------------+",
+            "| NOTE: Privacy-safe SSOT telemetry synced from iERP events.db (Zero debt recorded)|",
+            "+----------------------------------------------------------------------------------+"
           ];
           break;
         case 'benchmark':
