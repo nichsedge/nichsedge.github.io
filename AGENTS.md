@@ -34,9 +34,29 @@
    - Maintain `openapi.json`, `auth.md`, `pricing.md`, and `llms.txt`.
 4. **Content Ratio**: Maintain high semantic content density in page templates to support assistive technologies and automated agent extractors.
 
+## 🖼️ Projects Showcase & Visual Gallery Standards
+1. **Repository Filtering Contract**:
+   - The projects archive (`/projects` & `/id/projects`) displays **only active, original repositories** owned by `nichsedge`.
+   - Always filter out forks (`repo.fork`) and archived (`repo.archived`) repositories in `app/projects/projects-client.tsx`.
+2. **Strict "No Placeholder" UX Policy**:
+   - Never display scrape/capture audit notes or placeholder text (such as *"Screenshots not captured yet"* or *"No UI — screenshots not applicable"*) on public cards.
+   - If a project lacks screenshots in `data/project-screenshots.json`, omit the gallery container cleanly.
+   - Missing captures are tracked solely in audit logs: `docs/project-capture-coverage.md` and dev-only console warnings.
+3. **Screenshots Manifest & Assets**:
+   - Screenshot metadata lives in `data/project-screenshots.json` (`{ "repo-name": [{ "url": "/media/projects/...", "caption": "..." }] }`).
+   - All image assets belong in `public/media/projects/`.
+   - Update coverage metrics via `python3 scripts/report-capture-coverage.py` whenever screenshots are added or modified.
+4. **Visual & Accessibility Testing**:
+   - Verify gallery interactions, accessibility, dialog keyboard traps, and mobile layouts:
+     ```bash
+     CHROME_PATH=/usr/bin/google-chrome-stable uv run --with playwright python3 scripts/test_project_gallery.py
+     ```
+
 ## Key Entry Points
 - Root Layout: `app/layout.tsx`
 - Home Page: `app/page.tsx` & `app/home-client.tsx`
+- Projects Archive: `app/projects/page.tsx` & `app/projects/projects-client.tsx`
+- Project Gallery Component: `components/project-gallery.tsx`
 - Developer Portal: `app/developers/page.tsx`
 - OpenAPI Specification: `public/openapi.json`
 - Agent Card: `public/.well-known/agent-card.json`
