@@ -1,0 +1,16 @@
+[
+  {
+    "project": "jira-clone-bolt",
+    "url": "http://127.0.0.1:5187/",
+    "caption": "Blocked startup: Loading tickets… (diagnostic evidence only; not a completed gallery view)",
+    "path": "/media/projects/jira-clone-bolt-blocked-loading.png",
+    "command": "cd /home/al/Projects/jira-clone-bolt && bun install && bun run dev --host 127.0.0.1 --port 5187 --strictPort",
+    "privacyReview": "Visually inspected saved 1440x900 PNG. Only a spinner and Loading tickets text are visible. Fresh isolated browser session bolt-capture-fresh-5187; no credentials, accounts, private records, seeded data, or personal mutations. No app source or portfolio code/manifest changed.",
+    "status": "blocked",
+    "galleryEligible": false,
+    "requestedViews": 2,
+    "completedMeaningfulViews": 0,
+    "blocker": "The public clone provides only empty .env.example values, with no configured VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. Its existing fallback query in src/lib/supabase.ts:22 implements then() without calling resolve/reject. Awaiting that query at src/services/ticketService.ts:27 therefore never settles, leaving App.tsx loading=true and preventing even the Supabase Not Connected screen from rendering. HTTP 200 and repeated live DOM checks confirmed the running app remained at Loading tickets. A Node Promise.race reproduction confirmed the fallback stays pending. Two distinct meaningful screens are unavailable without configuring Supabase and/or changing application code; neither fake configuration nor fabricated data was introduced.",
+    "serverStopped": true
+  }
+]

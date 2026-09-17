@@ -1,0 +1,31 @@
+[
+  {
+    "project": "jira-clone",
+    "status": "captured",
+    "reason": "Captured two distinct public screens: sign-in and registration-locked page. No login, account creation, submissions, database initialization, or fabricated records. These are authentication screens, not a working authenticated dashboard.",
+    "evidence": "Read README.md; existing dependencies used. Started with bun run node_modules/next/dist/bin/next dev -p 5195. Fresh headless Chrome via uv run --with playwright, no persistent profile. Both screenshots visually inspected: no errors or personal data; registration page's repository-provided demo credentials masked. Repository git status remained clean.",
+    "screenshots": [
+      {
+        "url": "http://localhost:5195/login",
+        "caption": "ProFlow public sign-in screen (Jira Clone); empty fields, not authenticated.",
+        "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/jira-clone-login.png",
+        "command": "bun run node_modules/next/dist/bin/next dev -p 5195; uv run --with playwright python (fresh headless /usr/bin/google-chrome, 1440x1000 viewport, page.goto('/login'), page.screenshot(full_page=True))",
+        "privacyReview": "Visually inspected. Empty input values; visible email/password hints are source-app placeholders. No credentials entered, no private data, no submissions."
+      },
+      {
+        "url": "http://localhost:5195/register",
+        "caption": "ProFlow registration-locked public screen; repository-provided demo credentials redacted, no account created.",
+        "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/jira-clone-register.png",
+        "command": "bun run node_modules/next/dist/bin/next dev -p 5195; uv run --with playwright python (fresh headless /usr/bin/google-chrome, 1440x1000 viewport, page.goto('/register'), page.screenshot(full_page=True, mask=[demo email locator, demo password locator]))",
+        "privacyReview": "Visually inspected. Two opaque magenta masks fully cover repository-provided demo email and password. No replacement content invented; no credentials used, signup, private records, or sending."
+      }
+    ]
+  },
+  {
+    "project": "gutenberg",
+    "status": "blocked",
+    "reason": "The repository omits web/static/index.html, which its root route requires. App starts but GET / returns HTTP 500 FileNotFoundError. This is a UI project with a broken checkout, not a no-UI project; no substitute frontend or fabricated screen was created.",
+    "evidence": "Cloned public https://github.com/nichsedge/gutenberg at 2990ca9b39983ff0bbf186cc72e4f00ec91cf452. Read README.md and GEMINI.md. uv sync succeeded; uv run main.py --server --host 127.0.0.1 --port 5194 reached Application startup complete. Browser showed Internal Server Error; curl independently returned 500. Traceback web/server.py:55 opens web/static/index.html. git ls-tree -r --name-only HEAD confirms only app.js and style.css under web/static. Working tree remains clean. No app screenshots captured.",
+    "screenshots": []
+  }
+]

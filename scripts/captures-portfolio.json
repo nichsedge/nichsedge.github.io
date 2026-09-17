@@ -1,0 +1,18 @@
+[
+  {
+    "project": "nichsedge.github.io",
+    "url": "http://127.0.0.1:3002/",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/nichsedge.github.io-home.png",
+    "caption": "Running portfolio: home page.",
+    "command": "bun run dev; uv run --with playwright --no-project python scripts/capture-portfolio.py",
+    "privacyReview": "Isolated browser, public routes; developer badge hidden only. No personal storage or credential entry."
+  },
+  {
+    "project": "nichsedge.github.io",
+    "url": "http://127.0.0.1:3002/projects/",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/nichsedge.github.io-projects.png",
+    "caption": "Running portfolio: projects page.",
+    "command": "bun run dev; uv run --with playwright --no-project python scripts/capture-portfolio.py",
+    "privacyReview": "Isolated browser, public routes; developer badge hidden only. No personal storage or credential entry."
+  }
+]

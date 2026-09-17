@@ -1,0 +1,242 @@
+{
+  "bijak-beli": [
+    {
+      "url": "/media/projects/bijak-beli-home.webp",
+      "caption": "Running app: brand transparency homepage and public brand discovery."
+    },
+    {
+      "url": "/media/projects/bijak-beli-explore.webp",
+      "caption": "Running app: brand directory with category filters and company ownership."
+    }
+  ],
+  "fitly": [
+    {
+      "url": "/media/projects/fitly-add-item.webp",
+      "caption": "Running app: blank Add Item form in a fresh local wardrobe; no personal inventory."
+    },
+    {
+      "url": "/media/projects/fitly-settings.webp",
+      "caption": "Running app: settings and local-first storage controls in an empty wardrobe."
+    }
+  ],
+  "nutrijoy": [
+    {
+      "url": "/media/projects/nutrijoy-recipes.webp",
+      "caption": "Running app: built-in Glow Recipes, without personal health records."
+    },
+    {
+      "url": "/media/projects/nutrijoy-activity.webp",
+      "caption": "Running app: activity library and entry controls; no personal activity submitted."
+    }
+  ],
+  "idx-bei": [
+    {
+      "url": "/media/projects/idx-bei-opportunities.png",
+      "caption": "Alpha Finder showing locally loaded IDX stock rankings and market metrics."
+    },
+    {
+      "url": "/media/projects/idx-bei-terminal.png",
+      "caption": "BBCA terminal with historical candlestick chart and technical indicators."
+    }
+  ],
+  "digital-garden": [
+    {
+      "url": "/media/projects/digital-garden-home.png",
+      "caption": "ByteCrypt digital garden homepage, built from repository content."
+    },
+    {
+      "url": "/media/projects/digital-garden-kafka.png",
+      "caption": "Apache Kafka knowledge note with explorer, graph and table of contents."
+    }
+  ],
+  "atracker": [
+    {
+      "url": "/media/projects/atracker-dashboard.png",
+      "caption": "Historical daily category usage and timeline; live app identity and window title privacy-masked."
+    },
+    {
+      "url": "/media/projects/atracker-history.png",
+      "caption": "Aggregate daily activity trends with date-range and device filtering."
+    }
+  ],
+  "Marketplace-Desa-Wisata": [
+    {
+      "url": "/media/projects/Marketplace-Desa-Wisata-home.png",
+      "caption": "Saba Lembang public landing page, running locally with the repository-supplied tourism content."
+    },
+    {
+      "url": "/media/projects/Marketplace-Desa-Wisata-catalog.png",
+      "caption": "Saba Lembang marketplace filters and product cards; repository-supplied catalog, not verified live inventory."
+    }
+  ],
+  "hydrotrack": [
+    {
+      "url": "/media/projects/hydrotrack-home.png",
+      "caption": "Running Android app: hydration dashboard with an empty intake log in an isolated emulator."
+    },
+    {
+      "url": "/media/projects/hydrotrack-settings.png",
+      "caption": "Running Android app: daily goal, glass size, units and reminder settings."
+    }
+  ],
+  "ngantriwoy": [
+    {
+      "url": "/media/projects/ngantriwoy-home.png",
+      "caption": "Running app: public queue entry and store-owner navigation; no live customer records."
+    },
+    {
+      "url": "/media/projects/ngantriwoy-login.png",
+      "caption": "Running app: unauthenticated sign-in choices; no login performed."
+    }
+  ],
+  "nichsedge.github.io": [
+    {
+      "url": "/media/projects/nichsedge.github.io-home.png",
+      "caption": "Running portfolio: home page."
+    },
+    {
+      "url": "/media/projects/nichsedge.github.io-projects.png",
+      "caption": "Running portfolio: projects page."
+    }
+  ],
+  "cepatkerja-id": [
+    {
+      "url": "/media/projects/cepatkerja-id-ats-scanner.png",
+      "caption": "ATS keyword scanner \u2014 empty resume and job-description inputs"
+    },
+    {
+      "url": "/media/projects/cepatkerja-id-cover-letter.png",
+      "caption": "Running cover-letter compiler with repository-supplied example text; no generated or submitted application."
+    }
+  ],
+  "takita": [
+    {
+      "url": "/media/projects/takita-home.png",
+      "caption": "Takita public landing page and service overview"
+    },
+    {
+      "url": "/media/projects/takita-estimator.png",
+      "caption": "Interactive project estimator \u2014 selected web-app category; nothing sent"
+    }
+  ],
+  "jira-clone": [
+    {
+      "url": "/media/projects/jira-clone-login.png",
+      "caption": "ProFlow public sign-in screen (Jira Clone); empty fields, not authenticated."
+    },
+    {
+      "url": "/media/projects/jira-clone-register.png",
+      "caption": "ProFlow registration-locked public screen; repository-provided demo credentials redacted, no account created."
+    }
+  ],
+  "ierp": [
+    {
+      "url": "/media/projects/ierp-overview.png",
+      "caption": "Running web dashboard: Personal ERP overview with sovereign runway, active stats, and journal activity heatmap."
+    },
+    {
+      "url": "/media/projects/ierp-decisions.png",
+      "caption": "Running web dashboard: Strategic decision journal, architectural choices, and PDR confidence scoring."
+    }
+  ],
+  "SendTheAyat": [
+    {
+      "url": "/media/projects/SendTheAyat-home.png",
+      "caption": "Running web app: KirimAyat landing page with personal verse search and audio preview."
+    },
+    {
+      "url": "/media/projects/SendTheAyat-browse.png",
+      "caption": "Running web app: Community messages feed with Quranic verses and tilawah audio playback."
+    }
+  ],
+  "vscode-markgarden": [
+    {
+      "url": "/media/projects/vscode-markgarden-graph.png",
+      "caption": "Running VS Code extension: MarkGarden workspace with Backlinks, Tags Explorer, Digital Garden health, and interactive Obsidian Graph View."
+    },
+    {
+      "url": "/media/projects/vscode-markgarden-clusters.png",
+      "caption": "Running VS Code extension: Physics-driven force-directed graph modeling 2,546 connected notes with live tag clustering and filter controls."
+    }
+  ],
+  "gutenberg": [
+    {
+      "url": "/media/projects/gutenberg-stats.png",
+      "caption": "Running web engine: Gutenberg Corpus Statistics showing lexical diversity, readability scores, and chapter progression density."
+    },
+    {
+      "url": "/media/projects/gutenberg-frequency.png",
+      "caption": "Running web engine: Word Frequency & TF-IDF matrix with part-of-speech filtering, lemmas, and document frequency distributions."
+    }
+  ],
+  "pcomp": [
+    {
+      "url": "/media/projects/pcomp-dag.png",
+      "caption": "dbt data lineage DAG: EnterKomputer and Viraindo staging models orchestrating into unified pcomp analytics."
+    },
+    {
+      "url": "/media/projects/pcomp-table.png",
+      "caption": "BigQuery dataset schema and partitioned hardware pricing tables."
+    }
+  ],
+  "sanslauncher": [
+    {
+      "url": "/media/projects/sanslauncher-home.png",
+      "caption": "Minimalist home screen: ambient clock, next calendar event anchor, distraction-free app list, and instant search with quick expense shortcut."
+    },
+    {
+      "url": "/media/projects/sanslauncher-preferences.png",
+      "caption": "Preferences & ADHD time scaffolding: ambient time anchor, tactile haptics, theme palette (AMOLED/Dark/Light), and app alias manager."
+    }
+  ],
+  "sansfinance": [
+    {
+      "url": "/media/projects/sansfinance-dashboard.png",
+      "caption": "Running Android app: Home dashboard displaying net worth summary, monthly cash flow rate, and global budget burn velocity."
+    },
+    {
+      "url": "/media/projects/sansfinance-wealth.png",
+      "caption": "Running Android app: Wealth allocation breakdown across fixed income, cash, equities, and crypto with 6-month savings velocity."
+    },
+    {
+      "url": "/media/projects/sansfinance-portfolio.png",
+      "caption": "Running Android app: Multi-asset portfolio valuation, snapshot diffs, and net worth trend line chart."
+    },
+    {
+      "url": "/media/projects/sansfinance-health.png",
+      "caption": "Running Android app: Portfolio health audit with FX currency exposure (IDR vs USD) and target vs actual allocation drift."
+    },
+    {
+      "url": "/media/projects/sansfinance-hub.png",
+      "caption": "Running Android app: Financial Hub & Strategy planning featuring accounts, debt strategist, and net worth forecasting."
+    }
+  ],
+  "deepfocus": [
+    {
+      "url": "/media/projects/deepfocus-pomodoro.png",
+      "caption": "Running Android app: Pomodoro focus timer with duration presets, activity tags, circular neon dial, and ambient soundscape selector."
+    },
+    {
+      "url": "/media/projects/deepfocus-stopwatch.png",
+      "caption": "Running Android app: Open-ended stopwatch focus mode with background audio streaming via Media3 ExoPlayer."
+    },
+    {
+      "url": "/media/projects/deepfocus-stats.png",
+      "caption": "Running Android app: Performance overview analytics with daily focus time, session counters, and weekly activity distribution."
+    }
+  ],
+  "k8s-ansible-gcp": [
+    {
+      "url": "/media/projects/k8s-ansible-gcp-arch.png",
+      "caption": "Cluster architecture diagram: 1 Master node and 7 GCP Worker nodes orchestrating WordPress, Spring PetClinic, OwnCloud, and Jitsi Meet."
+    },
+    {
+      "url": "/media/projects/k8s-ansible-gcp-monitoring.png",
+      "caption": "Cluster monitoring metrics: Real-time CPU/memory utilization across master and worker nodes during Apache JMeter concurrent load testing."
+    },
+    {
+      "url": "/media/projects/k8s-ansible-gcp.png",
+      "caption": "Kubernetes workload deployment and bare-metal cluster management overview."
+    }
+  ]
+}

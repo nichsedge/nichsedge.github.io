@@ -1,0 +1,50 @@
+[
+  {
+    "project": "bijak-beli",
+    "url": "http://localhost:3888/",
+    "caption": "Brand transparency homepage with barcode search and public brand discovery.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/bijak-beli-home.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. Existing public brand directory content; editorial claims shown as supplied by the app, not independently verified."
+  },
+  {
+    "project": "bijak-beli",
+    "url": "http://localhost:3888/search",
+    "caption": "Working brand directory with scores, category filters and public company ownership.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/bijak-beli-explore.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. Existing public brand directory content; editorial claims shown as supplied by the app, not independently verified."
+  },
+  {
+    "project": "fitly",
+    "url": "http://localhost:3001/",
+    "caption": "Real blank Add Item form: photo intake, garment metadata, categories and style tags.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/fitly-add-item.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. New empty local wardrobe; blank add form/settings only, no clothing purchases or personal inventory."
+  },
+  {
+    "project": "fitly",
+    "url": "http://localhost:3001/",
+    "caption": "Settings and local-first storage controls in a fresh, empty wardrobe.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/fitly-settings.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. New empty local wardrobe; blank add form/settings only, no clothing purchases or personal inventory."
+  },
+  {
+    "project": "nutrijoy",
+    "url": "http://localhost:9002/food",
+    "caption": "Glow Recipes tab: built-in nutrition recipe discovery without personal health records.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/nutrijoy-recipes.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. Public recipe/activity UI without health profile or logged measurements; default values are app-supplied, not a real person."
+  },
+  {
+    "project": "nutrijoy",
+    "url": "http://localhost:9002/activity",
+    "caption": "Activity entry screen with posture guidance, duration controls and activity library.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/nutrijoy-activity.webp",
+    "command": "uv run --with playwright --with pillow python /tmp/capture-web-a.py (apps: bun run dev in each repository)",
+    "privacyReview": "Fresh isolated browser context; no user profile, backups, private storage or credentials loaded; no records seeded or submitted. No privacy masks needed. Next.js development indicator hidden only; application UI unchanged. Public recipe/activity UI without health profile or logged measurements; default values are app-supplied, not a real person."
+  }
+]

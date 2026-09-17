@@ -1,0 +1,50 @@
+{
+  "portfolio-integration": {
+    "status": "no-ui",
+    "reason": "ETL pipeline, command-line tools and MCP server; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/portfolio-integration#readme",
+    "reviewed": "2026-09-17"
+  },
+  "ksei": {
+    "status": "no-ui",
+    "reason": "Python client, CLI and MCP server; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/ksei#readme",
+    "reviewed": "2026-09-17"
+  },
+  "debank-scraper": {
+    "status": "no-ui",
+    "reason": "Headless scraper, CLI and MCP server; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/debank-scraper#readme",
+    "reviewed": "2026-09-17"
+  },
+  "infra": {
+    "status": "no-ui",
+    "reason": "Terraform infrastructure configuration; no application UI.",
+    "evidence": "https://github.com/nichsedge/infra#readme",
+    "reviewed": "2026-09-17"
+  },
+  "lhkpn": {
+    "status": "no-ui",
+    "reason": "Scraper CLI and Python library; no application UI.",
+    "evidence": "https://github.com/nichsedge/lhkpn#readme",
+    "reviewed": "2026-09-17"
+  },
+  "yt-summarizer": {
+    "status": "no-ui",
+    "reason": "Command-line subtitle summarizer; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/yt-summarizer#readme",
+    "reviewed": "2026-09-17"
+  },
+  "SendTheAyat": {
+    "status": "blocked",
+    "reason": "Capture automation could not open the saved-items view; two meaningful screens not yet verified. UI exists; retry required.",
+    "evidence": "scripts/capture-batch-web-c.json",
+    "reviewed": "2026-09-17"
+  },
+  "gutenberg": {
+    "status": "blocked",
+    "reason": "The repository omits web/static/index.html, which its root route requires. App starts but GET / returns HTTP 500 FileNotFoundError. This is a UI project with a broken checkout, not a no-UI project; no substitute frontend or fabricated screen was created.",
+    "evidence": "scripts/capture-batch-web-d.json",
+    "reviewed": "2026-09-17"
+  }
+}

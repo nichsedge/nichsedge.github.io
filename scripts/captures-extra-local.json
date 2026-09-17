@@ -1,0 +1,34 @@
+[
+  {
+    "project": "hydrotrack",
+    "url": "android://com.sans.hydrotrack/home",
+    "caption": "Running Android app: hydration dashboard with an empty intake log in an isolated emulator.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/hydrotrack-home.png",
+    "command": "ANDROID_HOME=/home/al/Android/Sdk ./gradlew assembleDebug; adb -s emulator-5580 install app/build/outputs/apk/debug/app-debug.apk; adb -s emulator-5580 shell am start -n com.sans.hydrotrack/.MainActivity; adb -s emulator-5580 exec-out screencap -p",
+    "privacyReview": "Parent visually reviewed existing capture after worker timeout. Empty isolated emulator or fresh browser; no personal records or credentials displayed. Web capture hides Next.js development indicator only; no content substitutions."
+  },
+  {
+    "project": "hydrotrack",
+    "url": "android://com.sans.hydrotrack/settings",
+    "caption": "Running Android app: daily goal, glass size, units and reminder settings.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/hydrotrack-settings.png",
+    "command": "Open Settings in running com.sans.hydrotrack; adb -s emulator-5580 exec-out screencap -p",
+    "privacyReview": "Parent visually reviewed existing capture after worker timeout. Empty isolated emulator or fresh browser; no personal records or credentials displayed. Web capture hides Next.js development indicator only; no content substitutions."
+  },
+  {
+    "project": "ngantriwoy",
+    "url": "http://127.0.0.1:3037/",
+    "caption": "Running app: public queue entry and store-owner navigation; no live customer records.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/ngantriwoy-home.png",
+    "command": "Run Next.js on localhost:3037; uv run --with playwright --no-project python /home/al/Projects/.captures-extra-local-web.py",
+    "privacyReview": "Parent visually reviewed existing capture after worker timeout. Empty isolated emulator or fresh browser; no personal records or credentials displayed. Web capture hides Next.js development indicator only; no content substitutions."
+  },
+  {
+    "project": "ngantriwoy",
+    "url": "http://127.0.0.1:3037/login",
+    "caption": "Running app: unauthenticated sign-in choices; no login performed.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/ngantriwoy-login.png",
+    "command": "Run Next.js on localhost:3037; uv run --with playwright --no-project python /home/al/Projects/.captures-extra-local-web.py",
+    "privacyReview": "Parent visually reviewed existing capture after worker timeout. Empty isolated emulator or fresh browser; no personal records or credentials displayed. Web capture hides Next.js development indicator only; no content substitutions."
+  }
+]

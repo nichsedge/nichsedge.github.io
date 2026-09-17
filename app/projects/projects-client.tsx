@@ -5,9 +5,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Star, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import githubData from '@/data/github_repos_all.json';
-import resumeDataEN from '@/data/cv.json';
-import resumeDataID from '@/data/cv_id.json';
-import { MediaViewer } from '@/components/media-viewer';
+import screenshotManifest from '@/data/project-screenshots.json';
+import { ProjectGallery, type ProjectScreenshot } from '@/components/project-gallery';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import {
   BarChart,
@@ -25,7 +24,7 @@ const FADE_UP = {
 };
 
 export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
-  const resumeData = locale === 'id' ? resumeDataID : resumeDataEN;
+  const screenshots = screenshotManifest as Record<string, ProjectScreenshot[]>;
   useWideLayout('lg');
   const [search, setSearch] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -51,14 +50,11 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
   const repos = useMemo(() => {
     return githubData.repos
-      .filter(repo => !repo.private && repo.owner_login === 'nichsedge')
-      .map(githubRepo => {
-        const enrichment = (resumeData as any).projects?.find((p: any) => p.name === githubRepo.name);
-        return {
-          ...githubRepo,
-          media: enrichment?.media
-        };
-      })
+      .filter(repo => !repo.private && repo.owner_login === 'nichsedge' && !repo.fork && !repo.archived)
+      .map(githubRepo => ({
+        ...githubRepo,
+        screenshots: screenshots[githubRepo.name] || [],
+      }))
       .sort((a, b) => {
         if (b.stargazers_count !== a.stargazers_count) {
           return b.stargazers_count - a.stargazers_count;
@@ -66,6 +62,15 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
         return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       });
   }, []);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      const missing = repos.filter(r => r.screenshots.length === 0).map(r => r.name);
+      if (missing.length > 0) {
+        console.debug(`[projects-audit] ${missing.length} eligible repos without screenshots:`, missing);
+      }
+    }
+  }, [repos]);
 
   const filteredRepos = useMemo(() => {
     return repos.filter(repo => {
@@ -386,13 +391,9 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 {repo.description || "No description provided."}
               </p>
 
-              {repo.media && (
+              {repo.screenshots.length > 0 && (
                 <div className="mb-6">
-                  <MediaViewer
-                    type={repo.media.type as 'image' | 'video'}
-                    url={repo.media.url}
-                    alt={repo.name}
-                  />
+                  <ProjectGallery projectName={repo.name} screenshots={repo.screenshots} locale={locale} />
                 </div>
               )}
 

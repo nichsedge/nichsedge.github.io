@@ -1,0 +1,18 @@
+[
+  {
+    "project": "Marketplace-Desa-Wisata",
+    "url": "http://127.0.0.1:5186/",
+    "caption": "Saba Lembang public landing page, running locally with the repository-supplied tourism content.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/Marketplace-Desa-Wisata-home.png",
+    "command": "bun install --frozen-lockfile && bun run build; uv run --with playwright --no-project python scripts/capture-marketplace.py",
+    "privacyReview": "Fresh browser; public screens only, no login, checkout, personal records or fabricated substitutions. Repository catalog may include demonstration content; not represented as verified live inventory."
+  },
+  {
+    "project": "Marketplace-Desa-Wisata",
+    "url": "http://127.0.0.1:5186/marketplace",
+    "caption": "Saba Lembang marketplace filters and product cards; repository-supplied catalog, not verified live inventory.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/Marketplace-Desa-Wisata-catalog.png",
+    "command": "bun install --frozen-lockfile && bun run build; uv run --with playwright --no-project python scripts/capture-marketplace.py",
+    "privacyReview": "Fresh browser; public screens only, no login, checkout, personal records or fabricated substitutions. Repository catalog may include demonstration content; not represented as verified live inventory."
+  }
+]

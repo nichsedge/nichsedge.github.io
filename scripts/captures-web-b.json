@@ -1,0 +1,50 @@
+[
+  {
+    "project": "idx-bei",
+    "url": "http://127.0.0.1:8000/dashboard/#opportunities",
+    "caption": "Alpha Finder showing locally loaded IDX stock rankings and market metrics.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/idx-bei-opportunities.png",
+    "command": "cd /home/al/Projects/idx-bei && uv run idx serve --port 8000",
+    "privacyReview": "Public market data only; no personal holdings, account identifiers or credentials. Genuine CDP screenshot of running app, no data substitutions. App investment claims are not independently validated."
+  },
+  {
+    "project": "idx-bei",
+    "url": "http://127.0.0.1:8000/dashboard/#terminal?ticker=BBCA",
+    "caption": "BBCA terminal with historical candlestick chart and technical indicators.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/idx-bei-terminal.png",
+    "command": "cd /home/al/Projects/idx-bei && uv run idx serve --port 8000; click Stock Terminal",
+    "privacyReview": "Public stock metrics and chart; no personal account data. Genuine running-app capture without substitutions."
+  },
+  {
+    "project": "digital-garden",
+    "url": "http://127.0.0.1:8089/",
+    "caption": "ByteCrypt digital garden homepage, built from repository content.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/digital-garden-home.png",
+    "command": "cd /home/al/Projects/digital-garden && npx quartz build --serve --port 8089 --wsPort 3089",
+    "privacyReview": "Public digital-garden repository content. No credentials or private account identifiers displayed; homepage has public LinkedIn link. No content fabricated or substituted."
+  },
+  {
+    "project": "digital-garden",
+    "url": "http://127.0.0.1:8089/Knowledge/Computer-Science/Data-Streaming/Data-Ingestion-with-Kafka-and-Kafka-Streaming/Apache-Kafka/Apache-Kafka",
+    "caption": "Apache Kafka knowledge note with explorer, graph and table of contents.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/digital-garden-kafka.png",
+    "command": "cd /home/al/Projects/digital-garden && npx quartz build --serve --port 8089 --wsPort 3089",
+    "privacyReview": "Public digital-garden repository content. No credentials or private account identifiers displayed; homepage has public LinkedIn link. No content fabricated or substituted."
+  },
+  {
+    "project": "atracker",
+    "url": "http://127.0.0.1:5173/",
+    "caption": "Historical daily category usage and timeline; live app identity and window title privacy-masked.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/atracker-dashboard.png",
+    "command": "Existing atracker-rs service on :8933; cd /home/al/Projects/atracker/dashboards/dashboard-v2 && bun run dev --host 127.0.0.1 --port 5173; select 2026-09-16",
+    "privacyReview": "Genuine running-app screenshot with opaque post-capture mask at [456, 308, 1328, 362] covering .app-details (live application identifier and window title). Raw image never written to disk. Category groups collapsed, device filter closed showing All Devices; no URLs, titles, device names or identifiers visible. Metrics are real local aggregates, not fabricated."
+  },
+  {
+    "project": "atracker",
+    "url": "http://127.0.0.1:5173/history",
+    "caption": "Aggregate daily activity trends with date-range and device filtering.",
+    "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/atracker-history.png",
+    "command": "Existing atracker-rs service on :8933; cd /home/al/Projects/atracker/dashboards/dashboard-v2 && bun run dev --host 127.0.0.1 --port 5173; open History",
+    "privacyReview": "Only genuine aggregate daily durations and event counts shown. Device selector remains closed at All Devices. No titles, URLs, application names, device identifiers, or credentials visible. No mask needed."
+  }
+]

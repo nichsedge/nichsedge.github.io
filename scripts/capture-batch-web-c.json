@@ -1,0 +1,53 @@
+[
+  {
+    "project": "cepatkerja-id",
+    "status": "captured",
+    "reason": "Two distinct real UI screens captured from local app; awaiting final visual review.",
+    "evidence": "HTTP 200 at http://127.0.0.1:5191; source inspected; launched with bun. No source changes or seeded records.",
+    "screenshots": [
+      {
+        "url": "http://127.0.0.1:5191/",
+        "caption": "ATS keyword scanner — empty resume and job-description inputs",
+        "path": "/media/projects/cepatkerja-id-ats-scanner.png",
+        "command": "bun /tmp/capture-web-c/capture.mjs (Chrome Playwright; port 5191)",
+        "privacyReview": "Fresh Chrome context; no credentials, records, signups or submissions; non-GET and external data requests blocked. Public UI or empty form only. Parent visual review passed; app-supplied example text is not user data."
+      },
+      {
+        "url": "http://127.0.0.1:5191/",
+        "caption": "Cover letter compiler — unsubmitted career form",
+        "path": "/media/projects/cepatkerja-id-cover-letter.png",
+        "command": "bun /tmp/capture-web-c/capture.mjs (Chrome Playwright; port 5191)",
+        "privacyReview": "Fresh Chrome context; no credentials, records, signups or submissions; non-GET and external data requests blocked. Public UI or empty form only. Parent visual review passed; app-supplied example text is not user data."
+      }
+    ]
+  },
+  {
+    "project": "takita",
+    "status": "captured",
+    "reason": "Two distinct real UI screens captured from local app; awaiting final visual review.",
+    "evidence": "HTTP 200 at http://127.0.0.1:5192; source inspected; launched with bun. No source changes or seeded records.",
+    "screenshots": [
+      {
+        "url": "http://127.0.0.1:5192/",
+        "caption": "Takita public landing page and service overview",
+        "path": "/media/projects/takita-home.png",
+        "command": "bun /tmp/capture-web-c/capture.mjs (Chrome Playwright; port 5192)",
+        "privacyReview": "Fresh Chrome context; no credentials, records, signups or submissions; non-GET and external data requests blocked. Public UI or empty form only. Parent visual review passed; app-supplied example text is not user data."
+      },
+      {
+        "url": "http://127.0.0.1:5192/",
+        "caption": "Interactive project estimator — selected web-app category; nothing sent",
+        "path": "/media/projects/takita-estimator.png",
+        "command": "bun /tmp/capture-web-c/capture.mjs (Chrome Playwright; port 5192)",
+        "privacyReview": "Fresh Chrome context; no credentials, records, signups or submissions; non-GET and external data requests blocked. Public UI or empty form only. Parent visual review passed; app-supplied example text is not user data."
+      }
+    ]
+  },
+  {
+    "project": "SendTheAyat",
+    "status": "blocked",
+    "reason": "TimeoutError: click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Tersimpan', exact: true })\n",
+    "evidence": "Local port 5193",
+    "screenshots": []
+  }
+]
