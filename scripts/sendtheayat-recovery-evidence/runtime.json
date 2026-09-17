@@ -1,0 +1,43 @@
+{
+  "rootHTTP": 200,
+  "pageErrors": [],
+  "httpFailures": [
+    {
+      "url": "http://127.0.0.1:8394/api/messages",
+      "status": 404
+    }
+  ],
+  "checks": [
+    "home renders",
+    "accessible-name Pesan Tersimpan opens archive",
+    "saved count 0",
+    "sent tab count 0",
+    "archive closes"
+  ],
+  "captures": [
+    {
+      "project": "SendTheAyat",
+      "url": "http://127.0.0.1:8394/",
+      "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/SendTheAyat-home.png",
+      "manifestEntry": {
+        "url": "/media/projects/SendTheAyat-home.png",
+        "caption": "Running mobile web app: KirimAyat landing page; repository-provided demonstration messages, not live submissions."
+      },
+      "sha256": "d4cc6da98635665c24888af1588328d8cd1e4518b440fa8d28ef571e88665f1b",
+      "captureMethod": "Playwright screenshot of actual Android Chrome viewport via CDP",
+      "capturedAt": "2026-09-17T10:58:57.850537+00:00"
+    },
+    {
+      "project": "SendTheAyat",
+      "url": "http://127.0.0.1:8394/",
+      "path": "/home/al/Projects/nichsedge.github.io/public/media/projects/SendTheAyat-saved.png",
+      "manifestEntry": {
+        "url": "/media/projects/SendTheAyat-saved.png",
+        "caption": "Running mobile web app: saved-verses archive in a fresh browser, with no saved or sent personal messages."
+      },
+      "sha256": "ad8333b983260ba68fb47dcaa479605c51b350779ff2272b872f0fb5aa6c2db2",
+      "captureMethod": "Playwright screenshot of actual Android Chrome viewport via CDP",
+      "capturedAt": "2026-09-17T10:59:00.685826+00:00"
+    }
+  ]
+}

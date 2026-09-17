@@ -1,0 +1,49 @@
+{
+  "project": "SendTheAyat",
+  "status": "captured-reviewed-not-integrated",
+  "sourceCommit": "0d774b7c644424f2d08e1f841b15d8d6986594b9",
+  "sourceChanges": "No application source changes made. Pre-existing AGENTS.md modification preserved.",
+  "build": {"command": "/home/al/.bun/bin/bun run build", "exitCode": 0, "result": "Next.js 16.3.5 compiled successfully; TypeScript passed; 12 static pages generated.", "log": "/tmp/sendtheayat-recovery-build.log"},
+  "runtime": {
+    "serveCommand": "python3 -m http.server 8394 --bind 127.0.0.1 --directory /home/al/Projects/SendTheAyat/out",
+    "rootHTTP": 200,
+    "device": "Fresh isolated Android emulator-5580; Chrome without account, notifications declined",
+    "connectionCommands": ["adb -s emulator-5580 reverse tcp:8394 tcp:8394", "adb -s emulator-5580 shell am start -W -a android.intent.action.VIEW -d http://127.0.0.1:8394/ com.android.chrome", "adb -s emulator-5580 forward tcp:9394 localabstract:chrome_devtools_remote"],
+    "captureCommand": "uv run --no-project --with playwright python scripts/capture-sendtheayat-recovery.py",
+    "captureExitCode": 0,
+    "checks": ["Homepage rendered", "Pesan Tersimpan accessible-name selector opens archive", "Saved count is zero", "Sent tab switches and count is zero", "Archive closes", "Kirim Ayat opens verse selection without submitting a message"],
+    "pageErrors": [],
+    "evidence": "scripts/sendtheayat-recovery-evidence/runtime.json"
+  },
+  "selectorResolution": "Navbar.tsx sets aria-label=Pesan Tersimpan; visible Tersimpan text is hidden on mobile. Used get_by_role('button', name='Pesan Tersimpan', exact=True). No application bug or source fix required.",
+  "manifestEntries": {
+    "SendTheAyat": [
+      {"url": "/media/projects/SendTheAyat-home.png", "caption": "Running mobile web app: KirimAyat landing page; repository-provided demonstration messages, not live submissions."},
+      {"url": "/media/projects/SendTheAyat-saved.png", "caption": "Running mobile web app: saved-verses archive in a fresh browser, with no saved or sent personal messages."}
+    ]
+  },
+  "captures": [
+    {
+      "path": "public/media/projects/SendTheAyat-home.png",
+      "sha256": "d4cc6da98635665c24888af1588328d8cd1e4518b440fa8d28ef571e88665f1b",
+      "dimensions": [1079, 1709],
+      "capturedAt": "2026-09-17T10:58:57.850537+00:00",
+      "url": "http://127.0.0.1:8394/",
+      "method": "Playwright viewport screenshot from actual Android Chrome over CDP; browser chrome excluded, application pixels unchanged",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Readable mobile landing page, search and compose controls, repository example card; no private user data."}
+    },
+    {
+      "path": "public/media/projects/SendTheAyat-saved.png",
+      "sha256": "ad8333b983260ba68fb47dcaa479605c51b350779ff2272b872f0fb5aa6c2db2",
+      "dimensions": [1079, 1709],
+      "capturedAt": "2026-09-17T10:59:00.685826+00:00",
+      "url": "http://127.0.0.1:8394/",
+      "method": "Same browser viewport after opening actual saved archive",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Distinct archive modal with saved/sent tabs, zero counts, readable empty-state instructions; no private data."}
+    }
+  ],
+  "privacyReview": "No accounts, form submissions, storage seeding, or fabricated content. Saved/sent storage verified absent or empty. Landing message content is repository-supplied INITIAL_COMMUNITY_MESSAGES from lib/community-messages.ts, not live messages or agent-created records.",
+  "limitations": ["Local static server returns HTTP 404 for /api/messages because Cloudflare Pages Functions/D1 are not running. Frontend displays repository fallback content. Live backend, audio playback and message delivery were not verified."],
+  "verification": "Two distinct PNG hashes and dimensions checked against disk; previous four DeepFocus/SansFinance asset hashes still match their evidence.",
+  "integration": "Shared manifests/status/gallery left untouched as requested. No gallery E2E or deployment claim."
+}

@@ -1,0 +1,118 @@
+{
+  "reviewedDate": "2026-09-17",
+  "scope": ["deepfocus", "indoscraping", "sansfinance"],
+  "counts": {"requestedProjects": 3, "acceptedProjectsWithTwoDistinctViews": 2, "acceptedImages": 4, "noGraphicalUiProjects": 1},
+  "manifestEntries": {
+    "deepfocus": [
+      {"url": "/media/projects/deepfocus-timer.png", "caption": "Running Android app: Pomodoro setup with duration presets and session tags, ready at 25:00."},
+      {"url": "/media/projects/deepfocus-statistics.png", "caption": "Running Android app: Performance Overview with zero sessions and an empty weekly activity chart."}
+    ],
+    "sansfinance": [
+      {"url": "/media/projects/sansfinance-dashboard.png", "caption": "Running Android app: empty dashboard with net worth, monthly cash flow and 30-day forecast; offline fresh app state."},
+      {"url": "/media/projects/sansfinance-transactions.png", "caption": "Running Android app: empty Transactions view with period navigation and installment/recurring filters."}
+    ]
+  },
+  "captures": [
+    {
+      "project": "deepfocus",
+      "path": "public/media/projects/deepfocus-timer.png",
+      "sha256": "dd1592cd37c1f9d815011aab78fee94cd6a4c57c2b3042a0c03a2e7fe0cfe132",
+      "dimensions": [1080, 1920],
+      "provenance": "Final file matches the recovered capture evidence from emulator-5582, captureSource /home/al/Projects/.captures-recovered/deepfocus-p1.png. This worker separately launched and captured the same actual timer UI on emulator-5586; the final shared asset was subsequently replaced by the concurrent recovery capture. Final file hash was independently checked and the final file visually reviewed.",
+      "command": "adb -s emulator-5582 exec-out screencap -p",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Timer selected; 25:00 READY, interval presets, session tags and START FOCUS. Readable, no private records."},
+      "privacyReview": "Generic timer defaults; no session or personal identifiers visible. No fabricated records or image content."
+    },
+    {
+      "project": "deepfocus",
+      "path": "public/media/projects/deepfocus-statistics.png",
+      "sha256": "b5da58c287c56dc07c9cb45a651ace745d4b02a0235e9de700500535754643a9",
+      "dimensions": [1080, 1920],
+      "provenance": "Final file matches recovered capture evidence from emulator-5582, captureSource /home/al/Projects/.captures-recovered/deepfocus-p2.png. This worker independently exercised Stats on emulator-5586. Final shared file hash checked and final file visually reviewed after concurrent replacement.",
+      "command": "Open Stats in com.sans.deepfocus; adb -s emulator-5582 exec-out screencap -p",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Stats selected; Performance Overview, 0m focus, 0 sessions and empty weekly activity. Clearly distinct from Timer, readable, no private data."},
+      "privacyReview": "Empty focus history; no activity seeded. No masks or fabricated image content."
+    },
+    {
+      "project": "sansfinance",
+      "path": "public/media/projects/sansfinance-dashboard.png",
+      "sha256": "f84e3697c65ab23b23d6b9beca8e1615e64c8e74a22e156c9b9bb6414ea1be42",
+      "dimensions": [1080, 1920],
+      "provenance": "Direct capture from newly created isolated emulator-5586 running the locally built APK; app data cleared after disabling emulator networking.",
+      "command": "python3 scripts/capture-recovered-android.py shot sansfinance-dashboard",
+      "uiEvidence": "scripts/recovered-existing-evidence/sansfinance-dashboard.xml",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Dashboard renders net worth, assets, liabilities, income, expense, cash flow and forecast at Rp0, savings rate 0.00%. Clear layout and no private balances."},
+      "privacyReview": "Initial online launch auto-populated financial values, so that state was NOT captured for publication. Disabled Wi-Fi and mobile data on the dedicated emulator, cleared only this fresh emulator's com.sans.finance app data, then relaunched offline. Final capture contains genuine empty state, no replacement values, imported snapshot, or seeded data."
+    },
+    {
+      "project": "sansfinance",
+      "path": "public/media/projects/sansfinance-transactions.png",
+      "sha256": "1156f5e9ff6c3791efecf397434d14e26deaceb984deaf24deea5d407e5714b0",
+      "dimensions": [1080, 1920],
+      "provenance": "Direct capture of Transactions navigation on the same isolated offline emulator-5586.",
+      "command": "python3 scripts/capture-recovered-android.py tap Transactions && python3 scripts/capture-recovered-android.py shot sansfinance-transactions",
+      "uiEvidence": "scripts/recovered-existing-evidence/sansfinance-transactions.xml",
+      "visualReview": {"result": "accepted", "tool": "vision_analyze", "notes": "Transactions selected; period navigation, search, All/Installments/Recurring filters, zero totals, and No data available for this period. Distinct useful view; no private records."},
+      "privacyReview": "Same offline empty app state as dashboard. No transaction submitted, no fabricated content and no masking."
+    }
+  ],
+  "sourceState": {
+    "deepfocus": {"head": "ef6c2b140e8dbef168e022216a1cfd3f07d6026f", "preexistingChange": "app/src/main/java/com/sans/deepfocus/ui/TimerScreen.kt"},
+    "sansfinance": {"head": "d6f04193a8f0073c1fd2b4ca328709c255e9aee6", "preexistingChange": "app/src/main/java/com/sans/finance/presentation/add_transaction/AddTransactionScreen.kt"},
+    "indoscraping": {"head": "1a5c0edbc04fb4e234d8990ce2ff6d04b6c10bd0", "preexistingChange": "uv.lock"}
+  },
+  "runEvidence": {
+    "deepfocus": {
+      "buildCommand": "ANDROID_HOME=/home/al/Android/Sdk ./gradlew :app:assembleDebug --console=plain",
+      "buildResult": "exit 0; BUILD SUCCESSFUL in 23s; 37 tasks: 1 executed, 36 up-to-date",
+      "installResult": "adb -s emulator-5586 install -r app/build/outputs/apk/debug/app-debug.apk: Success",
+      "launchResult": "am start -W -n com.sans.deepfocus/.MainActivity: Status ok, COLD, TotalTime 5654, WaitTime 5738",
+      "interactionResult": "UIAutomator found Stats; navigation succeeded and distinct timer/statistics screenshots produced.",
+      "unitTests": "Not independently executed by this worker; no fresh Android unit-test claim."
+    },
+    "sansfinance": {
+      "buildCommand": "ANDROID_HOME=/home/al/Android/Sdk ./gradlew :app:assembleDebug --console=plain",
+      "buildResult": "exit 0; BUILD SUCCESSFUL in 19s; 41 tasks up-to-date",
+      "installResult": "adb -s emulator-5586 install -r app/build/outputs/apk/debug/app-debug.apk: Success",
+      "privacyPreparation": "adb -s emulator-5586 shell svc wifi disable; adb -s emulator-5586 shell svc data disable; adb -s emulator-5586 shell pm clear com.sans.finance => Success",
+      "launchResult": "After offline clear: am start -W -n com.sans.finance/.MainActivity: Status ok, COLD, TotalTime 6163, WaitTime 6193",
+      "interactionResult": "UIAutomator found Transactions; tab navigation succeeded and both final screenshots captured.",
+      "unitTests": "Not independently executed by this worker; no fresh Android unit-test claim."
+    },
+    "indoscraping": {
+      "commands": [
+        {"command": "uv run --no-sync indoscraping list", "exitCode": 0, "evidence": "scripts/recovered-existing-evidence/indoscraping-list.txt"},
+        {"command": "uv run --no-sync indoscraping status", "exitCode": 0, "evidence": "scripts/recovered-existing-evidence/indoscraping-status.txt"},
+        {"command": "uv run --no-sync pytest -q", "exitCode": 0, "result": "11 tests passed", "evidence": "scripts/recovered-existing-evidence/indoscraping-tests.txt"}
+      ],
+      "dataReview": "Read-only catalog/storage commands; 11 existing files and 191.50 KB active volume. No scrapers run, no data fabricated."
+    },
+    "workerEmulator": {
+      "serial": "emulator-5586",
+      "avdHome": "/home/al/Projects/.captures-recovery-worker-561",
+      "systemImage": "android-36.1/google_apis_playstore/x86_64",
+      "command": "ANDROID_HOME=/home/al/Android/Sdk ANDROID_AVD_HOME=/home/al/Projects/.captures-recovery-worker-561 /home/al/Android/Sdk/emulator/emulator -avd unique -port 5586 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect",
+      "bootResult": "sys.boot_completed=1"
+    }
+  },
+  "blockers": [
+    {
+      "project": "indoscraping",
+      "status": "no-graphical-ui",
+      "reason": "Repository is a Rich CLI scraper suite. Existing catalog/storage PNGs show terminal output, not a graphical application. They are reviewed but not accepted as graphical app screenshots. Two qualifying graphical views cannot be supplied without inventing an interface.",
+      "sourceEvidence": ["README.md lines 10,21,49-66", "AGENTS.md lines 7-16", "pyproject.toml lines 58-59", "git ls-files '*.html' '*.tsx' '*.jsx' '*.vue' returned no frontend files"],
+      "reviewedExistingAssets": [
+        {"path": "public/media/projects/indoscraping-catalog.png", "visualReview": "Readable terminal table of available scrapers; original screenshot capture provenance absent. CLI output independently rerun but image provenance not claimed."},
+        {"path": "public/media/projects/indoscraping-storage.png", "visualReview": "Readable terminal storage inventory and volume summary; original screenshot capture provenance absent. CLI output independently rerun but image provenance not claimed."}
+      ]
+    }
+  ],
+  "issues": [
+    "Concurrent use of emulator-5582 caused an intermediate screenshot mismatch. That intermediate asset was rejected, and this worker moved to an isolated emulator-5586. Final four hashes above were checked against disk.",
+    "Concurrent recovery replaced DeepFocus assets; final replacements were independently visually reviewed and matched the previously saved recovery evidence hashes.",
+    "SansFinance online first launch populated financial values automatically. Only the later offline-cleared genuine empty views are accepted.",
+    "SansFinance build warns of deprecated Gradle features incompatible with Gradle 10; build still succeeds.",
+    "A subsequent attempt to persist fresh build logs was consent-blocked and did not run; build results above come from the earlier completed tool executions, not fabricated logs."
+  ],
+  "integration": "Only assets, capture helper and evidence files touched by this worker. No edits to shared manifests/status/gallery, no gallery E2E, no deployment claim. Manifest-compatible entries are supplied above for review and integration."
+}

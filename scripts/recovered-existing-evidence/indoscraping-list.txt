@@ -1,0 +1,16 @@
+                                                          Available Scrapers                                                          
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ID              ┃ Scraper Name                   ┃ Category     ┃ Tech Stack           ┃ Status / Output File                      ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ detik           │ Detik.com News Scraper         │ News         │ Python               │ Ready (3.0 KB, updated 2026-08-13 19:32)  │
+│ bisnis          │ Bisnis.com Scraper             │ News         │ Python               │ Ready (876 B, updated 2026-08-13 19:33)   │
+│ cnbc            │ CNBC Indonesia Scraper         │ News         │ Python               │ Ready (3.5 KB, updated 2026-08-13 19:33)  │
+│ cnn             │ CNN Indonesia Scraper          │ News         │ Python               │ Ready (5.1 KB, updated 2026-08-13 19:25)  │
+│ kompas          │ Kompas.com Scraper             │ News         │ Python               │ Ready (3.8 KB, updated 2026-08-13 19:25)  │
+│ narasi          │ Narasi.tv Scraper              │ News         │ Python               │ Ready (616 B, updated 2026-08-13 19:25)   │
+│ alfagift        │ Alfagift Scraper               │ E-Commerce   │ Python               │ Ready (79.2 KB, updated 2026-08-13 19:36) │
+│ indomaret       │ Klik Indomaret Scraper         │ E-Commerce   │ Python               │ Ready (3.1 KB, updated 2026-08-13 19:33)  │
+│ blibli-search   │ Blibli Search Scraper          │ E-Commerce   │ Python (Playwright)  │ Ready (47.5 KB, updated 2026-08-13 19:26) │
+│ tokped          │ Tokopedia Holistic Scraper     │ E-Commerce   │ Python (Selenium)    │ Ready (31.1 KB, updated 2026-08-13 19:49) │
+│ banks           │ Digital Bank Rates Scraper     │ Finance      │ Python (Playwright)  │ Ready (13.7 KB, updated 2026-08-13 19:24) │
+└─────────────────┴────────────────────────────────┴──────────────┴──────────────────────┴───────────────────────────────────────────┘
