@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Star, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
+import { ExternalLink, Star, GitFork, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import githubData from '@/data/github_repos_all.json';
 import screenshotManifest from '@/data/project-screenshots.json';
@@ -58,6 +58,9 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
       .sort((a, b) => {
         if (b.stargazers_count !== a.stargazers_count) {
           return b.stargazers_count - a.stargazers_count;
+        }
+        if (b.forks_count !== a.forks_count) {
+          return b.forks_count - a.forks_count;
         }
         return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       });
@@ -381,8 +384,15 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 <div className="w-8 h-8 bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                   {repo.language === 'Python' ? <Cpu size={16} /> : <Code size={16} />}
                 </div>
-                <div className="flex items-center gap-1.5 text-text-3 font-mono text-[10px]">
-                  <Star size={12} className="text-yellow-500/50" /> {repo.stargazers_count}
+                <div className="flex items-center gap-2.5 text-text-3 font-mono text-[10px]">
+                  {repo.forks_count > 0 && (
+                    <span className="flex items-center gap-1" title={`${repo.forks_count} forks`}>
+                      <GitFork size={12} className="text-accent/70" /> {repo.forks_count}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1" title={`${repo.stargazers_count} stars`}>
+                    <Star size={12} className="text-yellow-500/50" /> {repo.stargazers_count}
+                  </span>
                 </div>
               </div>
 
