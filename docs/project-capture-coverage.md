@@ -64,7 +64,7 @@ Two distinct actual running-app views per eligible UI project. Archived reposito
 | spring-boot-react | pending | UI inspection / capture pending |
 | springboot-react-jwt | pending | UI inspection / capture pending |
 | SubMerger | pending | UI inspection / capture pending |
-| TA_A04_12 | pending | UI inspection / capture pending |
+| TA_A04_12 | excluded | Archived or forked |
 | takita | captured | 2 screenshots in data/project-screenshots.json |
 | udacity-agentic-ai | pending | UI inspection / capture pending |
 | vscode-markgarden | captured | 2 screenshots in data/project-screenshots.json |
