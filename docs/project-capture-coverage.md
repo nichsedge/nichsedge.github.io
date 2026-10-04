@@ -43,6 +43,7 @@ Two distinct actual running-app views per eligible UI project. Archived reposito
 | k8s-ansible-gcp | captured | 3 screenshots in data/project-screenshots.json |
 | ksei | no-ui | Python client, CLI and MCP server; no graphical application UI. [Evidence](https://github.com/nichsedge/ksei#readme) |
 | lhkpn | no-ui | Scraper CLI and Python library; no application UI. [Evidence](https://github.com/nichsedge/lhkpn#readme) |
+| lintang | pending | UI inspection / capture pending |
 | machine-learning-zoomcamp | excluded | Archived or forked |
 | MacTahoe-icon-theme | excluded | Archived or forked |
 | Marketplace-Desa-Wisata | captured | 2 screenshots in data/project-screenshots.json |
