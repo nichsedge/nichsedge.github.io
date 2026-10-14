@@ -46,5 +46,113 @@
     "reason": "The repository omits web/static/index.html, which its root route requires. App starts but GET / returns HTTP 500 FileNotFoundError. This is a UI project with a broken checkout, not a no-UI project; no substitute frontend or fabricated screen was created.",
     "evidence": "scripts/capture-batch-web-d.json",
     "reviewed": "2026-09-17"
+  },
+  "adk-samples": {
+    "status": "no-ui",
+    "reason": "Agent Development Kit sample scripts and demonstration code; no application UI.",
+    "evidence": "https://github.com/nichsedge/adk-samples#readme",
+    "reviewed": "2026-10-14"
+  },
+  "airflow-udacity": {
+    "status": "no-ui",
+    "reason": "Apache Airflow DAG pipeline scripts and custom operators; no application UI.",
+    "evidence": "https://github.com/nichsedge/airflow-udacity#readme",
+    "reviewed": "2026-10-14"
+  },
+  "artificial-intelligence-for-trading": {
+    "status": "no-ui",
+    "reason": "Quantitative trading Jupyter notebooks and algorithmic signal models; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/artificial-intelligence-for-trading#readme",
+    "reviewed": "2026-10-14"
+  },
+  "data-engineering-with-aws-udacity": {
+    "status": "no-ui",
+    "reason": "AWS Redshift, S3, and Spark ETL pipeline scripts; no application UI.",
+    "evidence": "https://github.com/nichsedge/data-engineering-with-aws-udacity#readme",
+    "reviewed": "2026-10-14"
+  },
+  "data-streaming-udacity": {
+    "status": "no-ui",
+    "reason": "Kafka, Faust, and Spark Streaming pipeline scripts; no application UI.",
+    "evidence": "https://github.com/nichsedge/data-streaming-udacity#readme",
+    "reviewed": "2026-10-14"
+  },
+  "datasets": {
+    "status": "no-ui",
+    "reason": "Data repository containing raw datasets, schemas, and distribution files; no application UI.",
+    "evidence": "https://github.com/nichsedge/datasets#readme",
+    "reviewed": "2026-10-14"
+  },
+  "dotfiles-public": {
+    "status": "no-ui",
+    "reason": "Personal Linux and macOS shell dotfiles, configuration scripts, and development setup; no application UI.",
+    "evidence": "https://github.com/nichsedge/dotfiles-public#readme",
+    "reviewed": "2026-10-14"
+  },
+  "email-api": {
+    "status": "no-ui",
+    "reason": "Headless backend REST API service for email dispatching; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/email-api#readme",
+    "reviewed": "2026-10-14"
+  },
+  "generative-ai-udacity": {
+    "status": "no-ui",
+    "reason": "Nanodegree coursework Jupyter notebooks for generative AI models; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/generative-ai-udacity#readme",
+    "reviewed": "2026-10-14"
+  },
+  "Google-Cloud-Skills-Boost": {
+    "status": "no-ui",
+    "reason": "GCP lab automation scripts, SQL queries, and architecture code; no application UI.",
+    "evidence": "https://github.com/nichsedge/Google-Cloud-Skills-Boost#readme",
+    "reviewed": "2026-10-14"
+  },
+  "intro-to-AIDS": {
+    "status": "no-ui",
+    "reason": "Academic coursework Jupyter notebooks for Artificial Intelligence and Data Science; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/intro-to-AIDS#readme",
+    "reviewed": "2026-10-14"
+  },
+  "nichsedge": {
+    "status": "no-ui",
+    "reason": "Special GitHub user profile README repository; no application UI.",
+    "evidence": "https://github.com/nichsedge/nichsedge#readme",
+    "reviewed": "2026-10-14"
+  },
+  "panganku-scraper": {
+    "status": "no-ui",
+    "reason": "Headless Node.js web scraper and data extractor for panganku.org; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/panganku-scraper#readme",
+    "reviewed": "2026-10-14"
+  },
+  "sandbox-hub": {
+    "status": "no-ui",
+    "reason": "Personal sandbox of Python scripts and notebooks for data engineering and scrapers; no application UI.",
+    "evidence": "https://github.com/nichsedge/sandbox-hub#readme",
+    "reviewed": "2026-10-14"
+  },
+  "snsr": {
+    "status": "no-ui",
+    "reason": "Headless background Python automation script for mouse and keyboard simulation; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/snsr#readme",
+    "reviewed": "2026-10-14"
+  },
+  "social-media-analytics": {
+    "status": "no-ui",
+    "reason": "Jupyter notebooks and analysis scripts for text mining and network analysis; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/social-media-analytics#readme",
+    "reviewed": "2026-10-14"
+  },
+  "SubMerger": {
+    "status": "no-ui",
+    "reason": "Command-line tool for converting subtitle files into Markdown e-books; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/SubMerger#readme",
+    "reviewed": "2026-10-14"
+  },
+  "udacity-agentic-ai": {
+    "status": "no-ui",
+    "reason": "Agentic AI Python scripts and multi-agent workflows; no graphical application UI.",
+    "evidence": "https://github.com/nichsedge/udacity-agentic-ai#readme",
+    "reviewed": "2026-10-14"
   }
 }

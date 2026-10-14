@@ -133,6 +133,7 @@ button, a, [role="button"], input, select, textarea {
 body.dev-mode * {
   outline: 1px solid rgba(0, 225, 207, 0.25) !important;
 }
+/* impeccable-disable-next-line codex-grid-background -- developer x-ray debug inspection mode */
 body.dev-mode {
   background-image: 
     linear-gradient(rgba(0, 225, 207, 0.05) 1px, transparent 1px),
@@ -159,12 +160,6 @@ body.dev-mode {
   box-shadow: 0 0 20px rgba(0, 225, 207, 0.05);
 }
 
-.matrix-bg {
-  background: linear-gradient(rgba(0, 225, 207, 0.02) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 225, 207, 0.02) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
 /* SENSORY LOCKDOWN */
 body.sensory-lockdown {
   background-color: #000;
@@ -174,7 +169,6 @@ body.sensory-lockdown * {
   transition: opacity 0.5s !important;
 }
 body.sensory-lockdown .noise-overlay,
-body.sensory-lockdown .matrix-bg,
 body.sensory-lockdown canvas {
   display: none !important;
 }

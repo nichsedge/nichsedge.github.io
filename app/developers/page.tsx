@@ -25,7 +25,6 @@ export default function DevelopersPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-10 font-sans">
         <header className="border-b border-border-subtle pb-6">
-          <div className="text-xs font-mono text-accent uppercase tracking-widest mb-2">Developers // API Surface & Sandbox</div>
           <h1 className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-text-0">NICHSEDGE Developer Portal</h1>
           <p className="mt-2 text-text-muted text-base leading-relaxed">
             Machine-readable REST endpoints, Model Context Protocol (MCP) server endpoints, OpenAPI 3.1 specifications, and interactive testing tools.
@@ -34,7 +33,7 @@ export default function DevelopersPage() {
 
         {/* Quickstart / Sandbox */}
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Interactive Sandbox & Quickstart</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Interactive Sandbox & Quickstart</h2>
           <p className="text-text-muted leading-relaxed">
             All public endpoints support anonymous read-only access. You can test these endpoints immediately via <code className="bg-surface px-1 py-0.5 rounded font-mono text-accent">curl</code> or in your browser:
           </p>
@@ -84,7 +83,7 @@ export default function DevelopersPage() {
 
         {/* Specifications */}
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Machine Specifications & Schemas</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Machine Specifications & Schemas</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-sm">
             <div className="p-4 border border-border-subtle bg-surface/50 rounded-lg">
               <div className="font-semibold text-accent mb-1">OpenAPI 3.1 Spec</div>
@@ -122,7 +121,7 @@ export default function DevelopersPage() {
 
         {/* Authentication Walkthrough */}
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Agent Authentication (auth.md)</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Agent Authentication (auth.md)</h2>
           <p className="text-text-muted leading-relaxed">
             Our platform supports the WorkOS <Link href="/auth.md" className="text-accent underline">auth.md</Link> specification. For public data reading, agents may use anonymous mode. For authenticated actions, provide a bearer token minted through client credentials or an identity assertion.
           </p>
@@ -134,7 +133,7 @@ export default function DevelopersPage() {
 
         {/* WebMCP Browser Tools */}
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">WebMCP In-Page Tools</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">WebMCP In-Page Tools</h2>
           <p className="text-text-muted leading-relaxed">
             When browsing this website inside a WebMCP-capable agent environment (such as Google Chrome Origin Trials or ChatGPT desktop browser), agents can invoke tools directly using:
           </p>

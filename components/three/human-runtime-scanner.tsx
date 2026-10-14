@@ -887,16 +887,16 @@ export function HumanRuntimeScanner({
       </div>
 
       {/* Telemetry live gauges */}
-      <div className="flex items-center gap-2 sm:gap-3 font-mono text-[9px] uppercase">
+      <div className="flex items-center gap-2 sm:gap-3 font-mono text-[11px] uppercase">
         <div className="flex items-center gap-1">
-          <Activity size={11} className={telemetryValues.heartbeat > 100 ? 'text-amber-500 animate-ping' : 'text-accent'} />
+          <Activity size={11} className={telemetryValues.heartbeat > 100 ? 'text-amber-500' : 'text-accent'} />
           <span className={telemetryValues.heartbeat > 100 ? 'text-amber-400 font-bold' : 'text-text-1'}>
             {telemetryValues.heartbeat}BPM
           </span>
         </div>
 
         <div className="hidden sm:flex items-center gap-1">
-          <Flame size={11} className={telemetryValues.temp > 50 ? 'text-red-500 animate-bounce' : 'text-blue-400'} />
+          <Flame size={11} className={telemetryValues.temp > 50 ? 'text-red-500' : 'text-blue-400'} />
           <span className={telemetryValues.temp > 50 ? 'text-red-400 font-bold' : 'text-text-1'}>
             {telemetryValues.temp}°C
           </span>

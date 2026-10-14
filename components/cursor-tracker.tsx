@@ -58,7 +58,7 @@ export function CursorTracker() {
       </div>
       <div
         ref={labelRef}
-        className="fixed pointer-events-none z-[9999] font-mono text-[8px] text-accent/60 hidden md:flex gap-2 will-change-transform"
+        className="fixed pointer-events-none z-[9999] font-mono text-[11px] text-accent/80 hidden md:flex gap-2 will-change-transform"
         style={{ top: 0, left: 0, transition: 'transform 100ms linear' }}
       >
         <div className="flex flex-col">

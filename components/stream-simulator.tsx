@@ -205,7 +205,7 @@ export function StreamSimulator({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-accent" />
             <h3 className="text-xs uppercase tracking-widest text-accent font-bold">
               {locale === 'id' ? 'Simulasi Pemrosesan Stream Real-Time' : 'Real-Time Stream Engine & Backpressure Simulator'}
             </h3>

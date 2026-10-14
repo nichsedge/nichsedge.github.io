@@ -25,7 +25,6 @@ export default function ContactPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-8 font-sans">
         <header className="border-b border-border-subtle pb-6">
-          <div className="text-xs font-mono text-accent uppercase tracking-widest mb-2">Comms // Direct Channels</div>
           <h1 className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-text-0">Contact & Engagement</h1>
           <p className="mt-2 text-text-muted text-base leading-relaxed">
             Direct communication channels for enterprise architecture consulting, contract data engineering retainers, and technical collaborations.
@@ -60,7 +59,7 @@ export default function ContactPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Verified Digital Identities</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Verified Digital Identities</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm font-mono border border-border-subtle">
               <thead className="bg-surface/80 text-text-muted uppercase text-xs">
@@ -97,7 +96,7 @@ export default function ContactPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Autonomous Agent Inquiries</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Autonomous Agent Inquiries</h2>
           <p className="text-text-muted leading-relaxed">
             AI agents wishing to inspect data architecture models or portfolio metrics programmatically may query our OpenAPI endpoints or stream natural-language inquiries via our NLWeb endpoint at <code className="bg-surface px-1 py-0.5 rounded font-mono text-accent">/api/v1/ask</code>.
           </p>

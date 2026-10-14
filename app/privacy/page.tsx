@@ -25,7 +25,6 @@ export default function PrivacyPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-8 font-sans">
         <header className="border-b border-border-subtle pb-6">
-          <div className="text-xs font-mono text-accent uppercase tracking-widest mb-2">Legal // Governance</div>
           <h1 className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-text-0">Privacy Policy & AI Agent Terms</h1>
           <p className="mt-2 text-text-muted text-base leading-relaxed">
             Effective Date: January 1, 2026. Last updated: September 10, 2026.
@@ -33,7 +32,7 @@ export default function PrivacyPage() {
         </header>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">1. Data Collection & Telemetry Principles</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">1. Data Collection & Telemetry Principles</h2>
           <p className="text-text-muted leading-relaxed">
             This digital portfolio and engineering archive (<code className="font-mono text-xs bg-surface px-1 py-0.5 rounded">nichsedge.github.io</code>) is designed with privacy-first and zero-tracker principles. We do not use third-party behavioral advertising cookies, invasive session recording scripts, or fingerprinting technologies.
           </p>
@@ -43,7 +42,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">2. Autonomous AI Crawler & Agent Policy</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">2. Autonomous AI Crawler & Agent Policy</h2>
           <p className="text-text-muted leading-relaxed">
             We explicitly welcome autonomous AI agents, search indexing engines, and research crawlers seeking to evaluate technical capabilities, project architectures, and professional credentials.
           </p>
@@ -55,14 +54,14 @@ export default function PrivacyPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">3. Communication & Data Retention</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">3. Communication & Data Retention</h2>
           <p className="text-text-muted leading-relaxed">
             When you contact Ichsanul Amal directly via email, your communication details are used solely to evaluate and respond to your inquiry. We do not sell, rent, or distribute contact lists to third-party marketing brokers.
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">4. Contact & Compliance Officer</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">4. Contact & Compliance Officer</h2>
           <p className="text-text-muted leading-relaxed">
             For questions regarding privacy practices, crawler policies, or data governance standards, please address communications to:
           </p>

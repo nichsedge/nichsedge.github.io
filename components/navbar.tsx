@@ -88,15 +88,15 @@ export function Navbar({ isNSM: propIsNSM, toggleNSM: propToggleNSM }: { isNSM?:
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <span className="hidden sm:inline">{isIndonesian ? 'Cari' : 'Search'}</span>
-          <span className="hidden md:inline ml-1.5 opacity-40 text-[8px] font-mono">[Ctrl+K]</span>
+          <span className="hidden md:inline ml-1.5 opacity-60 text-[11px] font-mono">[Ctrl+K]</span>
         </button>
         <button 
           onClick={toggleNSM}
           title={isNSM ? "Disable Neural Link" : "Enable Neural Link"}
           className={`flex items-center gap-1.5 p-1 sm:px-2 sm:py-0.5 border rounded-sm transition-all whitespace-nowrap cursor-pointer ${isNSM ? 'bg-accent/20 border-accent text-accent' : 'bg-bg-1 border-border-subtle hover:border-accent/40'}`}
         >
-          {isNSM ? <Zap size={11} className="animate-pulse" /> : <ZapOff size={11} />}
-          <span className="text-[9px] uppercase tracking-tighter hidden sm:inline">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
+          {isNSM ? <Zap size={11} /> : <ZapOff size={11} />}
+          <span className="text-[11px] uppercase tracking-tighter hidden sm:inline">{isNSM ? 'NSM_ACTIVE' : 'SYNC_OFF'}</span>
         </button>
       </div>
     </nav>

@@ -100,12 +100,12 @@ export function EtlDagArchitect({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border-subtle">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-accent" />
             <h3 className="text-xs uppercase tracking-widest font-bold text-text-0">
               {isID ? 'Visualizador DAG ETL Interaktif' : 'Interactive Visual ETL DAG Architect'}
             </h3>
           </div>
-          <p className="text-[10px] text-text-3 mt-1">
+          <p className="text-[11px] text-text-3 mt-1">
             {isID 
               ? 'Rancang, hubungkan, dan uji performa data pipeline skala tinggi secara real-time.' 
               : 'Design, connect, and benchmark high-throughput data pipeline architectures in real time.'}

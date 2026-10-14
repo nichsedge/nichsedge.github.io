@@ -590,10 +590,10 @@ SELECT * FROM transformed;`;
           {/* Telemetry Gauge Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             <div className="p-3 bg-bg/50 border border-border-subtle rounded">
-              <div className="text-[9px] text-text-3 uppercase tracking-wider">{locale === 'id' ? 'Total Event Diproses' : 'Processed Telemetry'}</div>
+              <div className="text-[11px] text-text-3 uppercase tracking-wider">{locale === 'id' ? 'Total Event Diproses' : 'Processed Telemetry'}</div>
               <div className="text-lg font-bold text-accent font-mono mt-1">{processedEvents.toLocaleString()}</div>
-              <div className="text-[9px] text-emerald-400 mt-0.5 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <div className="text-[11px] text-emerald-400 mt-0.5 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 +{selectedSource.rate.toLocaleString()} / sec
               </div>
             </div>

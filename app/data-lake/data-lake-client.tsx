@@ -657,10 +657,6 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
       <header className="pt-8 sm:pt-12 md:pt-16 pb-6 sm:pb-8 px-4 sm:px-6 border-b border-border-subtle relative z-10">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="font-mono text-[10px] text-accent uppercase tracking-[0.25em] mb-3 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" /> 
-            {locale === 'id' ? 'ARSIP DATA // DATA_LAKE_WORKSPACE' : 'DATA ARCHIVES // DATA_LAKE_WORKSPACE'}
-          </div>
           <h1 className="text-4xl font-bold text-text-0 mb-4 tracking-tight font-sans">
             Virtual SQL <span className="text-accent underline decoration-accent/20 underline-offset-4">Lake</span>
           </h1>
@@ -680,7 +676,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
         <div className="w-full lg:w-72 border-r border-border-subtle bg-bg-1/90 flex flex-col h-[300px] lg:h-full overflow-hidden shrink-0">
           
           {/* Tab Selection Header */}
-          <div className="flex border-b border-border-subtle font-mono text-[9px] uppercase tracking-wider shrink-0 bg-bg">
+          <div className="flex border-b border-border-subtle font-mono text-[11px] uppercase tracking-wider shrink-0 bg-bg">
             <button 
               onClick={() => setSidebarTab('schema')}
               className={`flex-1 py-3 text-center border-r border-border-subtle transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'schema' ? 'bg-bg-1 text-accent border-b-2 border-b-accent' : 'text-text-3 hover:text-text-1 bg-bg'}`}
@@ -878,8 +874,8 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
                     </button>
                   ))}
                 </div>
-                <div className="hidden sm:flex items-center gap-1.5 text-[8px] text-text-3 pl-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-text-3 pl-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>ENGINE: {activeDialect.toUpperCase()}_WASM</span>
                 </div>
               </div>
@@ -983,7 +979,7 @@ export default function DataLakeClient({ locale = 'en' }: { locale?: 'en' | 'id'
                </div>
             ) : error ? (
                <div className="flex-1 flex items-center justify-center text-red-400 font-mono text-[12px] flex-col gap-2.5 text-center p-6 bg-red-950/5 border border-red-500/10 rounded-sm">
-                 <AlertCircle size={24} className="text-red-500 animate-bounce" />
+                 <AlertCircle size={24} className="text-red-500" />
                  <div className="font-bold uppercase tracking-wider">[EXECUTION_PLAN_FAILED]</div>
                  <p className="max-w-md text-[11px] text-text-3 leading-relaxed">{error}</p>
                </div>

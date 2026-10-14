@@ -94,7 +94,7 @@
             "end": "2025-10-31"
           },
           "shortDescription": "Researched agentic AI frameworks and built automated product development workflows using ADK, AutoGen, and LangChain.",
-          "fullDescription": "Led research and prototype engineering for LLM-agent-driven applications. Evaluated cutting-edge AI developer platforms and constructed multi-agent tools to automate and streamline software development cycles.",
+          "fullDescription": "Led research and prototype engineering for LLM-agent-driven applications. Evaluated frontier AI developer platforms and constructed multi-agent tools to automate software development workflows.",
           "tech": [
             "LangChain",
             "AutoGen",

@@ -30,7 +30,6 @@ export default function AboutPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-8 font-sans">
         <header className="border-b border-border-subtle pb-6">
-          <div className="text-xs font-mono text-accent uppercase tracking-widest mb-2">Technical Dossier // Identity</div>
           <h1 className="text-3xl sm:text-4xl font-mono font-bold tracking-tight text-text-0">About Ichsanul Amal (Nichsedge)</h1>
           <p className="mt-2 text-text-muted text-base leading-relaxed">
             Data Quality Engineer & System Architect specializing in deterministic data engines, distributed pipeline orchestration, and AI-native vibe coding.
@@ -38,7 +37,7 @@ export default function AboutPage() {
         </header>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Professional Biography</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Professional Biography</h2>
           <p className="text-text-muted leading-relaxed">
             Ichsanul Amal (known professionally as Nichsedge) is an enterprise data engineer and systems architect currently serving as a Data Quality Engineer at Krom Bank Indonesia. Prior to Krom Bank, he worked as a Data Engineering, Governance, and Management Analyst at Accenture, where he designed data quality validation models and automated metadata migrations across 4,000+ critical data components.
           </p>
@@ -48,14 +47,14 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Academic Foundation & Honors</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Academic Foundation & Honors</h2>
           <p className="text-text-muted leading-relaxed">
             Ichsanul graduated with a Bachelor of Science in Computer Science (Information Systems) from the University of Indonesia, achieving a 3.77 / 4.00 GPA. During his academic career, he served as a Teaching Assistant for core computer science coursework including Python Programming, Calculus, and Operating Systems, while conducting aspect-based sentiment analysis research at the IR-NLP Lab CSUI.
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-mono font-semibold text-text-0 border-l-2 border-accent pl-3">Core Engineering Philosophy</h2>
+          <h2 className="text-xl font-mono font-semibold text-text-0">Core Engineering Philosophy</h2>
           <ul className="list-disc list-inside space-y-2 text-text-muted">
             <li><strong>Deterministic Systems:</strong> Eliminating data rot through automated schema enforcement and zero-entropy pipelines.</li>
             <li><strong>Agent-First Architecture:</strong> Building web applications and APIs that are first-class citizens for autonomous AI agents via Model Context Protocol (MCP) and WebMCP.</li>

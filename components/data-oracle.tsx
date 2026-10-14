@@ -152,7 +152,7 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <Loader2 size={24} className="text-accent animate-spin" />
-                <div className="font-mono text-[10px] text-accent uppercase tracking-widest animate-pulse">
+                <div className="font-mono text-[11px] text-accent uppercase tracking-widest animate-pulse">
                   {["SCANNING_STACK", "MARKET_CROSS_SYNC", "GENESIS_PROJECTION"][stage]}...
                 </div>
               </div>
@@ -161,16 +161,16 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 bg-black/40 border-l-2 border-accent font-mono text-[13px] leading-relaxed relative overflow-hidden"
+              className="p-6 bg-black/40 border border-border-subtle rounded font-mono text-[13px] leading-relaxed relative overflow-hidden"
             >
                <div className="flex items-center justify-between mb-2">
-                 <div className="text-[8px] text-accent uppercase tracking-[0.4em] font-bold flex items-center gap-1.5">
+                 <div className="text-[11px] text-accent uppercase tracking-[0.2em] font-bold flex items-center gap-1.5">
                    <span>PROJECTION_v4.2</span>
                    <span className="text-text-3 font-normal opacity-70">| 99.4% Vector Match</span>
                  </div>
                  <button
                    onClick={handleSpeakText}
-                   className="text-[9px] uppercase tracking-widest text-accent hover:underline cursor-pointer flex items-center gap-1"
+                   className="text-[11px] uppercase tracking-widest text-accent hover:underline cursor-pointer flex items-center gap-1"
                  >
                    {isSpeaking ? '🔊 Stop Audio' : '🔊 Listen TTS'}
                  </button>

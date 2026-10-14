@@ -238,5 +238,29 @@
       "url": "/media/projects/k8s-ansible-gcp.png",
       "caption": "Kubernetes workload deployment and bare-metal cluster management overview."
     }
+  ],
+  "lintang": [
+    {
+      "url": "/media/projects/lintang-home.png",
+      "caption": "Running app: Lintang Studio Peta Diri public landing page and brand philosophy."
+    },
+    {
+      "url": "/media/projects/lintang-calculator.png",
+      "caption": "Running app: Interactive Pythagorean Life Path and Lo Shu grid self-discovery calculator."
+    },
+    {
+      "url": "/media/projects/lintang-reflection.png",
+      "caption": "Running app: Reflection card generator with interactive guidance for personal alignment."
+    }
+  ],
+  "spring-boot-react": [
+    {
+      "url": "/media/projects/spring-boot-react-home.png",
+      "caption": "Running app: Course tutorial portal with Spring Boot REST API integration and dynamic React views."
+    },
+    {
+      "url": "/media/projects/spring-boot-react-items.png",
+      "caption": "Running app: Item management table with dynamic searching, status filters, and CRUD action dialogs."
+    }
   ]
 }

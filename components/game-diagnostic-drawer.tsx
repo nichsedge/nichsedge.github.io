@@ -38,13 +38,13 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
           {/* Header */}
           <div className="p-4 border-b border-border-subtle flex items-center justify-between bg-bg-1">
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-accent" />
               <div>
                 <h3 className="font-mono text-xs uppercase tracking-widest text-text-0 font-bold flex items-center gap-2">
                   <Terminal size={14} className="text-accent" />
                   {isID ? 'DECK DIAGNOSTIK & MATRIKS MISI' : 'DIAGNOSTIC DECK & QUEST MATRIX'}
                 </h3>
-                <p className="font-mono text-[10px] text-text-3">
+                <p className="font-mono text-[11px] text-text-3">
                   {isID ? `STATUS CLEARANCE: ${gameState.title} (LVL ${gameState.level})` : `CLEARANCE STATUS: ${gameState.title} (LVL ${gameState.level})`}
                 </p>
               </div>
@@ -108,9 +108,9 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
                       <div>
                         <div className="font-bold text-text-0 group-hover:text-accent transition-colors flex items-center gap-1.5">
                           {isID ? 'MAINKAN: 3D DATA HIGHWAY ARCADE' : 'PLAY: 3D DATA HIGHWAY ARCADE'}
-                          <span className="text-[9px] px-1.5 py-0.2 bg-accent text-bg font-bold rounded">MINIGAME</span>
+                          <span className="text-[11px] px-1.5 py-0.2 bg-accent text-bg font-bold rounded">MINIGAME</span>
                         </div>
-                        <div className="text-[10px] text-text-3 mt-0.5">
+                        <div className="text-[11px] text-text-3 mt-0.5">
                           {isID ? 'Kendalikan drone transmisi dan raih 500+ skor (+200 XP)' : 'Pilot the transmission drone and reach 500+ score (+200 XP)'}
                         </div>
                       </div>
@@ -121,7 +121,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
                   </div>
                 )}
 
-                <div className="text-[10px] text-text-3 uppercase tracking-wider mb-2 pt-1">
+                <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 pt-1">
                   {isID ? 'Matriks Misi Progres:' : 'Mission Progression Matrix:'}
                 </div>
                 {INITIAL_QUESTS.map(quest => {
@@ -151,7 +151,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
                         </div>
                       </div>
                       <div className="shrink-0">
-                        <span className={`px-2 py-0.5 rounded text-[10px] ${
+                        <span className={`px-2 py-0.5 rounded text-[11px] ${
                           isDone 
                             ? 'bg-accent/20 text-accent font-bold' 
                             : 'bg-bg-1 text-text-3 border border-border-subtle'
@@ -184,7 +184,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
                       <div>
                         <div className="font-bold text-text-0 flex items-center gap-1.5">
                           {badge.title}
-                          {isUnlocked && <span className="text-[9px] text-accent font-mono">[UNLOCKED]</span>}
+                          {isUnlocked && <span className="text-[11px] text-accent font-mono">[UNLOCKED]</span>}
                         </div>
                         <div className="text-[11px] text-text-3 mt-0.5">{badge.description}</div>
                       </div>
@@ -196,7 +196,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
 
             {activeTab === 'telemetry' && (
               <div className="space-y-4">
-                <div className="text-[10px] text-text-3 uppercase tracking-wider">
+                <div className="text-[11px] text-text-3 uppercase tracking-wider">
                   {isID 
                     ? 'Alih-alih animasi otomatis yang bising, aktifkan widget telemetri sesuai kebutuhan Anda:' 
                     : 'Instead of passive noisy animations, toggle live telemetry widgets on demand:'}
@@ -223,7 +223,7 @@ export function GameDiagnosticDrawer({ isOpen, onClose, onOpenArcade, locale = '
                       >
                         <div>
                           <div className="font-bold text-text-0">{item.label}</div>
-                          <div className="text-[10px] text-text-3">{item.desc}</div>
+                          <div className="text-[11px] text-text-3">{item.desc}</div>
                         </div>
                         <div className={`w-8 h-4 rounded-full transition-colors relative p-0.5 ${active ? 'bg-accent' : 'bg-bg-1 border border-border-subtle'}`}>
                           <div className={`w-3 h-3 rounded-full bg-white transition-transform ${active ? 'translate-x-4' : 'translate-x-0'}`} />

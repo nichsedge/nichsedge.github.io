@@ -36,11 +36,7 @@ const KnowledgeConstellation = dynamic(() => import('@/components/three/knowledg
 import resumeDataEN from '@/data/cv.json';
 import resumeDataID from '@/data/cv_id.json';
 
-const FADE_UP = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
-};
+
 
 function Section({ children, label, id, isNSM }: { children: React.ReactNode, label: string, id: string, isNSM?: boolean }) {
   return (
@@ -106,10 +102,10 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] bg-[#09090b]/95 border-2 border-accent text-accent px-8 py-4 font-mono text-xs uppercase tracking-widest text-center shadow-[0_0_40px_rgba(0,225,207,0.3)] backdrop-blur-md rounded-sm"
           >
             <div className="flex items-center gap-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-accent animate-ping" />
+              <span className="w-2.5 h-2.5 rounded-full bg-accent" />
               <span>{locale === 'id' ? '[ALERTI: NEURAL LINK TERSINKRONISASI]' : '[ALERT: NEURAL LINK SYNCHRONIZED]'}</span>
             </div>
-            <div className="text-[9px] text-text-3 mt-1.5">{locale === 'id' ? 'gangguan interferensi matriks diaktifkan' : 'ambient matrix interference activated'}</div>
+            <div className="text-[11px] text-text-3 mt-1.5">{locale === 'id' ? 'gangguan interferensi matriks diaktifkan' : 'ambient matrix interference activated'}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -123,15 +119,14 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         
         {/* Subtle Cybernetic Background Compass / HUD Watermark */}
         <div className="absolute top-1/2 -right-16 -translate-y-1/2 opacity-[0.04] select-none pointer-events-none group-hover:opacity-[0.07] transition-all duration-1000">
-          <Cpu size={500} strokeWidth={0.5} className={isNSM ? 'text-accent animate-pulse' : ''} />
+          <Cpu size={500} strokeWidth={0.5} className={isNSM ? 'text-accent' : ''} />
         </div>
         
-        <motion.div {...FADE_UP} className="relative z-20 max-w-[780px]">
+        <div className="relative z-20 max-w-[780px]">
           {/* Top Status & Mission Telemetry Bar */}
-          <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-text-3">
+          <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6 font-mono text-[11px] uppercase tracking-widest text-text-3">
             <span className="flex items-center gap-2 px-2 sm:px-2.5 py-1 bg-bg-1/90 border border-border-subtle rounded-sm text-text-2 shadow-sm">
-              <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
-              <span className="w-1.5 h-1.5 bg-accent rounded-full -ml-3.5" />
+              <span className="w-1.5 h-1.5 bg-accent rounded-full" />
               <span>SYS_ID // ICHSANUL AMAL</span>
             </span>
             <span className="hidden sm:inline text-border-subtle">•</span>
@@ -152,14 +147,14 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             {locale === 'id' ? (
               <>
                 <GlitchText text="Rekayasa Sistem Data Deterministik" />{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-white/90 to-accent">
+                <span className="text-accent font-semibold">
                   & Integritas Zero-Entropy.
                 </span>
               </>
             ) : (
               <>
                 <GlitchText text="Architecting Deterministic Data Engines" />{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-white/90 to-accent">
+                <span className="text-accent font-semibold">
                   & Zero-Entropy Pipelines.
                 </span>
               </>
@@ -229,7 +224,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               <motion.a whileHover={{ y: -2, color: 'var(--theme-accent, #00e1cf)' }} href={`mailto:${resumeData.profile.email}`} className="text-text-3 hover:text-accent transition-colors p-1" title="Email"><Mail size={18} /></motion.a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Expertise Graph & 3D Celestial Constellation (Placed First) */}
@@ -279,8 +274,8 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       <section id="architecture" className="px-6 py-12 md:py-16 border-b border-border-subtle">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <div className="flex items-center gap-2 font-mono text-[11px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span>{locale === 'id' ? '02 // ARSITEKTUR // MEJA KERJA SISTEM' : '02 // ARCHITECTURE // SYSTEM WORKBENCH'}</span>
             </div>
             <p className="font-mono text-[11px] text-text-3">

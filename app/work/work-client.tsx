@@ -16,7 +16,6 @@ import { Navbar } from '@/components/navbar';
 import { SubNav } from '@/components/sub-nav';
 import { MediaViewer } from '@/components/media-viewer';
 import { GlitchText } from '@/components/glitch-text';
-import { DecryptedText } from '@/components/decrypted-text';
 import { TiltCard } from '@/components/tilt-card';
 
 import resumeDataEN from '@/data/cv.json';
@@ -80,7 +79,7 @@ function formatPeriod(period: Period, yearOnly = false, locale = 'en'): string {
     return `${months[month - 1]} ${year}`;
   };
   
-  return `${formatDate(period.start)} — ${formatDate(period.end)}`;
+  return `${formatDate(period.start)} - ${formatDate(period.end)}`;
 }
 
 function calculateDuration(period: Period, locale = 'en'): string {
@@ -164,11 +163,6 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         {/* Header Section */}
         <section id="overview" className="mb-14 sm:mb-20 md:mb-24">
           <motion.div {...FADE_UP} className="space-y-6">
-            <div className="flex items-center gap-2 font-mono text-[10px] text-accent uppercase tracking-[0.3em]">
-              <span className="w-2 h-2 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(0,225,207,0.5)]" />
-              <DecryptedText text="SYS_OPERATIONS // CAREER_TRAJECTORY" />
-            </div>
-            
             <h1 className="text-4xl md:text-6xl font-bold text-text-0 tracking-tighter leading-none mb-8">
               {locale === 'id' ? (
                 <>Membuat sistem mampu <span className="text-accent italic font-light"><GlitchText text="berpikir" /></span> dan <span className="text-accent italic font-light"><GlitchText text="berkembang" /></span>.</>
@@ -180,12 +174,12 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
             <div className="grid md:grid-cols-2 gap-12 pt-8">
               <p className="text-[15px] text-text-2 leading-relaxed font-light">
                 {locale === 'id' ? 
-                  "Pekerjaan saya berfokus pada titik temu antara data dunia nyata yang berantakan dan kecerdasan bersih yang siap pakai. Saya berspesialisasi dalam membangun \"sistem saraf\" organisasi modern—pipeline, data warehouse, dan streaming engine yang mengubah kebisingan menjadi sinyal penting." :
-                  "My work exists at the friction point between messy real-world data and clean, actionable intelligence. I specialize in building the \"nervous systems\" of modern organizations—the pipelines, warehouses, and streaming engines that turn noise into signal."
+                  "Pekerjaan saya berfokus pada titik temu antara data dunia nyata yang berantakan dan kecerdasan bersih yang siap pakai. Saya berspesialisasi dalam membangun \"sistem saraf\" organisasi modern: pipeline, data warehouse, dan streaming engine yang mengubah kebisingan menjadi sinyal penting." :
+                  "My work exists at the friction point between messy real-world data and clean, actionable intelligence. I specialize in building the \"nervous systems\" of modern organizations: the pipelines, warehouses, and streaming engines that turn noise into signal."
                 }
               </p>
               <div className="bg-bg-1/40 border border-border-subtle p-6 rounded-sm backdrop-blur-sm">
-                <div className="flex items-center gap-2 font-mono text-[9px] text-text-3 uppercase mb-4 tracking-widest">
+                <div className="flex items-center gap-2 font-mono text-[11px] text-text-3 uppercase mb-4 tracking-widest">
                   <Cpu size={12} /> {locale === 'id' ? 'Inti Teknis' : 'Technical Core'}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 font-mono text-[11px] text-accent/80">
@@ -241,7 +235,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   </div>
 
                   {/* Year Range Header */}
-                  <div className="font-mono text-[10px] text-accent font-bold tracking-[0.25em] uppercase mb-1">
+                  <div className="font-mono text-[11px] text-accent font-bold tracking-[0.25em] uppercase mb-1">
                     {formatPeriod(role.period, true, locale)}
                   </div>
                   
@@ -251,17 +245,17 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   </div>
 
                   {/* Active Uptime / Duration Metric */}
-                  <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg-1/80 border border-border-subtle rounded-sm font-mono text-[9px] text-text-3 group-hover:text-accent group-hover:border-accent/30 transition-all select-none">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-bg-1/80 border border-border-subtle rounded-sm font-mono text-[11px] text-text-3 group-hover:text-accent group-hover:border-accent/30 transition-all select-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                     <span>{calculateDuration(role.period, locale)}</span>
                   </div>
 
                   {/* Status Indicator */}
-                  <div className="mt-1 font-mono text-[8px] tracking-wider uppercase font-bold">
+                  <div className="mt-1 font-mono text-[11px] tracking-wider uppercase font-bold">
                     {role.period.end === null || role.period.end === 'Present' ? (
-                      <span className="text-accent/90">{locale === 'id' ? '[ SYS_STATUS: AKTIF ]' : '[ SYS_STATUS: ACTIVE ]'}</span>
+                      <span className="text-accent">{locale === 'id' ? '[ SYS_STATUS: AKTIF ]' : '[ SYS_STATUS: ACTIVE ]'}</span>
                     ) : (
-                      <span className="text-text-3/60">{locale === 'id' ? '[ SYS_STATUS: ARSIP ]' : '[ SYS_STATUS: ARCHIVED ]'}</span>
+                      <span className="text-text-3">{locale === 'id' ? '[ SYS_STATUS: ARSIP ]' : '[ SYS_STATUS: ARCHIVED ]'}</span>
                     )}
                   </div>
                 </div>
@@ -303,7 +297,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   {/* Tech Stack */}
                   <div className="flex flex-wrap gap-2 pt-4">
                     {role.tech.map(t => (
-                      <span key={t} className="px-2.5 py-1 bg-bg-1 border border-border-subtle rounded-sm font-mono text-[10px] text-text-3 group-hover:border-accent/40 group-hover:text-accent transition-all uppercase">
+                      <span key={t} className="px-2.5 py-1 bg-bg-1 border border-border-subtle rounded-sm font-mono text-[11px] text-text-3 group-hover:border-accent/40 group-hover:text-accent transition-all uppercase">
                         {t}
                       </span>
                     ))}
@@ -312,8 +306,8 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   {/* Projects/Sub-roles */}
                   {role.projects && role.projects.length > 0 && (
                     <div className="mt-8 pt-8 border-t border-border-subtle/50 space-y-8">
-                      <div className="flex items-center gap-2 font-mono text-[9px] text-accent uppercase tracking-widest">
-                        <Layers size={12} className="animate-pulse" />
+                      <div className="flex items-center gap-2 font-mono text-[11px] text-accent uppercase tracking-widest">
+                        <Layers size={12} />
                         <span>{locale === 'id' ? 'SUBSEKSI_NODE_SARAF // PROYEK_AKTIF' : 'NEURAL_NODE_SUBSECTIONS // ACTIVE_PROJECTS'}</span>
                       </div>
                       
@@ -325,7 +319,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                               <h4 className="text-base font-semibold text-text-1 group-hover/project:text-accent transition-colors">
                                 {project.role}
                               </h4>
-                              <span className="font-mono text-[10px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period, false, locale)}</span>
+                              <span className="font-mono text-[11px] text-text-3 uppercase tracking-wider">{formatPeriod(project.period, false, locale)}</span>
                             </div>
                             
                             <p className="text-[14px] text-text-2 leading-relaxed font-light font-sans max-w-2xl">
@@ -359,7 +353,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                             {project.tech && project.tech.length > 0 && (
                               <div className="flex flex-wrap gap-1.5 pt-2">
                                 {project.tech.map(t => (
-                                  <span key={t} className="px-1.5 py-0.5 bg-bg-1 border border-border-subtle/50 rounded-sm font-mono text-[8px] text-text-3 uppercase tracking-tighter hover:border-accent/30 hover:text-accent transition-all">
+                                  <span key={t} className="px-1.5 py-0.5 bg-bg-1 border border-border-subtle/50 rounded-sm font-mono text-[11px] text-text-3 uppercase tracking-tighter hover:border-accent/30 hover:text-accent transition-all">
                                     {t}
                                   </span>
                                 ))}
@@ -404,12 +398,12 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 bg-bg-1/40 border border-border-subtle rounded-sm hover:border-accent/30 transition-colors">
                   <Network className="text-accent mb-4" size={24} />
-                  <h4 className="font-bold text-text-0 mb-2">Systems Thinking</h4>
+                  <h3 className="font-bold text-text-0 mb-2">Systems Thinking</h3>
                   <p className="text-[13px] text-text-3">I don't just build pipelines; I architect ecosystems where data flows naturally and predictably.</p>
                 </div>
                 <div className="p-6 bg-bg-1/40 border border-border-subtle rounded-sm hover:border-accent/30 transition-colors">
                   <Layers className="text-accent mb-4" size={24} />
-                  <h4 className="font-bold text-text-0 mb-2">Pragmatic Ops</h4>
+                  <h3 className="font-bold text-text-0 mb-2">Pragmatic Ops</h3>
                   <p className="text-[13px] text-text-3">Stability is a feature. I prioritize observability and self-healing mechanisms in every build.</p>
                 </div>
               </div>
@@ -444,7 +438,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   <div className="space-y-6 text-[12px] font-mono leading-relaxed">
                     {/* Education */}
                     <div>
-                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SYSTEM_BOOT_FIRMWARE:</div>
+                      <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SYSTEM_BOOT_FIRMWARE:</div>
                       <ul className="space-y-3">
                         {resumeData.education.map((edu: any, idx: number) => (
                           <li key={idx} className="flex items-start gap-2.5">
@@ -452,9 +446,9 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                             <div>
                               <strong className="text-text-0 block">{edu.degree}</strong>
                               <span className="text-text-2">{edu.institution}</span>
-                              <span className="text-text-3 text-[10px] ml-2">({edu.period.start.split('-')[0]} — {edu.period.end.split('-')[0]})</span>
+                              <span className="text-text-3 text-[11px] ml-2">({edu.period.start.split('-')[0]} - {edu.period.end.split('-')[0]})</span>
                               {edu.details && (
-                                <p className="text-[10px] text-text-3 font-sans mt-0.5">{edu.details}</p>
+                                <p className="text-[11px] text-text-3 font-sans mt-0.5">{edu.details}</p>
                               )}
                             </div>
                           </li>
@@ -464,21 +458,21 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
 
                     {/* Certificates */}
                     <div>
-                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SECURITY_KEYCHAIN_PROTOCOLS:</div>
+                      <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// SECURITY_KEYCHAIN_PROTOCOLS:</div>
                       <ul className="space-y-2 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
                         {resumeData.certificates.map((cert: any, idx: number) => (
                           <li key={idx} className="flex items-center justify-between gap-2 border-b border-border-subtle/30 pb-1.5 last:border-0 last:pb-0 min-w-0">
                             <div className="truncate min-w-0 flex-1">
                               <span className="text-accent mr-1.5 font-bold">●</span>
                               <span className="text-text-1 group-hover:text-text-0 transition-colors" title={cert.title}>{cert.title}</span>
-                              <span className="text-text-3 text-[10px] block font-sans truncate">{cert.issuer} ({cert.date})</span>
+                              <span className="text-text-3 text-[11px] block font-sans truncate">{cert.issuer} ({cert.date})</span>
                             </div>
                             {cert.link && (
                               <a 
                                 href={cert.link} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="text-[9px] text-accent/70 hover:text-accent border border-accent/20 hover:border-accent/50 px-1.5 py-0.5 rounded-sm bg-accent/5 transition-all uppercase tracking-tighter shrink-0 flex items-center gap-1 font-mono"
+                                className="text-[11px] text-accent/80 hover:text-accent border border-accent/20 hover:border-accent/50 px-1.5 py-0.5 rounded-sm bg-accent/5 transition-all uppercase tracking-tighter shrink-0 flex items-center gap-1 font-mono"
                               >
                                 verify_hash
                               </a>
@@ -504,14 +498,14 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   <div className="space-y-6 text-[12px] font-mono leading-relaxed">
                     {/* Spoken Languages */}
                     <div>
-                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// TRANSLATION_CODECS:</div>
+                      <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// TRANSLATION_CODECS:</div>
                       <ul className="space-y-2">
                         {resumeData.spoken_languages.map((lang: any, idx: number) => (
                           <li key={idx} className="flex items-center gap-2.5">
                             <span className="text-accent">├─</span>
                             <div>
                               <strong className="text-text-0">{lang.language}</strong>
-                              <span className="text-text-3 text-[10px] ml-2">[{lang.proficiency.split(' (')[0]}]</span>
+                              <span className="text-text-3 text-[11px] ml-2">[{lang.proficiency.split(' (')[0]}]</span>
                             </div>
                           </li>
                         ))}
@@ -520,7 +514,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
 
                     {/* Organizations */}
                     <div>
-                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// ACTIVE_ROUTING_NODES:</div>
+                      <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// ACTIVE_ROUTING_NODES:</div>
                       <ul className="space-y-3">
                         {resumeData.organizations.map((org: any, idx: number) => (
                           <li key={idx} className="flex items-start gap-2.5">
@@ -528,7 +522,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                             <div>
                               <strong className="text-text-0 block">{org.name}</strong>
                               <span className="text-text-2">{org.role}</span>
-                              <span className="text-text-3 text-[10px] ml-2">({org.start_date.split('-')[0]} — {org.end_date.split('-')[0] || 'Present'})</span>
+                              <span className="text-text-3 text-[11px] ml-2">({org.start_date.split('-')[0]} - {org.end_date.split('-')[0] || 'Present'})</span>
                             </div>
                           </li>
                         ))}
@@ -537,14 +531,14 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
 
                     {/* Awards */}
                     <div>
-                      <div className="text-[9px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// BENCHMARK_ACCOLADES:</div>
+                      <div className="text-[11px] text-text-3 uppercase tracking-wider mb-2 font-bold select-none">// BENCHMARK_ACCOLADES:</div>
                       <ul className="space-y-2">
                         {resumeData.awards.map((aw: any, idx: number) => (
                           <li key={idx} className="flex items-start gap-2">
                             <span className="text-accent font-bold">★</span>
                             <div>
                               <span className="text-text-1 font-bold">{aw.title}</span>
-                              <span className="text-text-3 text-[10px] block font-sans">{aw.issuer} ({aw.date})</span>
+                              <span className="text-text-3 text-[11px] block font-sans">{aw.issuer} ({aw.date})</span>
                             </div>
                           </li>
                         ))}
@@ -561,8 +555,7 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       <footer className="py-24 border-t border-border-subtle bg-bg-1 px-6">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="text-center md:text-left space-y-4">
-             <div className="font-mono text-[10px] text-accent tracking-[0.4em] uppercase">{locale === 'id' ? 'Siap terhubung?' : 'Ready to connect?'}</div>
-             <h3 className="text-3xl font-bold text-text-0 tracking-tight">{locale === 'id' ? 'Mari bangun sesuatu yang sistemik.' : "Let's build something systemic."}</h3>
+             <h2 className="text-3xl font-bold text-text-0 tracking-tight">{locale === 'id' ? 'Mari bangun sesuatu yang sistemik.' : "Let's build something systemic."}</h2>
           </div>
           <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-8 font-mono text-[11px] text-text-3 uppercase tracking-wider sm:tracking-widest">
             <a href={`mailto:${profile.email}`} className="hover:text-accent transition-colors break-all">{profile.email}</a>

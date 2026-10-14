@@ -310,7 +310,6 @@ export function CommandPalette() {
       >
         <div className="relative flex items-center justify-center">
           <Brain className="size-4 sm:size-[19px] group-hover:scale-110 transition-transform text-accent" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full animate-ping opacity-75" />
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full" />
         </div>
       </button>
@@ -420,7 +419,7 @@ export function CommandPalette() {
                         {aiStatus === 'LIVE' ? 'COGNITIVE_CORE: ONLINE' : 'LOCAL_EMULATION: ACTIVE'}
                       </span>
                       <span className="sm:hidden flex items-center gap-1">
-                        <span className={`size-1.5 rounded-full ${aiStatus === 'LIVE' ? 'bg-accent animate-pulse' : 'bg-yellow-500'}`} />
+                        <span className={`size-1.5 rounded-full ${aiStatus === 'LIVE' ? 'bg-accent' : 'bg-yellow-500'}`} />
                         {aiStatus === 'LIVE' ? 'ONLINE' : 'LOCAL'}
                       </span>
                     </span>

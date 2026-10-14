@@ -984,7 +984,6 @@ kafka_hub --+          +----------------+          +--------------------+       
       <Navbar />
       <div className="pt-6 sm:pt-10 md:pt-14 pb-12 sm:pb-16 px-4 md:px-8">
         <div className={`max-w-4xl mx-auto border ${themeStyles.border} bg-[#000000]/60 backdrop-blur-md ${themeStyles.glow} relative overflow-hidden group transition-all duration-500`}>
-          <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ background: 'repeating-linear-gradient(0deg, #00e1cf, #00e1cf 1px, transparent 1px, transparent 2px)' }} />
           
           {/* Terminal Header */}
           <div className={`bg-[#000000]/30 border-b ${themeStyles.border} px-4 py-2.5 flex items-center justify-between relative z-10 transition-colors duration-500`}>

@@ -155,14 +155,11 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
       <header className="pt-8 sm:pt-12 md:pt-16 pb-8 sm:pb-12 px-4 sm:px-6 border-b border-border-subtle">
         <motion.div {...FADE_UP}>
-          <div className="font-mono text-[10px] text-accent uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-accent rounded-full" /> {locale === 'id' ? 'Arsip // Proyek' : 'Archives // Projects'}
-          </div>
           <h1 className="text-4xl font-bold text-text-0 mb-6">{locale === 'id' ? 'Arsip Engineering' : 'Engineering Archive'}</h1>
           <p className="text-text-3 text-[14px] max-w-xl leading-relaxed font-light">
             {locale === 'id' ? 
-              'Daftar proyek open-source terkurasi, eksperimen, dan alat tingkat produksi yang dibangun untuk modern data stack.' : 
-              'A filtered list of open-source projects, experiments, and production-grade tools built for the modern data stack.'
+              'Daftar proyek open-source terkurasi, eksperimen, dan alat tingkat produksi yang dibangun untuk arsitektur data terdistribusi.' : 
+              'A filtered list of open-source projects, experiments, and production-grade tools built for distributed data architectures.'
             }
           </p>
         </motion.div>
@@ -170,21 +167,21 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
         <div className="mt-8 flex flex-col gap-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-bg-1 border border-border-subtle p-5 rounded-sm">
             <div className="space-y-1">
-              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Total_Repos</div>
+              <div className="font-mono text-[11px] uppercase text-text-3 tracking-widest">Total_Repos</div>
               <div className="text-[16px] font-semibold text-text-0">{stats.totalCount}</div>
             </div>
             <div className="space-y-1">
-              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">Cumulative_Stars</div>
+              <div className="font-mono text-[11px] uppercase text-text-3 tracking-widest">Cumulative_Stars</div>
               <div className="text-[16px] font-semibold text-text-0 flex items-center gap-1.5">
                 <Star size={13} className="text-accent" /> {stats.totalStars}
               </div>
             </div>
             <div className="space-y-1">
-              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Stack_Unik' : 'Unique_Stacks'}</div>
+              <div className="font-mono text-[11px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Stack_Unik' : 'Unique_Stacks'}</div>
               <div className="text-[16px] font-semibold text-text-0">{stats.langCount}</div>
             </div>
             <div className="space-y-1">
-              <div className="font-mono text-[9px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Fokus_Utama' : 'Primary_Focus'}</div>
+              <div className="font-mono text-[11px] uppercase text-text-3 tracking-widest">{locale === 'id' ? 'Fokus_Utama' : 'Primary_Focus'}</div>
               <div className="text-[16px] font-semibold text-accent truncate">#{stats.topTopic}</div>
             </div>
           </div>
@@ -192,7 +189,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           <div className="flex justify-end">
             <button
               onClick={() => setShowChart(!showChart)}
-              className="font-mono text-[10px] uppercase tracking-wider text-text-3 hover:text-accent flex items-center gap-1.5 transition-colors cursor-pointer py-1"
+              className="font-mono text-[11px] uppercase tracking-wider text-text-3 hover:text-accent flex items-center gap-1.5 transition-colors cursor-pointer py-1"
             >
               <PieChartIcon size={12} className="text-accent" />
               <span>{showChart ? (locale === 'id' ? 'Sembunyikan Distribusi Teknologi' : 'Hide Tech Distribution') : (locale === 'id' ? 'Lihat Distribusi Teknologi' : 'View Tech Distribution')}</span>
@@ -211,13 +208,13 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 <div className="flex flex-col md:flex-row gap-6 bg-bg-1 border border-border-subtle p-6 rounded-sm">
                   <div className="flex-1 space-y-4">
                     <div className="flex justify-between items-center">
-                      <h3 className="font-mono text-[10px] text-text-3 tracking-[0.2em] uppercase flex items-center gap-2">
+                      <h2 className="font-mono text-[11px] text-text-3 tracking-[0.2em] uppercase flex items-center gap-2">
                         <PieChartIcon size={14} className="text-accent" /> {locale === 'id' ? 'Komposisi Teknologi' : 'Tech Composition'}
-                      </h3>
+                      </h2>
                       {allLangData.length > 5 && (
                         <button
                           onClick={() => setShowAllLangs(!showAllLangs)}
-                          className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
+                          className="font-mono text-[11px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
                         >
                           {showAllLangs ? (locale === 'id' ? 'Top 5 saja' : 'Show Top 5') : `${locale === 'id' ? 'Semua' : 'Show All'} (${allLangData.length})`}
                           <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllLangs ? '-rotate-90' : 'rotate-90'}`} />
@@ -263,7 +260,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                         style={{ maxHeight: showAllLangs ? `${Math.max(180, langData.length * 36 - 60)}px` : '180px' }}
                       >
                         {langData.map((d) => (
-                          <div key={d.name} className="flex justify-between items-center text-[10px] font-mono py-0.5">
+                          <div key={d.name} className="flex justify-between items-center text-[11px] font-mono py-0.5">
                             <span className="text-text-3">{d.name}</span>
                             <div className="flex items-center gap-2">
                               <div className="w-20 h-1 bg-border rounded-full overflow-hidden">
@@ -300,7 +297,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           {selectedTopics.length > 0 && (
             <button
               onClick={() => setSelectedTopics([])}
-              className="self-start md:self-auto font-mono text-[9px] uppercase tracking-widest text-red-400 hover:text-red-300 transition-colors border border-red-500/20 px-2 py-1 rounded-sm bg-red-500/5 hover:bg-red-500/10 flex items-center gap-1"
+              className="self-start md:self-auto font-mono text-[11px] uppercase tracking-widest text-red-400 hover:text-red-300 transition-colors border border-red-500/20 px-2 py-1 rounded-sm bg-red-500/5 hover:bg-red-500/10 flex items-center gap-1"
             >
               {locale === 'id' ? 'Reset Filter' : 'Reset Filters'} ({selectedTopics.length})
             </button>
@@ -309,7 +306,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[9px] text-text-3 uppercase tracking-wider flex items-center gap-1.5">
+            <span className="font-mono text-[11px] text-text-3 uppercase tracking-wider flex items-center gap-1.5">
               <Filter size={10} className="text-accent" /> {locale === 'id' ? 'Topik:' : 'Topics:'}
               {selectedTopics.length > 0 && (
                 <span className="text-accent font-semibold">({selectedTopics.length} {locale === 'id' ? 'aktif' : 'active'})</span>
@@ -319,7 +316,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
             {allTopicsSorted.length > 15 && (
               <button
                 onClick={() => setShowAllTopics(!showAllTopics)}
-                className="font-mono text-[9px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
+                className="font-mono text-[11px] uppercase tracking-widest text-accent hover:text-text-0 transition-all flex items-center gap-1.5 border border-accent/20 px-2 py-0.5 rounded-sm bg-accent/5 hover:bg-accent/15"
               >
                 <span>{showAllTopics ? (locale === 'id' ? 'Tutup' : 'Show Less') : `${locale === 'id' ? 'Semua' : 'See all'} (${allTopicsSorted.length})`}</span>
                 <ArrowRight size={10} className={`transform transition-transform duration-200 ${showAllTopics ? '-rotate-90' : 'rotate-90'}`} />
@@ -340,7 +337,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 <button
                   key={topic}
                   onClick={() => toggleTopic(topic)}
-                  className={`shrink-0 px-2 py-1 text-[9px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${
+                  className={`shrink-0 px-2 py-1 text-[11px] font-mono rounded-sm border transition-all flex items-center gap-2 select-none ${
                     isSelected
                       ? 'bg-accent/10 border-accent/80 text-accent shadow-[0_0_8px_rgba(0,225,207,0.12)]'
                       : 'bg-bg-1 border-border-subtle text-text-3 hover:border-text-3 hover:text-text-1 hover:bg-bg-1/80'
@@ -348,7 +345,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 >
                   <span>#{topic}</span>
                   <span
-                    className={`px-1 rounded-sm text-[8px] font-semibold ${
+                    className={`px-1 rounded-sm text-[11px] font-semibold ${
                       isSelected
                         ? 'bg-accent/25 text-accent'
                         : 'bg-bg-2 text-text-3 border border-border-subtle'
@@ -384,7 +381,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 <div className="w-8 h-8 bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                   {repo.language === 'Python' ? <Cpu size={16} /> : <Code size={16} />}
                 </div>
-                <div className="flex items-center gap-2.5 text-text-3 font-mono text-[10px]">
+                <div className="flex items-center gap-2.5 text-text-3 font-mono text-[11px]">
                   {repo.forks_count > 0 && (
                     <span className="flex items-center gap-1" title={`${repo.forks_count} forks`}>
                       <GitFork size={12} className="text-accent/70" /> {repo.forks_count}
@@ -396,7 +393,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
                 </div>
               </div>
 
-              <h3 className="text-base font-bold text-text-0 mb-2 font-mono group-hover:text-accent transition-colors">{repo.name}</h3>
+              <h2 className="text-base font-bold text-text-0 mb-2 font-mono group-hover:text-accent transition-colors">{repo.name}</h2>
               <p className="text-[13px] text-text-2 font-light mb-5 line-clamp-3 min-h-[44px] leading-relaxed">
                 {repo.description || "No description provided."}
               </p>
@@ -409,22 +406,22 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
               <div className="flex flex-wrap gap-1.5 mb-6">
                 {repo.topics.slice(0, 4).map(topic => (
-                  <span key={topic} className="text-[9px] font-mono px-2 py-0.5 bg-bg-2 border border-border-subtle/70 rounded-sm text-text-3">#{topic}</span>
+                  <span key={topic} className="text-[11px] font-mono px-2 py-0.5 bg-bg-2 border border-border-subtle/70 rounded-sm text-text-3">#{topic}</span>
                 ))}
                 {repo.topics.length > 4 && (
-                  <span className="text-[9px] font-mono text-text-3/60 self-center">+{repo.topics.length - 4}</span>
+                  <span className="text-[11px] font-mono text-text-3/60 self-center">+{repo.topics.length - 4}</span>
                 )}
               </div>
 
               <div className="flex items-center justify-between pt-4 border-t border-border-subtle mt-auto">
-                <span className="text-[10px] font-mono text-accent/60 flex items-center gap-1.5">
+                <span className="text-[11px] font-mono text-accent/60 flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-accent" /> {repo.language || 'Markdown'}
                 </span>
                 <a
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-0 hover:text-accent transition-colors flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase"
+                  className="text-text-0 hover:text-accent transition-colors flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase"
                 >
                   {locale === 'id' ? 'Sumber' : 'Source'} <ExternalLink size={12} />
                 </a>
@@ -447,7 +444,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
 
       <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1 px-6 mt-16">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
+          <div className="font-mono text-[11px] text-text-3 flex items-center gap-4">
             <span>© 2026 NICHSEDGE</span>
             <span className="opacity-20">|</span>
             <span className="animate-pulse flex items-center gap-1">
@@ -455,7 +452,7 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
             </span>
           </div>
           <div className="flex flex-col gap-1 items-end">
-            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">
+            <a href="#" className="font-mono text-[11px] uppercase tracking-widest text-text-3 hover:text-accent">
               {locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}
             </a>
           </div>

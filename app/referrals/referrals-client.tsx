@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Copy, Check, Server, Network, Terminal, Search, X, ShieldAlert, Cpu } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
-import { InteractiveGrid } from '@/components/interactive-grid';
 import { TiltCard } from '@/components/tilt-card';
-import { DecryptedText } from '@/components/decrypted-text';
 import referralsData from '@/data/referrals.json';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { useNSM } from '@/lib/nsm';
@@ -60,20 +58,14 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20 relative z-20">
-        
-        {/* Background Grid Accent */}
-        <InteractiveGrid />
 
         {/* Cyber Hero Title */}
         <div className="relative mb-12 border-b border-border-subtle pb-8">
-          <div className="absolute top-0 right-0 font-mono text-[9px] text-text-3 text-right hidden md:block">
+          <div className="absolute top-0 right-0 font-mono text-[11px] text-text-3 text-right hidden md:block">
             <span>SYS_LOC: /REFERRALS</span><br/>
-            <span className="text-accent animate-pulse">TELEMETRY_LINK: CONNECTED</span>
+            <span className="text-accent">TELEMETRY_LINK: CONNECTED</span>
           </div>
 
-          <span className="font-mono text-[10px] text-accent uppercase tracking-[0.3em] font-bold block mb-3">
-            <DecryptedText text={locale === 'id' ? "05 — PORTAL PIPELINE INGESTI" : "05 — PORTAL PIPELINE"} speed={25} />
-          </span>
           <h1 className="text-3xl md:text-5xl font-bold text-text-0 tracking-tight font-sans mb-4">
             {locale === 'id' ? 'Gerbang' : 'Ingestion'} <span className="text-accent underline decoration-accent/20 underline-offset-4">{locale === 'id' ? 'Ingesti' : 'Gateways'}</span>
           </h1>
@@ -97,7 +89,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
               <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                 <stat.icon size={48} />
               </div>
-              <span className="text-[10px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
+              <span className="text-[11px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
               <div className="flex items-center gap-2">
                 <stat.icon size={12} className={stat.color} />
                 <span className="text-[13px] font-bold text-text-0">{stat.value}</span>
@@ -121,7 +113,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={locale === 'id' ? 'cari portal berdasarkan nama, manfaat, kata kunci...' : 'search portals by name, benefits, keywords...'}
-                className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[13px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
+                className="w-full pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[13px] rounded-sm outline-none transition-all placeholder:text-zinc-400"
               />
               {searchQuery && (
                 <button
@@ -134,7 +126,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
             </div>
 
             {/* Ingestion Speed Indicators (Mock) */}
-            <div className="hidden lg:flex items-center gap-4 font-mono text-[10px] tracking-wider text-text-3 shrink-0 border-l border-border-subtle pl-4">
+            <div className="hidden lg:flex items-center gap-4 font-mono text-[11px] tracking-wider text-text-3 shrink-0 border-l border-border-subtle pl-4">
               <div>
                 BANDWIDTH: <span className="text-text-0">1.2 GB/S</span>
               </div>
@@ -146,7 +138,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
           </div>
 
           {/* Dynamic Cyber Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none font-mono text-[10px]">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none font-mono text-[11px]">
             <span className="text-text-3 uppercase tracking-widest mr-2 select-none shrink-0">// CATEGORIES:</span>
             {categories.map((cat) => (
               <button
@@ -195,22 +187,19 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                               <span className="font-mono text-[11px] text-accent font-semibold uppercase tracking-wider block mb-1">
                                 [{node.category}]
                               </span>
-                              <h3 className="text-base font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
+                              <h2 className="text-base font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
                                 {node.name}
-                                <span className="relative flex h-1.5 w-1.5">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                                </span>
-                              </h3>
+                                <span className="inline-block rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                              </h2>
                             </div>
-                            <span className="font-mono text-[10px] px-2 py-0.5 bg-bg border border-border-subtle rounded-sm text-text-3 select-none">
+                            <span className="font-mono text-[11px] px-2 py-0.5 bg-bg border border-border-subtle rounded-sm text-text-3 select-none">
                               ROUTE_0{index + 1}
                             </span>
                           </div>
 
                           {/* Benefit payload description */}
-                          <div className="font-mono text-xs leading-relaxed text-text-1 bg-bg/80 border-l-2 border-accent p-3.5 mb-6 relative overflow-hidden">
-                            <span className="text-accent/90 block text-[10px] mb-1 font-bold uppercase tracking-wider">// {locale === 'id' ? 'MANFAAT MUATAN:' : 'PAYLOAD BENEFITS:'}</span>
+                          <div className="font-mono text-xs leading-relaxed text-text-1 bg-bg/80 border border-border-subtle p-3.5 mb-6 relative overflow-hidden">
+                            <span className="text-accent/90 block text-[11px] mb-1 font-bold uppercase tracking-wider">// {locale === 'id' ? 'MANFAAT MUATAN:' : 'PAYLOAD BENEFITS:'}</span>
                             {node.benefit}
                           </div>
                         </div>
@@ -271,11 +260,11 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                 animate={{ opacity: 1, y: 0 }}
                 className="border border-red-500/20 bg-red-500/5 p-8 text-center rounded-sm font-mono max-w-lg mx-auto"
               >
-                <ShieldAlert className="text-red-500 mx-auto mb-4 animate-bounce" size={32} />
-                <h3 className="text-red-400 text-[12px] uppercase tracking-widest font-bold mb-2">
+                <ShieldAlert className="text-red-500 mx-auto mb-4" size={32} />
+                <h2 className="text-red-400 text-[12px] uppercase tracking-widest font-bold mb-2">
                   {locale === 'id' ? '[KESALAHAN: TIDAK ADA KATA KUNCI PORTAL YANG COCOK]' : '[ERROR: NO PORTAL SIGNATURES MATCHED]'}
-                </h3>
-                <p className="text-text-3 text-[10px] leading-relaxed">
+                </h2>
+                <p className="text-text-3 text-xs leading-relaxed">
                   {locale === 'id' ? 
                     <>Kueri ingesti saat ini: <strong className="text-red-400">"{searchQuery}"</strong> tidak menghasilkan rute saluran yang cocok di <span className="text-text-1">referrals.json</span>. Masukkan kembali telemetri kueri atau atur ulang filter.</> :
                     <>The current ingestion query: <strong className="text-red-400">"{searchQuery}"</strong> did not yield matching channel routes in <span className="text-text-1">referrals.json</span>. Re-enter query telemetry or reset filters.</>
@@ -283,7 +272,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
                 </p>
                 <button
                   onClick={() => { setSearchQuery(''); setSelectedCategory('ALL'); }}
-                  className="mt-4 px-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white transition-colors uppercase text-[9px] tracking-widest"
+                  className="mt-4 px-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white transition-colors uppercase text-[11px] tracking-widest"
                 >
                   {locale === 'id' ? 'Reset Filter Telemetri' : 'Reset Telemetry Filters'}
                 </button>
@@ -297,7 +286,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
       {/* Cyber Footer */}
       <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1/40 px-6 relative z-10 mt-20">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
+          <div className="font-mono text-[11px] text-text-3 flex items-center gap-4">
             <span>© 2026 NICHSEDGE</span>
             <span className="opacity-20">|</span>
             <span className="animate-pulse flex items-center gap-1">
@@ -305,7 +294,7 @@ export default function ReferralsClient({ locale = 'en' }: { locale?: 'en' | 'id
             </span>
           </div>
           <div>
-            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">{locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}</a>
+            <a href="#" className="font-mono text-[11px] uppercase tracking-widest text-text-3 hover:text-accent">{locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}</a>
           </div>
         </div>
       </footer>

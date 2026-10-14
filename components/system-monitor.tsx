@@ -57,12 +57,10 @@ export function SystemMonitor() {
             </svg> System Monitor
           </div>
           <div className="flex items-center gap-1">
-            <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             LIVE
           </div>
         </div>
-
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ background: 'repeating-linear-gradient(0deg, #000, #000 1px, transparent 1px, transparent 2px)' }} />
 
         <div ref={scrollRef} className="space-y-1">
           <AnimatePresence mode="popLayout">

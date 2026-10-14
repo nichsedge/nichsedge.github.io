@@ -324,7 +324,7 @@ export function BiomeSelector() {
         >
           <Settings2 className="size-4 sm:size-[18px]" />
           {isSensoryLockdown && (
-            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent animate-pulse shadow-[0_0_6px_#00e1cf]" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-accent shadow-[0_0_6px_#00e1cf]" />
           )}
         </button>
       </div>

@@ -73,12 +73,12 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
               )}
             </div>
             <div>
-              <div className="text-[9px] uppercase tracking-widest text-text-3 font-semibold">
+              <div className="text-[11px] uppercase tracking-widest text-text-3 font-semibold">
                 {gameState.notification.type === 'level' ? '[SYSTEM PROMOTION]' : '[QUEST COMPLETED]'}
               </div>
               <div className="font-bold text-xs mt-0.5">{gameState.notification.message}</div>
               {gameState.notification.xp && (
-                <span className="text-[10px] text-accent font-bold">+{gameState.notification.xp} XP</span>
+                <span className="text-[11px] text-accent font-bold">+{gameState.notification.xp} XP</span>
               )}
             </div>
           </motion.div>
@@ -115,10 +115,10 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
             title={isID ? "Buka Game HUD" : "Expand Game HUD"}
             aria-label="Expand Game HUD"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="text-accent font-bold text-[10px]">LVL {gameState.level}</span>
-            <span className="text-text-3 text-[10px]">•</span>
-            <span className="text-text-2 text-[10px] max-w-[120px] sm:max-w-[130px] truncate">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+            <span className="text-accent font-bold text-[11px]">LVL {gameState.level}</span>
+            <span className="text-text-3 text-[11px]">•</span>
+            <span className="text-text-2 text-[11px] max-w-[120px] sm:max-w-[130px] truncate">
               {activeQuest ? (isID ? activeQuest.titleId : activeQuest.title) : 'SYSTEM ROOT'}
             </span>
             <ChevronUp size={12} className="text-accent ml-0.5" />
@@ -129,13 +129,13 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
               
               {/* Rank & XP Bar */}
               <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0">
-                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-accent font-bold text-[10px] shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/15 text-accent font-bold text-[11px] shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span>LVL {gameState.level}</span>
                 </div>
 
                 <div className="hidden sm:flex flex-col min-w-[100px]">
-                  <div className="flex justify-between text-[9px] text-text-3 font-medium">
+                  <div className="flex justify-between text-[11px] text-text-3 font-medium">
                     <span className="text-text-1 font-semibold truncate max-w-[80px]">{gameState.title}</span>
                     <span>{gameState.xp}/{maxLevelXp} XP</span>
                   </div>
@@ -153,16 +153,16 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
               {/* Active Mission Pill */}
               <div 
                 onClick={handleOpenDrawer}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1/60 hover:bg-accent/10 border border-border-subtle hover:border-accent/30 cursor-pointer transition-all min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-none"
+                className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-bg-1/80 hover:bg-accent/15 cursor-pointer transition-all min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-none"
                 title={isID ? "Klik untuk melihat matriks misi" : "Click to view mission matrix"}
               >
                 <span className="text-accent text-[11px] shrink-0">🎯</span>
-                <span className="text-[10px] text-text-2 truncate">
+                <span className="text-[11px] text-text-2 truncate">
                   {activeQuest 
                     ? (isID ? activeQuest.titleId : activeQuest.title)
                     : (isID ? 'Semua Misi Selesai (Root Access)' : 'All Missions Cleared (Root Access)')}
                 </span>
-                <span className="hidden md:inline-block text-[9px] text-accent font-bold shrink-0">
+                <span className="hidden md:inline-block text-[11px] text-accent font-bold shrink-0">
                   {activeQuest ? `+${activeQuest.xp}XP` : '★'}
                 </span>
               </div>
@@ -171,7 +171,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
               <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 <button
                   onClick={handleOpenArcade}
-                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-accent/15 hover:bg-accent hover:text-bg text-accent border border-accent/40 font-mono text-[10px] font-bold uppercase transition-all shadow-[0_0_12px_rgba(0,225,207,0.2)] cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-accent/15 hover:bg-accent hover:text-bg text-accent font-mono text-[11px] font-bold uppercase transition-all shadow-[0_0_12px_rgba(0,225,207,0.2)] cursor-pointer"
                   title={isID ? "Mainkan 3D Data Highway Minigame" : "Play 3D Data Highway Minigame"}
                 >
                   <Gamepad2 size={12} />
@@ -180,12 +180,12 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
 
                 <button
                   onClick={handleOpenDrawer}
-                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full bg-bg-1 hover:bg-accent hover:text-bg text-text-1 border border-border-subtle hover:border-accent font-mono text-[10px] font-bold uppercase transition-all cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-bg-1 hover:bg-accent hover:text-bg text-text-1 font-mono text-[11px] font-bold uppercase transition-all cursor-pointer"
                   title={isID ? "Buka Tactical Deck" : "Open Tactical Deck"}
                 >
                   <ChevronUp size={12} />
                   <span className="hidden sm:inline">{isID ? 'DECK' : 'DECK'}</span>
-                  <span className="px-1 py-0.2 rounded-full bg-accent/20 text-accent group-hover:bg-bg group-hover:text-accent text-[9px]">
+                  <span className="px-1 py-0.2 rounded-full bg-accent/20 text-accent group-hover:bg-bg group-hover:text-accent text-[11px]">
                     {gameState.completedQuests.length}/{INITIAL_QUESTS.length}
                   </span>
                 </button>

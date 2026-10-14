@@ -5,9 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Copy, Check, Server, Terminal, Cpu, AlertCircle, Search, X } from 'lucide-react';
 
 import { Navbar } from '@/components/navbar';
-import { InteractiveGrid } from '@/components/interactive-grid';
 import { TiltCard } from '@/components/tilt-card';
-import { DecryptedText } from '@/components/decrypted-text';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 import { useNSM } from '@/lib/nsm';
 import payData from '@/data/pay.json';
@@ -214,20 +212,14 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20 relative z-20">
-        
-        {/* Background Grid Accent */}
-        <InteractiveGrid />
 
         {/* Hero Title */}
         <div className="relative mb-12 border-b border-border-subtle pb-8">
-          <div className="absolute top-0 right-0 font-mono text-[9px] text-text-3 text-right hidden md:block">
+          <div className="absolute top-0 right-0 font-mono text-[11px] text-text-3 text-right hidden md:block">
             <span>SYS_LOC: /PAY</span><br/>
             <span className="text-accent">STATUS: READY</span>
           </div>
 
-          <span className="font-mono text-[10px] text-accent uppercase tracking-[0.3em] font-bold block mb-3">
-            <DecryptedText text={locale === 'id' ? "06 — INFORMASI TRANSFER FINANSIAL" : "06 — FINANCIAL TRANSFER INFO"} speed={25} />
-          </span>
           <h1 className="text-3xl md:text-5xl font-bold text-text-0 tracking-tight font-sans mb-4">
             {translations.title} <span className="text-accent underline decoration-accent/20 underline-offset-4">{translations.subtitle}</span>
           </h1>
@@ -248,7 +240,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                 <stat.icon size={48} />
               </div>
-              <span className="text-[9px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
+              <span className="text-[11px] uppercase tracking-widest text-text-3 block mb-1">{stat.label}</span>
               <div className="flex items-center gap-2">
                 <stat.icon size={12} className={stat.color} />
                 <span className="text-[12px] font-bold text-text-0">{stat.value}</span>
@@ -260,7 +252,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
         {/* Search Controller */}
         <div className="relative z-10 border border-border-subtle bg-bg-1/25 p-4 rounded-sm mb-10">
           <div className="relative w-full">
-            <div className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[10px] pointer-events-none select-none">
+            <div className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-accent/60 flex items-center gap-1.5 font-mono text-[11px] pointer-events-none select-none">
               <Search size={14} className="text-accent shrink-0" />
               <span className="opacity-60 hidden sm:inline">SEARCH &gt;</span>
             </div>
@@ -269,7 +261,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={translations.searchPlaceholder}
-              className="w-full pl-10 sm:pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-text-3/40"
+              className="w-full pl-10 sm:pl-28 pr-10 py-3 bg-bg-1 border border-border-subtle focus:border-accent text-text-1 font-mono text-[12px] rounded-sm outline-none transition-all placeholder:text-zinc-400"
             />
             {searchQuery && (
               <button
@@ -310,16 +302,13 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                           {/* Header metadata */}
                           <div className="flex justify-between items-start gap-4 mb-4">
                             <div>
-                              <span className="font-mono text-[9px] text-accent uppercase tracking-widest block mb-1">
+                              <span className="font-mono text-[11px] text-accent uppercase tracking-widest block mb-1">
                                 {node.category}
                               </span>
-                              <h3 className="text-base font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
+                              <h2 className="text-base font-bold text-text-0 tracking-wide font-sans flex items-center gap-2">
                                 {node.name}
-                                <span className="relative flex h-1.5 w-1.5">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                                </span>
-                              </h3>
+                                <span className="inline-block rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                              </h2>
                             </div>
                             <div className="p-1 shrink-0">
                               {renderLogos(node.id)}
@@ -327,15 +316,15 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                           </div>
 
                           {/* Description */}
-                          <p className="font-mono text-[10px] leading-relaxed text-text-2 bg-bg/60 border-l border-accent p-3 mb-6 relative overflow-hidden">
-                            <span className="text-accent/60 block text-[8px] mb-1 font-bold uppercase tracking-wider">// {translations.payloadDesc}</span>
+                          <p className="font-mono text-xs leading-relaxed text-text-2 bg-bg/60 border border-border-subtle p-3 mb-6 relative overflow-hidden">
+                            <span className="text-accent/60 block text-[11px] mb-1 font-bold uppercase tracking-wider">// {translations.payloadDesc}</span>
                             {locale === 'id' ? node.details_id : node.details}
                           </p>
                         </div>
 
                         {/* Recipient Details & Copy actions */}
                         <div className="space-y-3 pt-2 relative z-10 border-t border-border-subtle/50">
-                          <div className="flex justify-between items-center text-[10px] font-mono gap-1">
+                          <div className="flex justify-between items-center text-[11px] font-mono gap-1">
                             <span className="text-text-3">{translations.recipientLabel}:</span>
                             <span className="text-text-1 font-bold tracking-wide uppercase">
                               {node.recipient}
@@ -343,7 +332,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                           </div>
 
                           <div className="flex flex-col gap-2 pt-1">
-                            <div className="flex justify-between items-center text-[10px] font-mono">
+                            <div className="flex justify-between items-center text-[11px] font-mono">
                               <span className="text-text-3">{translations.routingCode}:</span>
                               <span className="text-text-0 font-bold tracking-widest text-xs select-all">
                                 {node.number}
@@ -353,7 +342,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                             {/* Copy Button */}
                             <button
                               onClick={() => handleCopy(node.number, node.id)}
-                              className={`py-2 px-3 border font-mono text-[9px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none rounded-sm w-full ${
+                              className={`py-2 px-3 border font-mono text-[11px] uppercase tracking-widest flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none rounded-sm w-full ${
                                 isCopied
                                   ? 'bg-green-500/10 border-green-500 text-green-400 shadow-[0_0_12px_rgba(34,197,94,0.15)]'
                                   : 'bg-bg border-border hover:border-accent hover:text-accent'
@@ -385,15 +374,15 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                 className="border border-red-500/20 bg-red-500/5 p-8 text-center rounded-sm font-mono max-w-lg mx-auto"
               >
                 <AlertCircle className="text-red-500 mx-auto mb-4" size={32} />
-                <h3 className="text-red-400 text-[12px] uppercase tracking-widest font-bold mb-2">
+                <h2 className="text-red-400 text-[12px] uppercase tracking-widest font-bold mb-2">
                   {translations.noResultsTitle}
-                </h3>
-                <p className="text-text-3 text-[10px] leading-relaxed mb-4">
+                </h2>
+                <p className="text-text-3 text-xs leading-relaxed mb-4">
                   {translations.noResultsDesc}
                 </p>
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="px-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white transition-colors uppercase text-[9px] tracking-widest"
+                  className="px-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-white transition-colors uppercase text-[11px] tracking-widest"
                 >
                   {translations.resetSearch}
                 </button>
@@ -403,7 +392,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
         </div>
 
         {/* Security Warning Notice */}
-        <div className="relative z-10 border border-yellow-500/20 bg-yellow-500/5 p-4 rounded-sm font-mono text-[10px] leading-relaxed text-text-3 mt-10 flex gap-3 items-start">
+        <div className="relative z-10 border border-yellow-500/20 bg-yellow-500/5 p-4 rounded-sm font-mono text-xs leading-relaxed text-text-3 mt-10 flex gap-3 items-start">
           <AlertCircle className="text-yellow-500 shrink-0" size={16} />
           <div>
             <span className="text-yellow-500 font-bold block mb-1">// IMPORTANT:</span>
@@ -419,7 +408,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       {/* Footer */}
       <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1/40 px-6 relative z-10 mt-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
+          <div className="font-mono text-[11px] text-text-3 flex items-center gap-4">
             <span>© 2026 NICHSEDGE</span>
             <span className="opacity-20">|</span>
             <span className="flex items-center gap-1">
@@ -427,7 +416,7 @@ export default function PayClient({ locale = 'en' }: { locale?: 'en' | 'id' }) {
             </span>
           </div>
           <div>
-            <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">
+            <a href="#" className="font-mono text-[11px] uppercase tracking-widest text-text-3 hover:text-accent">
               {locale === 'id' ? 'Gulir ke Atas' : 'Scroll to Top'}
             </a>
           </div>

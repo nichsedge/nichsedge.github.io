@@ -178,7 +178,7 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
               <div className="border border-border-subtle/60 bg-black/40 rounded-sm p-3 font-mono">
                 <div className="flex items-center justify-between text-[9px] text-text-3 uppercase tracking-widest mb-2">
                   <span className="flex items-center gap-1.5 text-amber-400">
-                    <Activity size={11} className="animate-pulse" />
+                    <Activity size={11} />
                     {isID ? 'STATUS METABOLISME' : 'METABOLIC STATUS'}
                   </span>
                   <span className="text-amber-400 font-bold">{isID ? 'KESEIMBANGAN SEDENTER' : 'SEDENTARY EQUILIBRIUM'}</span>
@@ -187,14 +187,14 @@ export function HumanRuntime({ locale = 'en' }: { locale?: 'en' | 'id' }) {
                 {/* Progress bars & badges */}
                 <div className="space-y-2">
                   <div className="h-2 w-full bg-bg-0/80 rounded-full border border-border-subtle/40 overflow-hidden relative">
-                    <div className="h-full bg-gradient-to-r from-amber-500 via-accent to-emerald-400 w-[94%] rounded-full animate-pulse" />
+                    <div className="h-full bg-gradient-to-r from-amber-500 via-accent to-emerald-400 w-[94%] rounded-full" />
                   </div>
                   <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-1">
-                    <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
+                    <div className="flex items-center gap-1.5 text-[11px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
                       <Coffee size={11} className="text-amber-400 shrink-0" />
                       <span className="truncate">Caffeine: <span className="text-amber-400">Lock</span></span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
+                    <div className="flex items-center gap-1.5 text-[11px] text-text-3 bg-bg-0/60 px-2 py-1 rounded border border-border-subtle/30 min-w-0">
                       <Flame size={11} className="text-red-400 shrink-0" />
                       <span className="truncate">Capsaicin: <span className="text-red-400">Fault</span></span>
                     </div>
