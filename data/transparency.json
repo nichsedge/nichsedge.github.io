@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-10-19T16:14:58Z",
+  "currency": "IDR",
+  "snapshot_date": "2026-10-07",
+  "runway_months": 28.8,
+  "status_label": "FORTRESS (>24m)",
+  "allocation_pct": {
+    "hard_assets": 0,
+    "investments": 66.8,
+    "liabilities": 0.2,
+    "liquid_cash": 33.2
+  },
+  "burn_pct": {
+    "cloud": 8.55,
+    "housing": 25.64,
+    "insurance": 5.98,
+    "lifestyle": 51.28,
+    "saas": 8.55
+  },
+  "commitment_count": 5
+}
