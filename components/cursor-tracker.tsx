@@ -9,6 +9,9 @@ export function CursorTracker() {
 
   useEffect(() => {
     let isClicked = false;
+    let rafId: number | null = null;
+    let latestX = 0;
+    let latestY = 0;
 
     const update = (x: number, y: number) => {
       if (crosshairRef.current) {
@@ -21,7 +24,16 @@ export function CursorTracker() {
       if (yRef.current) yRef.current.textContent = `Y: ${String(y).padStart(4, '0')}`;
     };
 
-    const handleMove = (e: MouseEvent) => update(e.clientX, e.clientY);
+    const handleMove = (e: MouseEvent) => {
+      latestX = e.clientX;
+      latestY = e.clientY;
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          rafId = null;
+          update(latestX, latestY);
+        });
+      }
+    };
     const handleDown = () => {
       isClicked = true;
       if (crosshairRef.current) crosshairRef.current.style.transform += ' scale(0.8) rotate(45deg)';
@@ -35,6 +47,7 @@ export function CursorTracker() {
     window.addEventListener('mouseup', handleUp, { passive: true });
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('mousedown', handleDown);
       window.removeEventListener('mouseup', handleUp);

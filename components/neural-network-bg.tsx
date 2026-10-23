@@ -69,19 +69,28 @@ export function NeuralNetworkBg() {
       const [r, g, b] = getCurrentColor();
       ctx.fillStyle = `rgba(${r},${g},${b},0.5)`;
 
+      // 1. Update positions
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
-
         node.x += node.vx;
         node.y += node.vy;
 
         if (node.x < 0 || node.x > width) node.vx *= -1;
         if (node.y < 0 || node.y > height) node.vy *= -1;
+      }
 
-        ctx.beginPath();
+      // 2. Batch draw all nodes in a single draw call
+      ctx.beginPath();
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        ctx.moveTo(node.x + 1.5, node.y);
         ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
-        ctx.fill();
+      }
+      ctx.fill();
 
+      // 3. Draw inter-node connection lines
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
           const node2 = nodes[j];
           const dx = node.x - node2.x;

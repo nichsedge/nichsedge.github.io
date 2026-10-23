@@ -11,11 +11,18 @@ export function ScrollProgress() {
   });
 
   const hexAddress = useTransform(scrollYProgress, [0, 1], [0x0000, 0xFFFF]);
-  const [hexString, setHexString] = React.useState('0x0000');
+  const ptrRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    let lastHex = '';
     return hexAddress.on('change', (v) => {
-      setHexString(`0x${Math.floor(v).toString(16).padStart(4, '0').toUpperCase()}`);
+      const formatted = `0x${Math.floor(v).toString(16).padStart(4, '0').toUpperCase()}`;
+      if (formatted !== lastHex) {
+        lastHex = formatted;
+        if (ptrRef.current) {
+          ptrRef.current.textContent = `PTR: ${formatted}`;
+        }
+      }
     });
   }, [hexAddress]);
 
@@ -30,8 +37,11 @@ export function ScrollProgress() {
        <div className="w-1 h-3 bg-accent/30 z-10" />
        <div className="w-1 h-1 rounded-full bg-accent/30 z-10" />
        
-       <div className="absolute top-1/2 -translate-y-1/2 -rotate-90 right-2 md:right-4 font-mono text-[11px] text-accent uppercase tracking-[0.2em] font-bold whitespace-nowrap hidden lg:block">
-         PTR: {hexString}
+       <div 
+         ref={ptrRef}
+         className="absolute top-1/2 -translate-y-1/2 -rotate-90 right-2 md:right-4 font-mono text-[11px] text-accent uppercase tracking-[0.2em] font-bold whitespace-nowrap hidden lg:block"
+       >
+         PTR: 0x0000
        </div>
     </div>
   );
