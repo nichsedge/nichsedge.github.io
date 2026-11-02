@@ -1,11 +1,7 @@
-import type { NextConfig } from "next";
-
+/** @type {import('next').NextConfig} */
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
-const nextConfig: NextConfig = {
-  experimental: {
-    agentUpgrade: "security",
-  },
+const nextConfig = {
   allowedDevOrigins: ['fedora', 'localhost', '127.0.0.1'],
   output: "export",
   trailingSlash: true,
