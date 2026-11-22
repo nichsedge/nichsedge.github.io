@@ -3,14 +3,14 @@ import React, { useLayoutEffect, useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
 
 export function BootSequence() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
 
   const bootLogs = [
     "ACPU BIOS - version 4.02",
     "Initializing memory allocation vectors...",
-    "16384 MB RAM System RAM Passed",
+    "16384 MB System RAM Passed",
     "Mounting /dev/sda1 on /root...",
     "Establishing neural uplink to gateway...",
     "Parsing encryption keys (AES-256)...",
@@ -22,6 +22,7 @@ export function BootSequence() {
 
   const finishBoot = useCallback(() => {
     try {
+      sessionStorage.removeItem('trigger-boot');
       sessionStorage.setItem('booted', 'true');
     } catch {}
     if (typeof document !== 'undefined') {
@@ -32,16 +33,19 @@ export function BootSequence() {
 
   useLayoutEffect(() => {
     try {
-      if (sessionStorage.getItem('booted')) {
-        finishBoot();
+      if (sessionStorage.getItem('trigger-boot') === 'true') {
+        setVisible(true);
+      } else {
+        document.documentElement.classList.remove('is-booting');
       }
     } catch {}
-  }, [finishBoot]);
+  }, []);
 
   useEffect(() => {
     if (!visible) return;
 
     let i = 0;
+    let closeTimeout: ReturnType<typeof setTimeout> | null = null;
     const interval = setInterval(() => {
       if (i < bootLogs.length) {
         setLogs(prev => [...prev, bootLogs[i]]);
@@ -49,14 +53,15 @@ export function BootSequence() {
         i++;
       } else {
         clearInterval(interval);
-        setTimeout(() => {
+        closeTimeout = setTimeout(() => {
           finishBoot();
-        }, 500);
+        }, 400);
       }
-    }, 100);
+    }, 90);
 
     const handleSkip = () => {
       clearInterval(interval);
+      if (closeTimeout) clearTimeout(closeTimeout);
       finishBoot();
     };
 
@@ -65,6 +70,7 @@ export function BootSequence() {
 
     return () => {
       clearInterval(interval);
+      if (closeTimeout) clearTimeout(closeTimeout);
       window.removeEventListener('keydown', handleSkip);
       window.removeEventListener('click', handleSkip);
     };

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Github, Linkedin, Mail, Cpu, Play, GitBranch, Terminal, Zap, Server, Sparkles, Activity, Bot } from 'lucide-react';
 
@@ -14,6 +15,8 @@ import { DecryptedText } from '@/components/decrypted-text';
 import { InteractiveGrid } from '@/components/interactive-grid';
 import { DataOracle } from '@/components/data-oracle';
 import { DataPipeline } from '@/components/data-pipeline';
+import { FeaturedWorkBand } from '@/components/featured-work-band';
+import { ViewportMount } from '@/components/viewport-mount';
 import { useNSM } from '@/lib/nsm';
 import { useWideLayout } from '@/hooks/use-wide-layout';
 
@@ -82,10 +85,12 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   }, [isNSM]);
 
   const subNavItems = locale === 'id' ? [
+    { name: 'Pengalaman', href: '#impact' },
     { name: 'Jaringan_Saraf', href: '#skills' },
     { name: 'Arsitektur', href: '#architecture' },
     { name: 'Runtime', href: '#human-runtime' },
   ] : [
+    { name: 'Impact', href: '#impact' },
     { name: 'Neural_Net', href: '#skills' },
     { name: 'Architecture', href: '#architecture' },
     { name: 'Runtime', href: '#human-runtime' },
@@ -227,8 +232,13 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </div>
       </section>
 
-      {/* Expertise Graph & 3D Celestial Constellation (Placed First) */}
-      <Section id="skills" label={locale === 'id' ? '01 — jaringan saraf' : '01 — neural network'} isNSM={isNSM}>
+      {/* Selected Experience & Flagship Systems */}
+      <Section id="impact" label={locale === 'id' ? '01 — pengalaman & sistem unggulan' : '01 — experience & flagship systems'} isNSM={isNSM}>
+        <FeaturedWorkBand locale={locale} />
+      </Section>
+
+      {/* Expertise Graph & 3D Celestial Constellation */}
+      <Section id="skills" label={locale === 'id' ? '02 — jaringan saraf' : '02 — neural network'} isNSM={isNSM}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div className="text-[10px] sm:text-[11px] font-mono text-text-3">
             {locale === 'id' ? 'Pilih mode tampilan graf:' : 'Select graph visualization mode:'}
@@ -262,7 +272,12 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         <div className="w-full">
           <div className="relative min-h-[540px] md:min-h-[600px] w-full">
              {skills3DView ? (
-               <KnowledgeConstellation locale={locale} />
+               <ViewportMount
+                 minHeightClass="min-h-[540px] md:min-h-[600px]"
+                 label={locale === 'id' ? 'MEMUAT_GALAKSI_3D...' : 'LOADING_3D_CONSTELLATION...'}
+               >
+                 <KnowledgeConstellation locale={locale} />
+               </ViewportMount>
              ) : (
                <KnowledgeGraph />
              )}
@@ -276,7 +291,7 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
           <div>
             <div className="flex items-center gap-2 font-mono text-[11px] text-accent uppercase tracking-[0.25em] font-bold mb-1">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              <span>{locale === 'id' ? '02 // ARSITEKTUR // MEJA KERJA SISTEM' : '02 // ARCHITECTURE // SYSTEM WORKBENCH'}</span>
+              <span>{locale === 'id' ? '03 // ARSITEKTUR // MEJA KERJA SISTEM' : '03 // ARCHITECTURE // SYSTEM WORKBENCH'}</span>
             </div>
             <p className="font-mono text-[11px] text-text-3">
               {locale === 'id' ? 'Instrumen pemrosesan & visualisasi data terdistribusi:' : 'Distributed data processing & telemetry engines:'}
@@ -305,8 +320,16 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         </div>
 
         <div className="transition-all duration-300 min-h-[450px]">
-          {activeArchTab === '3d-laser' && <LaserPipelineRouter locale={locale} />}
-          {activeArchTab === '3d-cluster' && <ServerRackExplorer locale={locale} />}
+          {activeArchTab === '3d-laser' && (
+            <ViewportMount minHeightClass="min-h-[450px]" label={locale === 'id' ? 'MEMUAT_LASER_3D...' : 'LOADING_3D_LASER_ROUTER...'}>
+              <LaserPipelineRouter locale={locale} />
+            </ViewportMount>
+          )}
+          {activeArchTab === '3d-cluster' && (
+            <ViewportMount minHeightClass="min-h-[450px]" label={locale === 'id' ? 'MEMUAT_CLUSTER_3D...' : 'LOADING_3D_SERVER_RACK...'}>
+              <ServerRackExplorer locale={locale} />
+            </ViewportMount>
+          )}
           {activeArchTab === 'live-arch' && <LiveArchitecture locale={locale} />}
           {activeArchTab === 'pipeline' && <DataPipeline locale={locale} />}
           {activeArchTab === 'stream' && <StreamSimulator locale={locale} />}
@@ -317,22 +340,50 @@ export default function HomeClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       </section>
 
       {/* Human Runtime Environment */}
-      <Section id="human-runtime" label={locale === 'id' ? '03 — lingkungan runtime manusia' : '03 — human runtime environment'} isNSM={isNSM}>
+      <Section id="human-runtime" label={locale === 'id' ? '04 — lingkungan runtime manusia' : '04 — human runtime environment'} isNSM={isNSM}>
          <HumanRuntime locale={locale} />
       </Section>
 
       <footer className="pt-12 pb-24 sm:pb-16 border-t border-border-subtle bg-bg-1 px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-mono text-[9px] text-text-3 flex items-center gap-4">
-            <span><DecryptedText text="© 2026 NICHSEDGE" /></span>
-            <span className="opacity-20">|</span>
-            <span className="animate-pulse flex items-center gap-1">
-              <div className="w-1 h-1 rounded-full bg-accent" /> {locale === 'id' ? 'SISTEM_STABIL' : 'SYSTEM_STABLE'}
-            </span>
-          </div>
-          <div className="flex flex-col gap-1 items-end">
-             <a href="#" className="font-mono text-[9px] uppercase tracking-widest text-text-3 hover:text-accent">{locale === 'id' ? 'Gulir_ke_Atas' : 'Scroll_to_Top'}</a>
-             <span className="font-mono text-[8px] uppercase tracking-widest text-text-3 opacity-20">{locale === 'id' ? 'Telur Paskah: Ketik \'NSM\'' : 'Easter Egg: Type \'NSM\''}</span>
+        <div className="flex flex-col gap-6">
+          <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-widest text-text-3">
+            <Link href={locale === 'id' ? '/id/work/' : '/work/'} className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Karir' : 'Work'}
+            </Link>
+            <Link href={locale === 'id' ? '/id/projects/' : '/projects/'} className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Proyek' : 'Projects'}
+            </Link>
+            <Link href="/about/" className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Tentang' : 'About'}
+            </Link>
+            <Link href="/developers/" className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Developer API' : 'Developers'}
+            </Link>
+            <Link href="/pricing/" className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Layanan' : 'Pricing'}
+            </Link>
+            <Link href="/contact/" className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Kontak' : 'Contact'}
+            </Link>
+            <Link href="/privacy/" className="hover:text-accent transition-colors whitespace-nowrap">
+              {locale === 'id' ? 'Privasi' : 'Privacy'}
+            </Link>
+          </nav>
+
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-border-subtle/60">
+            <div className="font-mono text-[10px] text-text-3 flex items-center gap-3">
+              <span><DecryptedText text="© 2026 NICHSEDGE" /></span>
+              <span className="opacity-30">·</span>
+              <span>{locale === 'id' ? 'Bandung, Indonesia' : 'Bandung, Indonesia'}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-text-3/50 hidden sm:inline">
+                {locale === 'id' ? "Ketik 'NSM' untuk mode matriks" : "Type 'NSM' for matrix mode"}
+              </span>
+              <a href="#" className="font-mono text-[10px] uppercase tracking-widest text-text-3 hover:text-accent transition-colors whitespace-nowrap">
+                {locale === 'id' ? 'Ke Atas ↑' : 'Back to Top ↑'}
+              </a>
+            </div>
           </div>
         </div>
       </footer>

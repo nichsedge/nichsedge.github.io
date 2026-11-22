@@ -384,11 +384,19 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
                   {narrative.intro}
                 </p>
                 <p>
-                  {locale === 'id' ? (
-                    <>Filosofi saya tentang data engineering cukup sederhana: <strong>{narrative.philosophy.split('**')[1] || 'Keandalan Tanpa Suara'}</strong>. {narrative.philosophy.split('**')[2] || 'Infrastruktur data terbaik adalah yang beroperasi hening...'}</>
-                  ) : (
-                    <>My philosophy on data engineering is simple: **{narrative.philosophy.split('**')[1]}**. {narrative.philosophy.split('**')[2]}</>
-                  )}
+                  {(() => {
+                    const firstDot = narrative.philosophy.indexOf('. ');
+                    if (firstDot === -1) return narrative.philosophy;
+                    const lead = narrative.philosophy.slice(0, firstDot + 1);
+                    const rest = narrative.philosophy.slice(firstDot + 2);
+                    return (
+                      <>
+                        {locale === 'id' ? 'Filosofi saya tentang data engineering cukup sederhana: ' : 'My philosophy on data engineering is simple: '}
+                        <strong className="text-text-0 font-semibold">{lead}</strong>{' '}
+                        {rest}
+                      </>
+                    );
+                  })()}
                 </p>
                 <p>
                   {narrative.conclusion}
@@ -398,13 +406,25 @@ export default function WorkClient({ locale = 'en' }: { locale?: 'en' | 'id' }) 
               <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 bg-bg-1/40 border border-border-subtle rounded-sm hover:border-accent/30 transition-colors">
                   <Network className="text-accent mb-4" size={24} />
-                  <h3 className="font-bold text-text-0 mb-2">Systems Thinking</h3>
-                  <p className="text-[13px] text-text-3">I don't just build pipelines; I architect ecosystems where data flows naturally and predictably.</p>
+                  <h3 className="font-bold text-text-0 mb-2">
+                    {locale === 'id' ? 'Berpikir Sistemik' : 'Systems Thinking'}
+                  </h3>
+                  <p className="text-[13px] text-text-3">
+                    {locale === 'id'
+                      ? 'Saya tidak sekadar membangun pipeline; saya merancang ekosistem tempat data mengalir secara alami dan dapat diprediksi.'
+                      : "I don't just build pipelines; I architect ecosystems where data flows naturally and predictably."}
+                  </p>
                 </div>
                 <div className="p-6 bg-bg-1/40 border border-border-subtle rounded-sm hover:border-accent/30 transition-colors">
                   <Layers className="text-accent mb-4" size={24} />
-                  <h3 className="font-bold text-text-0 mb-2">Pragmatic Ops</h3>
-                  <p className="text-[13px] text-text-3">Stability is a feature. I prioritize observability and self-healing mechanisms in every build.</p>
+                  <h3 className="font-bold text-text-0 mb-2">
+                    {locale === 'id' ? 'Operasi Pragmatis' : 'Pragmatic Ops'}
+                  </h3>
+                  <p className="text-[13px] text-text-3">
+                    {locale === 'id'
+                      ? 'Stabilitas adalah sebuah fitur. Saya memprioritaskan observabilitas dan mekanisme pemulihan mandiri di setiap sistem.'
+                      : 'Stability is a feature. I prioritize observability and self-healing mechanisms in every build.'}
+                  </p>
                 </div>
               </div>
            </motion.div>

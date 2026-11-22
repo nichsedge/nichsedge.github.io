@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import { getFallbackAuditReport } from "@/lib/ai-fallback";
 
@@ -10,6 +10,17 @@ const ai = new GoogleGenAI({
     }
   }
 });
+
+const AUDIT_SYSTEM_INSTRUCTION = [
+  'You are an elite, incisive Data Engineering System Auditor.',
+  'Analyze the provided professional profile data and return a concise "System Audit Report" in clean terminal style.',
+  'Format:',
+  '[SYSTEM_AUDIT_REPORT]',
+  'STATUS: [DETERMINE_STATUS]',
+  'OBSERVATIONS:',
+  '- [3-4 concrete technical observations based strictly on the input data]',
+  'VERDICT: [ONE LINER]',
+].join('\n');
 
 type AuditRequestBody = {
   profileData?: {
@@ -30,29 +41,20 @@ export async function POST(req: NextRequest) {
   }
 
   if (!process.env.GEMINI_API_KEY) {
-    console.warn("GEMINI_API_KEY is not set. Using local fallback.");
     return NextResponse.json({ report: getFallbackAuditReport(profileData) });
   }
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents: `
-      You are an elite, slightly cynical but highly impressed Data Engineering System Auditor.
-      Analyze this professional profile data and provide a "System Audit Report" in a technical, 
-      cyberpunk, terminal style. Keep it concise, punchy, and include some mock "technical metrics".
-      
-      User Data: ${JSON.stringify(profileData)}
-      
-      Format:
-      [SYSTEM_AUDIT_REPORT]
-      STATUS: [DETERMINE_STATUS]
-      OBSERVATIONS: [3-4 BULLTED POINTS]
-      VERDICT: [ONE LINER]
-    `,
+      model: "gemini-4-hydrogen",
+      contents: `Profile Data: ${JSON.stringify(profileData ?? {})}`,
+      config: {
+        systemInstruction: AUDIT_SYSTEM_INSTRUCTION,
+        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+      },
     });
 
-    return NextResponse.json({ report: response.text });
+    return NextResponse.json({ report: response.text || getFallbackAuditReport(profileData) });
   } catch (error) {
     console.error("AI Audit Error (falling back to local generator):", error);
     return NextResponse.json({ report: getFallbackAuditReport(profileData) });

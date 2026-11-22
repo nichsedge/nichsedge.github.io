@@ -26,7 +26,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
   const gameState = useGameState();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [arcadeOpen, setArcadeOpen] = useState(false);
-  const [minimized, setMinimized] = useState(false);
+  const [minimized, setMinimized] = useState(true);
   const isID = locale === 'id';
 
   // Find next uncompleted quest
@@ -192,7 +192,7 @@ export function GameHUD({ locale = 'en' }: GameHudProps) {
 
                 <button
                   onClick={() => setMinimized(true)}
-                  className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center rounded-full text-text-3 hover:text-accent transition-colors cursor-pointer sm:hidden"
+                  className="p-1.5 min-w-[28px] min-h-[28px] flex items-center justify-center rounded-full text-text-3 hover:text-accent transition-colors cursor-pointer"
                   title={isID ? "Kecilkan HUD" : "Minimize HUD"}
                   aria-label="Minimize HUD"
                 >

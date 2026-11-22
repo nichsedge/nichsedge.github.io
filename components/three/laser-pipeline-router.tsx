@@ -48,13 +48,18 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
     activeSinks: ['bigquery', 'clickhouse'],
     isBursting: false,
   });
+  const updateTubesRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     stateRef.current.activeSources = activeSources;
     stateRef.current.activeTransforms = activeTransforms;
     stateRef.current.activeSinks = activeSinks;
+    updateTubesRef.current?.();
+  }, [activeSources, activeTransforms, activeSinks]);
+
+  useEffect(() => {
     stateRef.current.isBursting = isBursting;
-  }, [activeSources, activeTransforms, activeSinks, isBursting]);
+  }, [isBursting]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -87,6 +92,7 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
     // Node Meshes
     const nodeMeshes: THREE.Group[] = [];
     const nodeGeo = new THREE.OctahedronGeometry(0.45);
+    const haloGeo = new THREE.IcosahedronGeometry(0.65);
 
     NODES_3D.forEach((node, idx) => {
       const group = new THREE.Group();
@@ -103,7 +109,6 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       group.add(mesh);
 
       // Wireframe Halo
-      const haloGeo = new THREE.IcosahedronGeometry(0.65);
       const haloMat = new THREE.MeshBasicMaterial({ color: node.color, wireframe: true, transparent: true, opacity: 0.35 });
       const halo = new THREE.Mesh(haloGeo, haloMat);
       group.add(halo);
@@ -114,7 +119,7 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
     });
 
     // Laser Beam Tubes
-    let laserLinesGroup = new THREE.Group();
+    const laserLinesGroup = new THREE.Group();
     scene.add(laserLinesGroup);
 
     // Energy Photons Pulses
@@ -190,6 +195,7 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       });
     };
 
+    updateTubesRef.current = updateLaserTubes;
     updateLaserTubes();
 
     // Mouse Interaction
@@ -408,14 +414,35 @@ export function LaserPipelineRouter({ locale = 'en' }: { locale?: 'en' | 'id' })
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', handleResize);
+      updateTubesRef.current = null;
+      while (laserLinesGroup.children.length > 0) {
+        const obj = laserLinesGroup.children[0] as THREE.Mesh;
+        obj.geometry.dispose();
+        (obj.material as THREE.Material).dispose();
+        laserLinesGroup.remove(obj);
+      }
+      nodeMeshes.forEach((group) => {
+        group.children.forEach((child) => {
+          const mesh = child as THREE.Mesh;
+          if (mesh.material) {
+            if (Array.isArray(mesh.material)) {
+              mesh.material.forEach((m) => m.dispose());
+            } else {
+              mesh.material.dispose();
+            }
+          }
+        });
+      });
       nodeGeo.dispose();
+      haloGeo.dispose();
       photonGeo.dispose();
+      photonMat.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [activeSources, activeTransforms, activeSinks]);
+  }, []);
 
   const triggerBurstTest = () => {
     soundEngine.playStreamSpike();

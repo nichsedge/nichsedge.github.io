@@ -36,6 +36,12 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
   const [failoverResolved, setFailoverResolved] = useState(false);
 
   const selectedNodeRef = useRef<number | null>(null);
+  const simStateRef = useRef({ chaosActive: false, failoverResolved: false });
+
+  useEffect(() => {
+    simStateRef.current.chaosActive = chaosActive;
+    simStateRef.current.failoverResolved = failoverResolved;
+  }, [chaosActive, failoverResolved]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -82,33 +88,35 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
     interior.position.set(0, 0, 0.2);
     scene.add(interior);
 
-    // Server Blades
+    // Server Blades (shared geometries across blades and drive bays)
     const bladeMeshes: THREE.Group[] = [];
     const ledMeshes: THREE.Mesh[] = [];
+    const chassisGeo = new THREE.BoxGeometry(3.0, 0.75, 1.8);
+    const bezelGeo = new THREE.BoxGeometry(2.9, 0.65, 0.05);
+    const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+    const driveGeo = new THREE.BoxGeometry(0.35, 0.45, 0.03);
+    const chassisMat = new THREE.MeshStandardMaterial({
+      color: 0x27272a,
+      metalness: 0.7,
+      roughness: 0.35
+    });
+    const bezelMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
+    const driveMat = new THREE.MeshStandardMaterial({ color: 0x3f3f46, metalness: 0.6 });
 
     SERVER_NODES.forEach((node, idx) => {
       const bladeGroup = new THREE.Group();
       bladeGroup.position.set(0, node.yPos, 0.2);
 
       // Chassis
-      const chassisGeo = new THREE.BoxGeometry(3.0, 0.75, 1.8);
-      const chassisMat = new THREE.MeshStandardMaterial({ 
-        color: 0x27272a, 
-        metalness: 0.7, 
-        roughness: 0.35 
-      });
       const chassis = new THREE.Mesh(chassisGeo, chassisMat);
       bladeGroup.add(chassis);
 
       // Front Bezel / Grille
-      const bezelGeo = new THREE.BoxGeometry(2.9, 0.65, 0.05);
-      const bezelMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
       const bezel = new THREE.Mesh(bezelGeo, bezelMat);
       bezel.position.set(0, 0, 0.92);
       bladeGroup.add(bezel);
 
-      // LED Diodes
-      const ledGeo = new THREE.SphereGeometry(0.04, 8, 8);
+      // LED Diodes (unique material per blade for independent status color)
       const ledMat = new THREE.MeshBasicMaterial({ color: 0x00e1cf });
       const led = new THREE.Mesh(ledGeo, ledMat);
       led.position.set(-1.2, 0.15, 0.95);
@@ -117,8 +125,6 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
 
       // Drive Bays
       for (let d = 0; d < 4; d++) {
-        const driveGeo = new THREE.BoxGeometry(0.35, 0.45, 0.03);
-        const driveMat = new THREE.MeshStandardMaterial({ color: 0x3f3f46, metalness: 0.6 });
         const drive = new THREE.Mesh(driveGeo, driveMat);
         drive.position.set(-0.6 + d * 0.45, 0, 0.94);
         bladeGroup.add(drive);
@@ -290,10 +296,11 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
         // Pulse LED Diodes
         const led = ledMeshes[idx];
         if (led) {
-          if (chaosActive && idx === 1 && !failoverResolved) {
+          const { chaosActive: isChaos, failoverResolved: isResolved } = simStateRef.current;
+          if (isChaos && idx === 1 && !isResolved) {
             // Failed node flashing red
             (led.material as THREE.MeshBasicMaterial).color.setHex(Math.sin(elapsed * 12) > 0 ? 0xef4444 : 0x450a0a);
-          } else if (failoverResolved && (idx === 0 || idx === 1)) {
+          } else if (isResolved && (idx === 0 || idx === 1)) {
             // Green failover link
             (led.material as THREE.MeshBasicMaterial).color.setHex(0x10b981);
           } else {
@@ -361,12 +368,27 @@ export function ServerRackExplorer({ locale = 'en' }: { locale?: 'en' | 'id' }) 
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', handleResize);
+      const geometries = new Set<THREE.BufferGeometry>();
+      const materials = new Set<THREE.Material>();
+      scene.traverse((obj) => {
+        if ((obj as THREE.Mesh).isMesh) {
+          const mesh = obj as THREE.Mesh;
+          if (mesh.geometry) geometries.add(mesh.geometry);
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach((m) => materials.add(m));
+          } else if (mesh.material) {
+            materials.add(mesh.material);
+          }
+        }
+      });
+      geometries.forEach((g) => g.dispose());
+      materials.forEach((m) => m.dispose());
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [chaosActive, failoverResolved]);
+  }, []);
 
   const triggerChaosOutage = () => {
     soundEngine.playAlertSound();

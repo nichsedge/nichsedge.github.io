@@ -695,6 +695,8 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
   ]);
 
   const rotationRef = useRef({ rotX: 0, rotY: 0, cameraZ: 7.8 });
+  const isAutoRotatingRef = useRef(isAutoRotating);
+  const selectedCategoriesRef = useRef(selectedCategories);
 
   const sceneRefs = useRef<{
     camera?: THREE.PerspectiveCamera;
@@ -703,6 +705,10 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
     zoomBy?: (delta: number) => void;
     updateCategoryVisibility?: (categories: string[]) => void;
   }>({});
+
+  useEffect(() => {
+    isAutoRotatingRef.current = isAutoRotating;
+  }, [isAutoRotating]);
 
   useEffect(() => {
     setMounted(true);
@@ -737,6 +743,7 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
 
   // Update 3D nodes visibility when category filter changes
   useEffect(() => {
+    selectedCategoriesRef.current = selectedCategories;
     sceneRefs.current.updateCategoryVisibility?.(selectedCategories);
   }, [selectedCategories]);
 
@@ -937,7 +944,7 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
 
     sceneRefs.current.updateCategoryVisibility = updateCategoryVisibility;
     // Apply current categories filter immediately upon mount/remount
-    updateCategoryVisibility(selectedCategories);
+    updateCategoryVisibility(selectedCategoriesRef.current);
 
     // Interaction, Rotation & Raycasting
     const raycaster = new THREE.Raycaster();
@@ -1176,7 +1183,7 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       if (!isRunning) return;
       animationId = requestAnimationFrame(animate);
 
-      if (!isDragging && isAutoRotating) {
+      if (!isDragging && isAutoRotatingRef.current) {
         rotY += 0.002;
         rotationRef.current.rotY = rotY;
       }
@@ -1255,16 +1262,45 @@ export function KnowledgeConstellation({ locale = 'en' }: { locale?: 'en' | 'id'
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('touchend', onTouchEnd);
 
+      nodePlanetGroups.forEach((pGroup) => {
+        pGroup.children.forEach((child) => {
+          const mesh = child as THREE.Mesh;
+          if (mesh.material) {
+            if (Array.isArray(mesh.material)) {
+              mesh.material.forEach((m) => m.dispose());
+            } else {
+              mesh.material.dispose();
+            }
+          }
+        });
+      });
+
+      stemLines.forEach((stem) => {
+        stem.geometry.dispose();
+        if (Array.isArray(stem.material)) {
+          stem.material.forEach((m) => m.dispose());
+        } else {
+          stem.material.dispose();
+        }
+      });
+
+      nodeSpriteMeshes.forEach((sprite) => {
+        sprite.material.map?.dispose();
+        sprite.material.dispose();
+      });
+
       sphereGeo.dispose();
       ringGeo.dispose();
       starGeo.dispose();
+      starMat.dispose();
       linesGeo.dispose();
+      linesMat.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [isExpanded, isAutoRotating]);
+  }, [isExpanded]);
 
   const renderConstellationUI = () => (
     <>

@@ -16,7 +16,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@google/genai": "^0.15.0",
+    "@google/genai": "^3.6.1",
     "@tailwindcss/postcss": "^4.3.5",
     "autoprefixer": "^10.6.2",
     "clsx": "^2.1.1",

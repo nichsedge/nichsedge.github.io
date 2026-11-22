@@ -78,9 +78,32 @@ export function WebMCPProvider() {
               },
             },
           },
-          execute: async () => {
+          execute: async (args) => {
             const res = await fetch('/api/v1/projects');
             const data = await res.json();
+            const q = typeof args?.query === 'string' ? args.query.trim().toLowerCase() : '';
+            if (q && Array.isArray(data?.data)) {
+              const filtered = data.data.filter((item: Record<string, unknown>) => {
+                const haystack = [
+                  item.name,
+                  item.description,
+                  item.language,
+                  ...(Array.isArray(item.topics) ? item.topics : []),
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+                  .toLowerCase();
+                return haystack.includes(q);
+              });
+              return {
+                content: [
+                  {
+                    type: 'text',
+                    text: JSON.stringify({ ...data, query: q, count: filtered.length, data: filtered }),
+                  },
+                ],
+              };
+            }
             return {
               content: [
                 {

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Star, GitFork, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight } from 'lucide-react';
+import { ExternalLink, Star, GitFork, Code, Cpu, Search, Filter, PieChart as PieChartIcon, ArrowRight, Image as ImageIcon, ArrowUpDown } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import githubData from '@/data/github_repos_all.json';
 import screenshotManifest from '@/data/project-screenshots.json';
@@ -28,6 +28,9 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
   useWideLayout('lg');
   const [search, setSearch] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedLang, setSelectedLang] = useState<string>('ALL');
+  const [onlyWithScreenshots, setOnlyWithScreenshots] = useState(false);
+  const [sortBy, setSortBy] = useState<'stars' | 'updated' | 'visuals'>('stars');
   const [showAllLangs, setShowAllLangs] = useState(false);
   const [showAllTopics, setShowAllTopics] = useState(false);
   const [showChart, setShowChart] = useState(false);
@@ -75,22 +78,56 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
     }
   }, [repos]);
 
+  const allTopicsSorted = useMemo(() => {
+    const counts = new Map<string, number>();
+    repos.flatMap(r => r.topics).forEach(topic => {
+      counts.set(topic, (counts.get(topic) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1]);
+  }, [repos]);
+
   const filteredRepos = useMemo(() => {
-    return repos.filter(repo => {
-      const matchesSearch = repo.name.toLowerCase().includes(search.toLowerCase()) ||
-        repo.description?.toLowerCase().includes(search.toLowerCase());
+    const q = search.trim().toLowerCase();
+    const list = repos.filter(repo => {
+      const matchesSearch = !q ||
+        repo.name.toLowerCase().includes(q) ||
+        repo.description?.toLowerCase().includes(q) ||
+        (repo.language?.toLowerCase().includes(q) ?? false);
       const matchesTopics = selectedTopics.length === 0 ||
         selectedTopics.every(t => (repo.topics as string[]).includes(t));
-      return matchesSearch && matchesTopics;
+      const matchesLang = selectedLang === 'ALL' || (repo.language || 'Other') === selectedLang;
+      const matchesScreenshots = !onlyWithScreenshots || repo.screenshots.length > 0;
+      return matchesSearch && matchesTopics && matchesLang && matchesScreenshots;
     });
-  }, [search, selectedTopics, repos]);
+
+    return [...list].sort((a, b) => {
+      if (sortBy === 'updated') {
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+      }
+      if (sortBy === 'visuals') {
+        if (b.screenshots.length !== a.screenshots.length) {
+          return b.screenshots.length - a.screenshots.length;
+        }
+        return b.stargazers_count - a.stargazers_count;
+      }
+      if (b.stargazers_count !== a.stargazers_count) {
+        return b.stargazers_count - a.stargazers_count;
+      }
+      if (b.forks_count !== a.forks_count) {
+        return b.forks_count - a.forks_count;
+      }
+      return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+    });
+  }, [search, selectedTopics, selectedLang, onlyWithScreenshots, sortBy, repos]);
 
   const stats = useMemo(() => {
     const totalStars = repos.reduce((acc, r) => acc + r.stargazers_count, 0);
     const languages = [...new Set(repos.map(r => r.language).filter(Boolean))];
-    const topTopic = 'life';
-    return { totalStars, langCount: languages.length, topTopic, totalCount: repos.length };
-  }, [repos]);
+    const topTopic = allTopicsSorted[0]?.[0] || 'data';
+    const visualCount = repos.filter(r => r.screenshots.length > 0).length;
+    return { totalStars, langCount: languages.length, topTopic, totalCount: repos.length, visualCount };
+  }, [repos, allTopicsSorted]);
 
   const allLangData = useMemo(() => {
     const counts = repos.reduce((acc, repo) => {
@@ -111,15 +148,6 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
     }
     return data;
   }, [allLangData, showAllLangs]);
-
-  const allTopicsSorted = useMemo(() => {
-    const counts = new Map<string, number>();
-    repos.flatMap(r => r.topics).forEach(topic => {
-      counts.set(topic, (counts.get(topic) || 0) + 1);
-    });
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1]);
-  }, [repos]);
 
   const displayedTopics = useMemo(() => {
     if (showAllTopics) {
@@ -281,33 +309,93 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
       </header>
 
       {/* Filters */}
-      <div className="sticky top-[45px] sm:top-[52px] z-30 bg-bg/85 backdrop-blur-md border-b border-border-subtle px-4 sm:px-6 py-2.5 sm:py-4 space-y-2.5 sm:space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-4">
-          <div className="relative w-full md:max-w-md">
+      <div className="sticky top-[45px] sm:top-[52px] z-30 bg-bg/85 backdrop-blur-md border-b border-border-subtle px-4 sm:px-6 py-2.5 sm:py-4 space-y-2.5 sm:space-y-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 sm:gap-3">
+          <div className="relative w-full lg:max-w-md">
             <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${search ? 'text-accent' : 'text-text-3'}`} />
             <input
               type="text"
-              placeholder={locale === 'id' ? 'Cari proyek...' : 'Search projects...'}
+              placeholder={locale === 'id' ? 'Cari proyek atau bahasa...' : 'Search projects or languages...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-bg-1 border border-border-subtle rounded-sm py-1.5 sm:py-2 pl-9 pr-4 text-[12px] font-mono outline-none focus:border-accent/40 focus:bg-bg-1/80 transition-all focus:shadow-[0_0_12px_rgba(0,225,207,0.05)] text-text-0"
             />
           </div>
 
-          {selectedTopics.length > 0 && (
-            <button
-              onClick={() => setSelectedTopics([])}
-              className="self-start md:self-auto font-mono text-[11px] uppercase tracking-widest text-red-400 hover:text-red-300 transition-colors border border-red-500/20 px-2 py-1 rounded-sm bg-red-500/5 hover:bg-red-500/10 flex items-center gap-1"
+          <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+            {/* Language Filter */}
+            <select
+              aria-label={locale === 'id' ? 'Filter bahasa pemrograman' : 'Filter by language'}
+              value={selectedLang}
+              onChange={(e) => setSelectedLang(e.target.value)}
+              className="bg-bg-1 border border-border-subtle rounded-sm px-2.5 py-1.5 text-text-2 focus:border-accent/50 outline-none cursor-pointer"
             >
-              {locale === 'id' ? 'Reset Filter' : 'Reset Filters'} ({selectedTopics.length})
+              <option value="ALL">{locale === 'id' ? 'Semua Bahasa' : 'All Languages'}</option>
+              {allLangData.map((lang) => (
+                <option key={lang.name} value={lang.name}>
+                  {lang.name} ({lang.value})
+                </option>
+              ))}
+            </select>
+
+            {/* Sort Selector */}
+            <div className="flex items-center bg-bg-1 border border-border-subtle rounded-sm px-2 py-1.5 gap-1.5">
+              <ArrowUpDown size={11} className="text-accent shrink-0" />
+              <select
+                aria-label={locale === 'id' ? 'Urutkan proyek' : 'Sort projects'}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'stars' | 'updated' | 'visuals')}
+                className="bg-transparent text-text-2 outline-none cursor-pointer"
+              >
+                <option value="stars">{locale === 'id' ? 'Bintang Terbanyak' : 'Most Stars'}</option>
+                <option value="updated">{locale === 'id' ? 'Terbaru Diperbarui' : 'Recently Updated'}</option>
+                <option value="visuals">{locale === 'id' ? 'Dengan Galeri Dulu' : 'Screenshots First'}</option>
+              </select>
+            </div>
+
+            {/* With Screenshots Toggle */}
+            <button
+              type="button"
+              onClick={() => setOnlyWithScreenshots(prev => !prev)}
+              aria-pressed={onlyWithScreenshots}
+              className={`px-2.5 py-1.5 rounded-sm border transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                onlyWithScreenshots
+                  ? 'bg-accent/15 border-accent text-accent font-semibold'
+                  : 'bg-bg-1 border-border-subtle text-text-3 hover:text-text-1 hover:border-text-3'
+              }`}
+            >
+              <ImageIcon size={12} />
+              <span>{locale === 'id' ? `Visual (${stats.visualCount})` : `With UI (${stats.visualCount})`}</span>
             </button>
-          )}
+
+            {(selectedTopics.length > 0 || selectedLang !== 'ALL' || onlyWithScreenshots || search.trim().length > 0) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch('');
+                  setSelectedTopics([]);
+                  setSelectedLang('ALL');
+                  setOnlyWithScreenshots(false);
+                }}
+                className="uppercase tracking-wider text-red-400 hover:text-red-300 transition-colors border border-red-500/25 px-2.5 py-1.5 rounded-sm bg-red-500/5 hover:bg-red-500/10 cursor-pointer whitespace-nowrap"
+              >
+                {locale === 'id' ? 'Reset' : 'Reset'}
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-text-3 uppercase tracking-wider flex items-center gap-1.5">
-              <Filter size={10} className="text-accent" /> {locale === 'id' ? 'Topik:' : 'Topics:'}
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-mono text-[11px] text-text-3 uppercase tracking-wider flex items-center gap-2">
+              <span className="flex items-center gap-1.5">
+                <Filter size={10} className="text-accent" /> {locale === 'id' ? 'Topik:' : 'Topics:'}
+              </span>
+              <span className="text-text-3/80 normal-case tabular-nums">
+                {locale === 'id'
+                  ? `Menampilkan ${filteredRepos.length} dari ${repos.length}`
+                  : `Showing ${filteredRepos.length} of ${repos.length}`}
+              </span>
               {selectedTopics.length > 0 && (
                 <span className="text-accent font-semibold">({selectedTopics.length} {locale === 'id' ? 'aktif' : 'active'})</span>
               )}
@@ -436,8 +524,16 @@ export default function ProjectsClient({ locale = 'en' }: { locale?: 'en' | 'id'
           <div className="font-mono text-[11px] text-text-3 uppercase tracking-[0.2em] mb-4">
             {locale === 'id' ? 'TIDAK_ADA_PROYEK_YANG_COCOK' : 'NO_MATCHES_FOUND'}
           </div>
-          <button onClick={() => { setSearch(''); setSelectedTopics([]); }} className="text-accent underline underline-offset-4 text-[12px] font-mono hover:text-text-0">
-            {locale === 'id' ? 'Atur ulang buffer kueri' : 'Reset query buffer'}
+          <button
+            onClick={() => {
+              setSearch('');
+              setSelectedTopics([]);
+              setSelectedLang('ALL');
+              setOnlyWithScreenshots(false);
+            }}
+            className="text-accent underline underline-offset-4 text-[12px] font-mono hover:text-text-0 cursor-pointer"
+          >
+            {locale === 'id' ? 'Atur ulang semua filter' : 'Reset all filters'}
           </button>
         </div>
       )}

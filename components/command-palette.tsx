@@ -51,27 +51,30 @@ export function CommandPalette() {
   const router = useRouter();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Check backend AI availability on mount
+  // Lazily check backend AI availability only when the palette is actually opened
   useEffect(() => {
+    if (!isOpen || aiStatus !== null) return;
+    let cancelled = false;
     const checkStatus = async () => {
       try {
         const res = await fetch('/api/ghost', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: '' })
+          body: JSON.stringify({ ping: true })
         });
-        if (res.ok) {
+        if (!cancelled && res.ok) {
           const data = await res.json();
-          setAiStatus(data.status);
-        } else {
+          setAiStatus(data.status === 'LIVE' ? 'LIVE' : 'LOCAL');
+        } else if (!cancelled) {
           setAiStatus('LOCAL');
         }
       } catch {
-        setAiStatus('LOCAL');
+        if (!cancelled) setAiStatus('LOCAL');
       }
     };
     checkStatus();
-  }, []);
+    return () => { cancelled = true; };
+  }, [isOpen, aiStatus]);
 
   // Auto-scroll chat terminal to bottom
   useEffect(() => {
@@ -112,11 +115,16 @@ export function CommandPalette() {
 
   const commands: CommandItem[] = [
     { id: 'home', label: 'Go to Home', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/') },
-    { id: 'projects', label: 'View Projects', icon: <FileText size={14} />, category: 'Navigation', action: () => router.push('/projects') },
-    { id: 'data-lake', label: 'Data Lake (SQL View)', icon: <Database size={14} />, category: 'Navigation', action: () => router.push('/data-lake') },
-    { id: 'terminal', label: 'Open Terminal Console', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal') },
-    { id: 'referrals', label: 'View Referrals (Gateways)', icon: <Network size={14} />, category: 'Navigation', action: () => router.push('/referrals') },
-    { id: 'pay', label: 'Show Pay / Transfer Node', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pay') },
+    { id: 'work', label: 'Career & Experience', icon: <FileText size={14} />, category: 'Navigation', action: () => router.push('/work/') },
+    { id: 'projects', label: 'View Projects Archive', icon: <FileText size={14} />, category: 'Navigation', action: () => router.push('/projects/') },
+    { id: 'data-lake', label: 'Data Lake (SQL Explorer)', icon: <Database size={14} />, category: 'Navigation', action: () => router.push('/data-lake/') },
+    { id: 'terminal', label: 'Open Terminal Console', icon: <Terminal size={14} />, category: 'Navigation', action: () => router.push('/terminal/') },
+    { id: 'about', label: 'About Ichsanul Amal', icon: <FileText size={14} />, category: 'Navigation', action: () => router.push('/about/') },
+    { id: 'developers', label: 'Developer Portal & APIs', icon: <Code size={14} />, category: 'Navigation', action: () => router.push('/developers/') },
+    { id: 'pricing', label: 'Consulting Pricing', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pricing/') },
+    { id: 'contact-page', label: 'Contact Channels', icon: <Mail size={14} />, category: 'Navigation', action: () => router.push('/contact/') },
+    { id: 'referrals', label: 'View Referrals (Gateways)', icon: <Network size={14} />, category: 'Navigation', action: () => router.push('/referrals/') },
+    { id: 'pay', label: 'Show Pay / Transfer Node', icon: <CreditCard size={14} />, category: 'Navigation', action: () => router.push('/pay/') },
     { id: 'settings', label: 'Open System Settings (Ctrl+,)', icon: <Settings2 size={14} />, category: 'System', action: () => window.dispatchEvent(new CustomEvent('open-system-settings')) },
     { id: 'audio-toggle', label: 'Toggle Audio Soundscape (Mute/Unmute)', icon: <Volume2 size={14} />, category: 'System', action: () => gameEngine.toggleAudio() },
     { id: 'nsm-toggle', label: 'Toggle Neural Sync Mode (NSM Matrix Rain)', icon: <Zap size={14} />, category: 'System', action: () => toggleNSM() },
@@ -129,7 +137,7 @@ export function CommandPalette() {
     { id: 'biome-forest', label: 'Switch Biome: Emerald Forest', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'forest' })) },
     { id: 'biome-quantum', label: 'Switch Biome: Quantum Spark', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'quantum' })) },
     { id: 'biome-nebula', label: 'Switch Biome: Nebula Flare', icon: <Palette size={14} />, category: 'Theme', action: () => window.dispatchEvent(new CustomEvent('selected-biome-change', { detail: 'nebula' })) },
-    { id: 'reboot', label: 'Reboot Master Node', icon: <Power size={14} />, category: 'System', action: () => { sessionStorage.removeItem('booted'); window.location.reload(); } },
+    { id: 'reboot', label: 'Replay BIOS Boot Sequence', icon: <Power size={14} />, category: 'System', action: () => { sessionStorage.setItem('trigger-boot', 'true'); window.location.reload(); } },
     { id: 'garden', label: 'Open Digital Garden', icon: <ExternalLink size={14} />, category: 'External', action: () => window.open('https://nichsedge.github.io/digital-garden/', '_blank') },
     { id: 'github', label: 'GitHub Profile', icon: <Github size={14} />, category: 'Social', action: () => window.open(resumeData.profile.github, '_blank') },
     { id: 'linkedin', label: 'LinkedIn Profile', icon: <Linkedin size={14} />, category: 'Social', action: () => window.open(resumeData.profile.linkedin, '_blank') },
@@ -302,17 +310,6 @@ export function CommandPalette() {
 
   return (
     <>
-      {/* Glowing Neural Oracle Floating Button */}
-      <button 
-        onClick={() => setIsOpen(true)}
-        title="Consult Neural Oracle & Search Commands (Ctrl+K)"
-        className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] sm:bottom-[72px] lg:bottom-6 right-16 sm:right-6 z-[85] bg-[#09090b]/90 border border-accent/30 p-3 min-w-[42px] min-h-[42px] rounded-full text-accent hover:text-text-0 hover:bg-accent/10 transition-all flex items-center justify-center group shadow-[0_0_20px_rgba(0,225,207,0.15)] hover:shadow-[0_0_25px_rgba(0,225,207,0.35)] hover:scale-105 duration-300 outline-none focus:outline-none focus:ring-0 cursor-pointer"
-      >
-        <div className="relative flex items-center justify-center">
-          <Brain className="size-4 sm:size-[19px] group-hover:scale-110 transition-transform text-accent" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent rounded-full" />
-        </div>
-      </button>
 
       <AnimatePresence>
         {auditOpen && (

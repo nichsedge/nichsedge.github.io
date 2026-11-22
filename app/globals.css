@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #09090b;
-  --color-bg-1: #18181b;
+  --color-bg: var(--bg, #09090b);
+  --color-bg-1: var(--bg-1, #18181b);
+  --color-bg-2: var(--bg-2, #27272a);
+  --color-surface: var(--surface, #18181b);
   --color-text-0: #fafafa;
   --color-text-1: #f4f4f5;
   --color-text-2: #d4d4d8;
   --color-text-3: #a1a1aa;
+  --color-text-muted: #a1a1aa;
   --color-accent: var(--theme-accent, #00e1cf);
   --color-border: #27272a;
   --color-border-focus: #3f3f46;
@@ -26,10 +29,13 @@
 :root {
   --bg: #09090b;
   --bg-1: #18181b;
+  --bg-2: #27272a;
+  --surface: #18181b;
   --text-0: #fafafa;
   --text-1: #f4f4f5;
   --text-2: #d4d4d8;
   --text-3: #a1a1aa;
+  --text-muted: #a1a1aa;
   --theme-accent: #00e1cf;
   --border: #27272a;
   --border-focus: #3f3f46;
@@ -64,6 +70,8 @@
 .biome-oled {
   --bg: #000000;
   --bg-1: #09090b;
+  --bg-2: #18181b;
+  --surface: #09090b;
   --theme-accent: #f59e0b;
   --color-accent: #f59e0b;
 }
@@ -71,6 +79,8 @@
 .biome-terminal {
   --bg: #03140c;
   --bg-1: #092015;
+  --bg-2: #113022;
+  --surface: #092015;
   --theme-accent: #22c55e;
   --color-accent: #22c55e;
 }

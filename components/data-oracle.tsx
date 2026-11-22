@@ -53,16 +53,14 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
     setIsLoading(true);
     setInsight(null);
     setStage(0);
-    
-    // Simulate thinking stages
-    for(let i=0; i<3; i++) {
-      setStage(i);
-      await new Promise(r => setTimeout(r, 600));
-    }
 
     const query = customQuery || (locale === 'id' 
       ? "Sebagai Oracle Data, prediksi 5 tahun ke depan karir saya berdasarkan stack saya (Spark, dbt, Airflow, GCP). Gunakan nada yang suportif namun futuristik. Maksimal 3 kalimat."
       : "As a Data Oracle, predict the next 5 years of my career based on my stack (Spark, dbt, Airflow, GCP). Use a supportive but futuristic tone. Max 3 sentences.");
+
+    const stageInterval = setInterval(() => {
+      setStage((prev) => (prev < 2 ? prev + 1 : 2));
+    }, 450);
 
     try {
       const res = await fetch('/api/ghost', {
@@ -72,7 +70,7 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       });
       if (!res.ok) throw new Error("API Route offline");
       const data = await res.json();
-      setStatus('LIVE');
+      setStatus(data.status === 'LIVE' ? 'LIVE' : 'LOCAL');
       setInsight(data.response);
       soundEngine.playSuccessChord();
     } catch {
@@ -80,6 +78,7 @@ export function DataOracle({ locale = 'en' }: { locale?: 'en' | 'id' }) {
       setInsight(getFallbackGhostResponse(query));
       soundEngine.playSuccessChord();
     } finally {
+      clearInterval(stageInterval);
       setIsLoading(false);
     }
   };
