@@ -58,6 +58,9 @@ export function JsonLd({
     sameAs: [
       'https://github.com/nichsedge',
       'https://linkedin.com/in/ichsanulamal19',
+      'https://arc.dev/@muhammadi19',
+      'https://wellfound.com/u/muhammad-ichsanul-amal',
+      'https://huggingface.co/nichsedge',
       'https://twitter.com/nichsedge',
     ],
   });
@@ -107,10 +110,14 @@ export function JsonLd({
       sameAs: [
         'https://github.com/nichsedge',
         'https://linkedin.com/in/ichsanulamal19',
+        'https://arc.dev/@muhammadi19',
+        'https://wellfound.com/u/muhammad-ichsanul-amal',
+        'https://huggingface.co/nichsedge',
         'https://twitter.com/nichsedge',
       ],
       knowsAbout: [
         'Data Engineering',
+        'Modern Data Stack',
         'System Architecture',
         'ETL / ELT Pipelines',
         'dbt (data build tool)',
@@ -118,10 +125,13 @@ export function JsonLd({
         'Google BigQuery',
         'PostgreSQL Performance Tuning',
         'Python',
+        'Financial & Market Data',
+        'Crypto & Web3 Data',
         'SQL & Stored Procedures',
-        'Data Lakes',
-        'Data Governance & Quality',
+        'Data Lakes & Warehouses',
+        'Data Governance & Quality (DAMA)',
         'Model Context Protocol (MCP)',
+        'Artificial Intelligence & Native AI Workflows',
         'WebMCP',
       ],
     });
